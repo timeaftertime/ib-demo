@@ -36,11 +36,6 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>
-			<artifactId>ib-drama</artifactId>
-			<version>${ib.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.milai</groupId>
 			<artifactId>ib-container</artifactId>
 			<version>${ib.version}</version>
 		</dependency>
