@@ -1,0 +1,78 @@
+memberName=HC 队员
+officerName=何志参谋
+ultraName=乌托拉
+how_did_you_driver={
+
+
+
+    ？？？？？？
+    
+    
+    
+    
+    
+    刚刚你飞机怎么飞的？
+
+}
+do_not_you_know_reverse_parking=    倒车入库啊，科目二没考过吗？
+are_you_not_skilled=    你是不是技术不行？
+you_can_say_it_agin=    ？？？你说什么，你再说一遍？
+are_you_not_skilled2=    我说你是不是代码写不出来，飞机只能朝上，所以只能退回来？
+wait_and_see=    你等着。
+it_is_excellent=    很好，颇有我当年和大古驾驶飞燕号的风范。
+no_no_no=    什么是王牌飞行员啊……（战术后仰）
+please_go_to_attack_deep_sea_city={
+    HC 队员，现在命令你驾驶海豚 1 号前往支援防卫军，消灭海底遗迹发现的城市。
+    
+    那是外星人企图侵略用来地球的秘密基地，不要放走任何一个敌人！
+}
+i_can_not_accept_that=    抱歉，我是 GUYS 的成员，我只接受迫水队长的命令。
+i_am_the_new_leader=    （拿出证件）现在起，就由我暂时接任 GUYS 队长一职。
+where_is_leader=    什么？怎么回事，迫水队长呢？
+you_do_not_need_to_know={
+    这你不需要知道。
+    
+    立刻执行命令，让侵略人逃跑再卷土重来的后果你是知道的！
+}
+slient=    （沉思……）
+think_around=    （自言自语）众所周知，一个优秀的男人通常还会开潜水艇……
+is_this_the_submarine={
+    海……海豚 1 号？？？潜水艇呢？
+    
+    还整了条海豚？
+}
+we_have_no_more_picture=    实在找不到潜水艇的图片了，这看起来是条海豚，其实是潜水艇。
+ok_fine=    我信你个鬼，你个糟老头子坏得很，你以为你插根吸管我就认不出你就是只海豚了？
+i_am_not_dolphin=    鲨……鲨鱼老哥，我不是海豚，我是潜水艇……
+you_are_dolphin=    我信你个鬼，你个糟老头子坏得很，你以为你插根吸管鲨鱼就认不出你就是只海豚了？
+bgm_info={
+BGM：《艾克斯奥特曼》
+小西贵雄- 新しい目覚め (新的觉醒)
+}
+do_you_want_to_attack=对方似乎要逃跑，是否追击对方逃生飞船？
+yes_attack=是，发射导弹。
+no_do_not_attack=不，让他们走。
+do_you_forget_the_order=何志参谋的命令是不能放走任何敌人，确定要违反命令吗？
+ok_let_us_attack=那还是追击吧。
+no_let_them_go=不，我看过剧本了，这里不能攻击，让他们走。
+why_you_prevent_me={
+
+
+
+    乌托拉？
+    
+    
+    
+    
+    你为什么要阻止我，如果让侵略者逃跑了……
+}
+are_you_sure_that_they_are_aggressor=    既然是侵略者，为什么不使用任何武装反抗就逃跑了，你不觉得奇怪吗？
+i_need_your_help={
+    HC，有些事情的真相，我想去确认一下。
+    
+    但是我的能量能在地球上维持的时间十分有限。
+    
+    因此，我希望借助你的力量。
+}
+what_should_we_do=    我们现在要怎么做呢？
+let_us_find_the_leader_first=    我们首先要找到迫水队长，现在只有他才能告诉我们真相。
