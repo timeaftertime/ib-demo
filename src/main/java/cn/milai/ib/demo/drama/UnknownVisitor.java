@@ -237,7 +237,7 @@ public class UnknownVisitor extends AbstractDrama {
 			(FormContainer) container,
 			DramaDialog.asParams(
 				str(stringCode),
-				speakerImg == null ? null : image(speakerImg).first(),
+				speakerImg == null ? null : image(speakerImg),
 				speakerName == null ? "" : str(speakerName)));
 		container.addObject(dialog);
 		WaitUtil.waitRemove(dialog, 5);

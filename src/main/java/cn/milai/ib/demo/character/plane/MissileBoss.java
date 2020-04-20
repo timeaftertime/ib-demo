@@ -158,7 +158,7 @@ public class MissileBoss extends EnemyPlane {
 		@Override
 		public void afterMove() {
 			PlayerCharacter target = getAttackTarget();
-			if (getCenterX() > target.getX() && getCenterX() < target.getX() + target.getWidth()) {
+			if (target == null || (getCenterX() > target.getX() && getCenterX() < target.getX() + target.getWidth())) {
 				sideShooter.attack();
 				status = new Pareparing();
 			}
