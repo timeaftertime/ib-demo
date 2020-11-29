@@ -8,6 +8,7 @@ import  cn.milai.ib.demo.character.plane.MissileBoss;
 cn.milai.ib.demo.drama.Hello("测试用的剧本") {
 	# 这条注释更华丽
 	void main() {
+	    add PlayerPlane(300, 600);
 	    add DramaDialog(277, 517, img("/img/speaker.png"),
 	    "敌星弹雨游戏引擎新版本发布了！
 	        新特性：

@@ -1,10 +1,10 @@
 package cn.milai.ib.demo.character.bullet.shooter;
 
-import cn.milai.ib.Point;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.weapn.bullet.Bullet;
 import cn.milai.ib.character.weapn.bullet.shooter.AbstractBulletShooter;
 import cn.milai.ib.demo.character.bullet.RedBullet;
+import cn.milai.ib.geometry.Point;
 
 /**
  * 一次放射两颗平行红色普通子弹、发射间隔随着使用者生命值减小而变短的发射器
