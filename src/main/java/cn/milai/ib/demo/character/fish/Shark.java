@@ -3,7 +3,7 @@ package cn.milai.ib.demo.character.fish;
 import cn.milai.ib.character.EnemyCharacter;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 
 /**
  * 鲨鱼
@@ -33,7 +33,7 @@ public class Shark extends EnemyFish implements EnemyCharacter {
 	private int minWaitFrame;
 	private long lastSetACCFrame;
 
-	public Shark(Container container) {
+	public Shark(UIContainer container) {
 		super(0, 0, container);
 		setX(getContainer().getWidth());
 		setY(getContainer().getHeight());
@@ -79,7 +79,7 @@ public class Shark extends EnemyFish implements EnemyCharacter {
 		if (character.getCenterY() < top()) {
 			return;
 		}
-		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * proratedIntProp(P_WAIT_FRAME)));
+		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * intProp(P_WAIT_FRAME)));
 		status.loseLife(character, life);
 	}
 

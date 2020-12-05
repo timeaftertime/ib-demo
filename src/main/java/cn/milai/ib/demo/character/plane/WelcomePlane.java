@@ -1,10 +1,10 @@
 package cn.milai.ib.demo.character.plane;
 
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 
 public class WelcomePlane extends EnemyPlane {
 
-	public WelcomePlane(int x, int y, Container container) {
+	public WelcomePlane(int x, int y, UIContainer container) {
 		super(x, y, container);
 		setSpeedX(getRatedSpeedX());
 		setSpeedY(getRatedSpeedY());

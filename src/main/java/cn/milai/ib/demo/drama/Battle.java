@@ -1,7 +1,7 @@
 package cn.milai.ib.demo.drama;
 
-import cn.milai.ib.container.Container;
 import cn.milai.ib.drama.Drama;
+import cn.milai.ib.drama.DramaContainer;
 import cn.milai.ib.ex.IBException;
 
 /**
@@ -12,11 +12,11 @@ import cn.milai.ib.ex.IBException;
 public abstract class Battle {
 
 	protected Drama drama;
-	private Container container;
+	private DramaContainer container;
 	private Thread battleThread;
 	private volatile boolean closed;
 
-	public Battle(Drama drama, Container container) {
+	public Battle(Drama drama, DramaContainer container) {
 		this.drama = drama;
 		this.container = container;
 		closed = false;
@@ -28,8 +28,8 @@ public abstract class Battle {
 	 * @return
 	 * @throws BattleStoppedException
 	 */
-	public Container container() throws BattleStoppedException {
-		Container c = this.container;
+	public DramaContainer container() throws BattleStoppedException {
+		DramaContainer c = this.container;
 		if (c == null) {
 			throw new BattleStoppedException();
 		}

@@ -6,7 +6,7 @@ import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.weapn.bullet.shooter.BulletShooter;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.demo.character.bullet.shooter.BlueShooter;
 
 /**
@@ -25,7 +25,7 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 	private BulletShooter shooter;
 	private int damagedCnt;
 
-	public Dolphin(int x, int y, Container container) {
+	public Dolphin(int x, int y, UIContainer container) {
 		super(x, y, container);
 		setDirection(Math.PI / 2);
 		player = new BasePlayer();

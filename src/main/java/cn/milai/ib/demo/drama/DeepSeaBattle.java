@@ -6,11 +6,11 @@ import cn.milai.ib.IBObject;
 import cn.milai.ib.component.BloodStrip;
 import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.demo.character.fish.Dolphin;
 import cn.milai.ib.demo.character.fish.Shark;
 import cn.milai.ib.drama.Drama;
+import cn.milai.ib.drama.DramaContainer;
 import cn.milai.ib.util.StringUtil;
 import cn.milai.ib.util.WaitUtil;
 
@@ -23,7 +23,7 @@ public class DeepSeaBattle extends Battle {
 
 	private static final String BATTLE_BGM = "/audio/newAwakening.mp3";
 
-	public DeepSeaBattle(Drama drama, Container container) {
+	public DeepSeaBattle(Drama drama, DramaContainer container) {
 		super(drama, container);
 	}
 
@@ -59,7 +59,7 @@ public class DeepSeaBattle extends Battle {
 
 	private void showBGMInfo() {
 		TextLines bgmInfo = new TextLines(0, 0, container(),
-			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 10L, 40L, 10L);
+			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 7L, 28L, 7L);
 		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getWidth());
 		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getHeight());
 		container().addObject(bgmInfo);

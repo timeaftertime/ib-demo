@@ -8,8 +8,8 @@ import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.character.weapn.bullet.shooter.BulletShooter;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.Image;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.demo.character.bullet.shooter.BlueShooter;
 
 /**
@@ -27,7 +27,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	private final Status INIT_STATUS;
 	private Stack<Status> statusStack = new Stack<>();
 
-	public PlayerPlane(int x, int y, Container container) {
+	public PlayerPlane(int x, int y, UIContainer container) {
 		super(x, y, container);
 		player = new BasePlayer();
 		shooter = new BlueShooter(intProp(P_SHOOT_INTERVAL), intProp(P_MAX_BULLET_NUM), this);

@@ -9,7 +9,7 @@ import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.character.explosion.creator.ExplosionCreator;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.property.Explosible;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.demo.character.explosion.creator.FishFallCreator;
 import cn.milai.ib.util.ImageUtil;
 
@@ -28,13 +28,13 @@ public abstract class AbstractFish extends MovableIBCharacter implements Fish, C
 
 	private Map<BufferedImage, BufferedImage> flipped = Maps.newConcurrentMap();
 
-	public AbstractFish(int x, int y, Container container) {
+	public AbstractFish(int x, int y, UIContainer container) {
 		super(x, y, container);
-		ratedACCX = proratedIntProp(P_RATED_ACC_X);
-		ratedACCY = proratedIntProp(P_RATED_ACC_Y);
+		ratedACCX = intProp(P_RATED_ACC_X);
+		ratedACCY = intProp(P_RATED_ACC_Y);
 		accX = 0;
 		accY = 0;
-		stopACC = proratedIntProp(P_STOP_ACC);
+		stopACC = intProp(P_STOP_ACC);
 	}
 
 	@Override

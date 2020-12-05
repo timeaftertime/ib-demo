@@ -10,17 +10,14 @@ import cn.milai.ib.component.GameOverLabel;
 import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.TextLines;
-import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.Image;
-import cn.milai.ib.container.LifecycleContainer;
-import cn.milai.ib.container.form.FormContainer;
 import cn.milai.ib.contaniner.BaseImage;
 import cn.milai.ib.demo.character.UltraFly;
 import cn.milai.ib.demo.character.bullet.Missile;
 import cn.milai.ib.demo.character.plane.PlayerPlane;
 import cn.milai.ib.drama.AbstractDrama;
+import cn.milai.ib.drama.DramaContainer;
 import cn.milai.ib.util.ImageUtil;
 import cn.milai.ib.util.StringUtil;
 import cn.milai.ib.util.WaitUtil;
@@ -33,11 +30,11 @@ import cn.milai.ib.util.WaitUtil;
 public class UnknownVisitor extends AbstractDrama {
 
 	private static final String HEIR_OF_LIGHT = "/audio/heirOfLight.mp3";
-	private static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(380);
-	private static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(576);
+	private static final int GAME_OVER_LABEL_POS_Y = 266;
+	private static final int RESTART_BUTTON_POS_Y = 403;
 	private static final String WARNING_AUDIO = "WARNING";
 
-	private Container container;
+	private DramaContainer container;
 
 	private Image baseBGI = image("/img/tpc.png");
 	private Image universeBGI = image("/img/backgroud.jpg");
@@ -49,7 +46,7 @@ public class UnknownVisitor extends AbstractDrama {
 	}
 
 	@Override
-	public void run(Container container) {
+	public void doRun(DramaContainer container) {
 		this.container = container;
 		tip(container);
 		inBase();
@@ -66,7 +63,7 @@ public class UnknownVisitor extends AbstractDrama {
 		UltraFly ultraFly = new UltraFly(x, container.getHeight(), container);
 		container.addObject(ultraFly);
 		while (ultraFly.getY() > player.getY()) {
-			ultraFly.setY(ultraFly.getY() - SystemConf.prorate(20));
+			ultraFly.setY(ultraFly.getY() - 14);
 			WaitUtil.wait(container, 1L);
 		}
 		memberSay("it_is_ultra");
@@ -75,7 +72,7 @@ public class UnknownVisitor extends AbstractDrama {
 		CommandShield shield = new CommandShield(container);
 		container.addObject(shield);
 		while (ultraFly.getY() + ultraFly.getHeight() > 0) {
-			ultraFly.setY(ultraFly.getY() - SystemConf.prorate(30));
+			ultraFly.setY(ultraFly.getY() - 21);
 			WaitUtil.wait(container, 1L);
 		}
 		container.removeObject(shield);
@@ -99,32 +96,38 @@ public class UnknownVisitor extends AbstractDrama {
 	}
 
 	private void showBGMInfo() {
-		TextLines bgmInfo = new TextLines(0, 0, container,
-			StringUtil.lines(str("bgm_info2")), Color.BLACK, 10L, 40L, 10L);
+		TextLines bgmInfo = new TextLines(
+			0, 0, container,
+			StringUtil.lines(str("bgm_info2")), Color.BLACK, 7L, 28L, 7L
+		);
 		bgmInfo.setX(container.getWidth() - 1 - bgmInfo.getWidth());
-		bgmInfo.setY(container.getHeight() - container.getContentHeight());
+		bgmInfo.setY(container.getHeight() - container.getHeight());
 		container.addObject(bgmInfo);
 	}
 
-	private void tip(Container container) {
+	private void tip(DramaContainer container) {
 		container.setBackgroud(new BaseImage(ImageUtil.newImage(Color.BLACK, 1, 1)));
 		info("controlTip");
 	}
 
 	private boolean battle() {
-		((LifecycleContainer) container).reset();
+		container.reset();
 		container.setBackgroud(universeBGI);
 		UniverseBattle universeBattle = new UniverseBattle(this, container);
 		if (!universeBattle.run()) {
 			CountDownLatch latch = new CountDownLatch(1);
-			((LifecycleContainer) container).addLifeCycleListener(() -> {
+			container.addLifeCycleListener(() -> {
 				latch.countDown();
 			});
 			container.addObject(new GameOverLabel(container.getWidth() / 2, GAME_OVER_LABEL_POS_Y, container));
-			container.addObject(new RestartButton(container.getWidth() / 2, RESTART_BUTTON_POS_Y, container,
-				() -> {
-					latch.countDown();
-				}));
+			container.addObject(
+				new RestartButton(
+					container.getWidth() / 2, RESTART_BUTTON_POS_Y, container,
+					() -> {
+						latch.countDown();
+					}
+				)
+			);
 			try {
 				latch.await();
 			} catch (InterruptedException e) {
@@ -138,8 +141,9 @@ public class UnknownVisitor extends AbstractDrama {
 		container.setBackgroud(universeBGI);
 		ViewObject dodgePlane = new ViewObject(
 			container.getWidth() / 2,
-			container.getContentHeight() / 6 * 5,
-			container, PlayerPlane.class);
+			container.getHeight() / 6 * 5,
+			container, PlayerPlane.class
+		);
 		container.addObject(dodgePlane);
 		memberSay("what_do_you_want_to_do");
 		visitorSay("surrender_as_soon_as_possible");
@@ -148,18 +152,19 @@ public class UnknownVisitor extends AbstractDrama {
 		ViewObject missile = new ViewObject(container.getWidth() / 2, 0, container, Missile.class);
 		missile.rotate(Math.PI);
 		container.addObject(missile);
+		int missileSpeedY = 35;
 		for (int i = 0; i < 5; i++) {
-			missile.moveY(SystemConf.prorate(50));
+			missile.moveY(missileSpeedY);
 			WaitUtil.wait(container, 1L);
 		}
 		memberSay("it_is_dangerous");
 		for (int i = 0; i < 5; i++) {
-			dodgePlane.moveX(SystemConf.prorate(15));
-			missile.moveY(SystemConf.prorate(50));
+			dodgePlane.moveX(11);
+			missile.moveY(missileSpeedY);
 			WaitUtil.wait(container, 1L);
 		}
 		while (missile.getY() + missile.getHeight() < container.getHeight()) {
-			missile.moveY(SystemConf.prorate(50));
+			missile.moveY(missileSpeedY);
 			WaitUtil.wait(container, 1L);
 		}
 		container.removeObject(missile);
@@ -197,7 +202,7 @@ public class UnknownVisitor extends AbstractDrama {
 	private void showPlaneTakeOff() {
 		info("take_off");
 		int x = container.getWidth() / 2;
-		int y = SystemConf.prorate(500);
+		int y = 350;
 		ViewObject plane = new ViewObject(x, y, container, PlayerPlane.class);
 		container.addObject(plane);
 		for (int speed = 0; plane.getY() + plane.getHeight() > 0; speed -= 1) {
@@ -233,14 +238,26 @@ public class UnknownVisitor extends AbstractDrama {
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = new DramaDialog(
 			(int) (0.5 * container.getWidth()),
-			(int) (0.75 * container.getContentHeight()),
-			(FormContainer) container,
+			(int) (0.75 * container.getHeight()),
+			container,
 			DramaDialog.asParams(
 				str(stringCode),
 				speakerImg == null ? null : image(speakerImg),
-				speakerName == null ? "" : str(speakerName)));
+				speakerName == null ? "" : str(speakerName)
+			)
+		);
 		container.addObject(dialog);
 		WaitUtil.waitRemove(dialog, 5);
+	}
+
+	@Override
+	protected int initWidth() {
+		return 554;
+	}
+
+	@Override
+	protected int initHeight() {
+		return 689;
 	}
 
 }

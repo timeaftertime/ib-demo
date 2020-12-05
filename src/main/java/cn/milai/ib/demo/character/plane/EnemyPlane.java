@@ -7,7 +7,7 @@ import cn.milai.ib.Enemy;
 import cn.milai.ib.character.EnemyCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.property.HasScore;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.util.RandomUtil;
 
 /**
@@ -20,10 +20,9 @@ public abstract class EnemyPlane extends AbstractPlane implements EnemyCharacter
 	private Enemy enemy;
 	private int score;
 
-	public EnemyPlane(int x, int y, Container container) {
+	public EnemyPlane(int x, int y, UIContainer container) {
 		super(x, y, container);
-		// 没有实现 Rotatable 接口，所以图片不会旋转
-		// 这里是为使得子弹方向都朝下
+		// 没有实现 Rotatable 接口，所以图片不会旋转，这里是为使得子弹方向都朝下
 		setDirection(Math.PI);
 		score = intProp(P_SCORE);
 		enemy = new BaseEnemy();

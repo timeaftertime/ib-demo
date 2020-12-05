@@ -6,7 +6,7 @@ import cn.milai.ib.BaseEnemy;
 import cn.milai.ib.Enemy;
 import cn.milai.ib.character.EnemyCharacter;
 import cn.milai.ib.character.PlayerCharacter;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.util.RandomUtil;
 
 /**
@@ -18,7 +18,7 @@ public abstract class EnemyFish extends AbstractFish implements EnemyCharacter {
 
 	private Enemy enemy;
 
-	public EnemyFish(int x, int y, Container container) {
+	public EnemyFish(int x, int y, UIContainer container) {
 		super(x, y, container);
 		enemy = new BaseEnemy();
 		selectAttackTarget();

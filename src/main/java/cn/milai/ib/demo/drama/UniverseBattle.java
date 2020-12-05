@@ -8,9 +8,7 @@ import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.component.BloodStrip;
 import cn.milai.ib.component.LifeCounter;
 import cn.milai.ib.component.text.TextLines;
-import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.ContainerEventListener;
 import cn.milai.ib.demo.character.UltraLight;
 import cn.milai.ib.demo.character.helper.AccelerateHelper;
@@ -20,6 +18,7 @@ import cn.milai.ib.demo.character.plane.MissileBoss;
 import cn.milai.ib.demo.character.plane.PlayerPlane;
 import cn.milai.ib.demo.character.plane.WelcomePlane;
 import cn.milai.ib.drama.AbstractDrama;
+import cn.milai.ib.drama.DramaContainer;
 import cn.milai.ib.util.RandomUtil;
 import cn.milai.ib.util.StringUtil;
 import cn.milai.ib.util.WaitUtil;
@@ -37,11 +36,11 @@ public class UniverseBattle extends Battle {
 
 	private static final String BATTLE_BGM = "/audio/themeOfUltraman.mp3";
 
-	private static final int BLOOD_STRP_Y = SystemConf.prorate(100);
+	private static final int BLOOD_STRP_Y = 70;
 
 	private PlayerCharacter player;
 
-	public UniverseBattle(AbstractDrama drama, Container container) {
+	public UniverseBattle(AbstractDrama drama, DramaContainer container) {
 		super(drama, container);
 	}
 
@@ -72,14 +71,19 @@ public class UniverseBattle extends Battle {
 		beforeBoss();
 		MissileBoss boss = new MissileBoss(container().getWidth() / 2, 0, container());
 		BloodStrip bossBloodStrip = new BloodStrip(
-			container().getWidth() / 2, BLOOD_STRP_Y, container(), boss);
+			container().getWidth() / 2, BLOOD_STRP_Y, container(), boss
+		);
 		WaitUtil.wait(container(), 10L);
 		container().addObject(boss);
 		container().addObject(bossBloodStrip);
 		while (boss.isAlive()) {
 			randomAddFollowPlane();
-			container().addObject(new OneLifeHelper(RandomUtil.nextInt(container().getWidth()), 0,
-				container()));
+			container().addObject(
+				new OneLifeHelper(
+					RandomUtil.nextInt(container().getWidth()), 0,
+					container()
+				)
+			);
 			WaitUtil.wait(container(), 100L);
 			randomAddFollowPlane();
 			WaitUtil.wait(container(), 100L);
@@ -90,8 +94,10 @@ public class UniverseBattle extends Battle {
 	}
 
 	private void showBGMInfo() {
-		TextLines bgmInfo = new TextLines(0, 0, container(),
-			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 10L, 40L, 10L);
+		TextLines bgmInfo = new TextLines(
+			0, 0, container(),
+			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 10L, 40L, 10L
+		);
 		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getWidth());
 		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getHeight());
 		container().addObject(bgmInfo);
@@ -109,7 +115,7 @@ public class UniverseBattle extends Battle {
 	private void beforeBoss() {
 		// 阶梯 Welcome
 		int midX = container().getWidth() / 2;
-		int interval = SystemConf.prorate(35);
+		int interval = 25;
 		addLadderWelcome(8, midX, interval, 20L);
 		// Welcome Follow 混合
 		for (int i = 0; i < 8; i++) {
@@ -118,11 +124,13 @@ public class UniverseBattle extends Battle {
 				WaitUtil.wait(container(), 10L);
 			}
 			WaitUtil.wait(container(), 25L);
-			addWelcomes((int) (container().getWidth() * 0.1),
+			addWelcomes(
+				(int) (container().getWidth() * 0.1),
 				(int) (container().getWidth() * 0.3),
 				(int) (container().getWidth() * 0.5),
 				(int) (container().getWidth() * 0.7),
-				(int) (container().getWidth() * 0.9));
+				(int) (container().getWidth() * 0.9)
+			);
 		}
 		WaitUtil.wait(container(), 30L);
 		hideBoss();
@@ -198,19 +206,26 @@ public class UniverseBattle extends Battle {
 	}
 
 	private void addPlayer() {
-		player = new PlayerPlane(container().getWidth() / 2,
-			container().getContentHeight() * 5 / 6,
-			container());
-		LifeCounter lifeCounter = new LifeCounter(container().getWidth() / 10,
-			container().getContentHeight() / 10 * 9,
-			container(), player);
+		player = new PlayerPlane(
+			container().getWidth() / 2,
+			container().getHeight() * 5 / 6,
+			container()
+		);
+		LifeCounter lifeCounter = new LifeCounter(
+			container().getWidth() / 10,
+			container().getHeight() / 10 * 9,
+			container(), player
+		);
 		container().addObject(player);
 		container().addObject(lifeCounter);
 	}
 
 	private void randomAddFollowPlane() {
-		container().addObject(new FollowPlane(RandomUtil.nextInt(container().getWidth()), 0,
-			container()));
+		container().addObject(
+			new FollowPlane(
+				RandomUtil.nextInt(container().getWidth()), 0, container()
+			)
+		);
 	}
 
 }

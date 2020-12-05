@@ -1,7 +1,7 @@
 package cn.milai.ib.demo.character.explosion;
 
 import cn.milai.ib.character.explosion.AbstractExplosion;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 
 /**
  * 默认的爆炸实现
@@ -10,7 +10,7 @@ import cn.milai.ib.container.Container;
  */
 public class BaseExplosion extends AbstractExplosion {
 
-	public BaseExplosion(int x, int y, Container container) {
+	public BaseExplosion(int x, int y, UIContainer container) {
 		super(x, y, container);
 	}
 

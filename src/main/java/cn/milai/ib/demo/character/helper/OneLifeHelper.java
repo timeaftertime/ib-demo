@@ -2,7 +2,7 @@ package cn.milai.ib.demo.character.helper;
 
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.helper.AbstractHelper;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 
 public class OneLifeHelper extends AbstractHelper {
 
@@ -10,7 +10,7 @@ public class OneLifeHelper extends AbstractHelper {
 
 	private static final int GAIN_LIFE = 1;
 
-	public OneLifeHelper(int x, int y, Container container) {
+	public OneLifeHelper(int x, int y, UIContainer container) {
 		super(x, y, container);
 	}
 

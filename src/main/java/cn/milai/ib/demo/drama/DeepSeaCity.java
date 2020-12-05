@@ -11,12 +11,8 @@ import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.component.text.Selections;
-import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.Image;
-import cn.milai.ib.container.LifecycleContainer;
-import cn.milai.ib.container.form.FormContainer;
 import cn.milai.ib.demo.character.EscapeCraft;
 import cn.milai.ib.demo.character.ShiningStar;
 import cn.milai.ib.demo.character.UltraSide;
@@ -26,6 +22,7 @@ import cn.milai.ib.demo.character.fish.Dolphin;
 import cn.milai.ib.demo.character.fish.Shark;
 import cn.milai.ib.demo.character.plane.PlayerPlane;
 import cn.milai.ib.drama.AbstractDrama;
+import cn.milai.ib.drama.DramaContainer;
 import cn.milai.ib.util.WaitUtil;
 
 /**
@@ -35,13 +32,10 @@ import cn.milai.ib.util.WaitUtil;
  */
 public class DeepSeaCity extends AbstractDrama {
 
-	private static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(380);
-	private static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(576);
+	private static final int GAME_OVER_LABEL_POS_Y = 266;
+	private static final int RESTART_BUTTON_POS_Y = 403;
 
-	private static final int SEA_WIDTH = SystemConf.prorate(1700);
-	private static final int SEA_HEIGHT = SystemConf.prorate(861);
-
-	private Container container;
+	private DramaContainer container;
 
 	private Image baseBGI = image("/img/tpc.png");
 	private Image deepSeaBGI = image("/img/deepSea.jpg");
@@ -56,33 +50,39 @@ public class DeepSeaCity extends AbstractDrama {
 	}
 
 	@Override
-	public void run(Container container) {
+	public void doRun(DramaContainer container) {
 		this.container = container;
 		inBase();
-		int preWidth = container.getWidth();
-		int preHeight = container.getHeight();
-		container.resize(SEA_WIDTH, SEA_HEIGHT);
+		int seaSceneWidth = 1190;
+		int seaSceneHeight = 603;
+		container.newSize(seaSceneWidth, seaSceneHeight);
+		container.newUISize(seaSceneWidth, seaSceneHeight);
 		inSea();
 		while (!battle()) {
 		}
 		victory();
-		container.resize(preWidth, preHeight);
+		container.restoreSize();
+		container.restoreUISize();
 		toBeContinued(container);
 	}
 
 	private void victory() {
 		container.reset();
 		container.setBackgroud(deepSeaBGI);
-		ViewObject dolphin = new ViewObject(container.getWidth() / 8, container.getHeight() / 3, container,
-			Dolphin.class);
+		ViewObject dolphin = new ViewObject(
+			container.getWidth() / 8, container.getHeight() / 3, container,
+			Dolphin.class
+		);
 		ViewObject craft = new ViewObject(centerX(), container.getHeight(), container, EscapeCraft.class);
 		ViewObject ultra = new ViewObject(centerX(), centerY(), container, UltraSide.class);
-		ViewObject star = new ViewObject((int) ultra.getCenterX(), (int) ultra.getCenterY(), container,
-			ShiningStar.class);
+		ViewObject star = new ViewObject(
+			(int) ultra.getCenterX(), (int) ultra.getCenterY(), container,
+			ShiningStar.class
+		);
 		container.addObject(dolphin);
 		container.addObject(craft);
-		int craftSpeed = SystemConf.prorate(10);
-		int dolphinSpeed = SystemConf.prorate(15);
+		int craftSpeed = 7;
+		int dolphinSpeed = 11;
 		while (craft.getCenterY() > centerY()) {
 			craft.moveY(-craftSpeed);
 			WaitUtil.wait(container, 1L);
@@ -96,22 +96,26 @@ public class DeepSeaCity extends AbstractDrama {
 			craft.setRotateRadian(radian);
 			WaitUtil.wait(container, 1L);
 		}
-		Selections selections = new Selections(centerX(), centerY(), container,
+		Selections selections = new Selections(
+			centerX(), centerY(), container,
 			str("do_you_want_to_attack"),
 			new String[] {
 				str("yes_attack"),
 				str("no_do_not_attack")
-			});
+			}
+		);
 		container.addObject(selections);
 		WaitUtil.waitRemove(selections, 10L);
 		boolean attack = selections.getValue() == 0;
 		if (!attack) {
-			selections = new Selections(centerX(), centerY(), container,
+			selections = new Selections(
+				centerX(), centerY(), container,
 				str("do_you_forget_the_order"),
 				new String[] {
 					str("ok_let_us_attack"),
 					str("no_let_them_go")
-				});
+				}
+			);
 			container.addObject(selections);
 			WaitUtil.waitRemove(selections, 10L);
 			attack = selections.getValue() == 0;
@@ -122,26 +126,28 @@ public class DeepSeaCity extends AbstractDrama {
 				craft.moveX(craftSpeed);
 				WaitUtil.wait(container, 1L);
 			}
-			ViewObject missile = new ViewObject((int) dolphin.getCenterX(), (int) dolphin.getCenterY(), container,
-				Missile.class);
+			ViewObject missile = new ViewObject(
+				(int) dolphin.getCenterX(), (int) dolphin.getCenterY(), container,
+				Missile.class
+			);
 			missile.rotate(Math.PI / 2);
 			container.addObject(missile);
 			Audio bomb = audio(BOMB_CODE, AUDIO_BOMB_FILE);
 			container.addObject(star);
 			while (missile.getX() + missile.getWidth() < centerX()) {
 				craft.moveX(craftSpeed);
-				missile.moveX(SystemConf.prorate(20L));
+				missile.moveX(14);
 				WaitUtil.wait(container, 1L);
 			}
 			container.removeObject(missile);
 			container.removeObject(star);
 			container.addObject(ultra);
 			BaseExplosion explosion = new BaseExplosion(centerX(), centerY(), container);
-			int size = 200;
+			int size = 140;
 			explosion.setX(centerX() - size / 2);
 			explosion.setY(centerY() - size / 2);
-			explosion.setWidth(SystemConf.prorate(size));
-			explosion.setHeight(SystemConf.prorate(size));
+			explosion.setWidth(size);
+			explosion.setHeight(size);
 			container.playAudio(bomb);
 			container.addObject(explosion);
 		}
@@ -171,9 +177,9 @@ public class DeepSeaCity extends AbstractDrama {
 		container.addObject(star);
 		while (star.getCenterX() > dolphin.getCenterX()) {
 			if (star.getCenterY() > dolphin.getCenterY()) {
-				star.moveY(-SystemConf.prorate(8));
+				star.moveY(-6);
 			}
-			star.moveX(-SystemConf.prorate(8));
+			star.moveX(-6);
 			WaitUtil.wait(container, 1L);
 		}
 		container.removeObject(star);
@@ -181,29 +187,34 @@ public class DeepSeaCity extends AbstractDrama {
 		ultraSay("let_us_find_the_leader_first");
 	}
 
-	private void toBeContinued(Container container) {
+	private void toBeContinued(DramaContainer container) {
 		container.reset();
 		IBComponent component = new LinesFullScreenPass(
-			10L, Integer.MAX_VALUE, 0L, Arrays.asList("未完待续…", "To Be Continued..."), SystemConf.prorate(10),
-			container);
+			10L, Integer.MAX_VALUE, 0L, Arrays.asList("未完待续…", "To Be Continued..."), 10,
+			container
+		);
 		container.addObject(component);
 		WaitUtil.waitRemove(component, 100L);
 	}
 
 	private boolean battle() {
-		((LifecycleContainer) container).reset();
+		container.reset();
 		container.setBackgroud(deepSeaBGI);
 		DeepSeaBattle deepSeaBattle = new DeepSeaBattle(this, container);
 		if (!deepSeaBattle.run()) {
 			CountDownLatch latch = new CountDownLatch(1);
-			((LifecycleContainer) container).addLifeCycleListener(() -> {
+			container.addLifeCycleListener(() -> {
 				latch.countDown();
 			});
 			container.addObject(new GameOverLabel(centerX(), GAME_OVER_LABEL_POS_Y, container));
-			container.addObject(new RestartButton(centerX(), RESTART_BUTTON_POS_Y, container,
-				() -> {
-					latch.countDown();
-				}));
+			container.addObject(
+				new RestartButton(
+					centerX(), RESTART_BUTTON_POS_Y, container,
+					() -> {
+						latch.countDown();
+					}
+				)
+			);
 			try {
 				latch.await();
 			} catch (InterruptedException e) {
@@ -220,7 +231,7 @@ public class DeepSeaCity extends AbstractDrama {
 		dolphin.setStatus("move");
 		container.addObject(dolphin);
 		for (int i = 0; i < 10; i++) {
-			dolphin.moveX(SystemConf.prorate(15));
+			dolphin.moveX(11);
 			WaitUtil.wait(container, 1L);
 		}
 		dolphin.setStatus(null);
@@ -231,12 +242,11 @@ public class DeepSeaCity extends AbstractDrama {
 		shark.horzontalFlip();
 		container.addObject(shark);
 		for (int i = 0; i < 15; i++) {
-			shark.setX(shark.getX() - SystemConf.prorate(20));
+			shark.setX(shark.getX() - 14);
 			WaitUtil.wait(container, 1L);
 		}
 		memberSay("i_am_not_dolphin");
 		info("you_are_dolphin");
-
 	}
 
 	private void inBase() {
@@ -245,10 +255,10 @@ public class DeepSeaCity extends AbstractDrama {
 		int baseY = centerY();
 		ViewObject plane = new ViewObject(baseX, 0, container, PlayerPlane.class);
 		container.addObject(plane);
-		int speed = 20;
+		int speed = 14;
 		while (plane.getCenterY() < baseY) {
 			plane.moveY(speed);
-			speed = Integer.max(7, speed - 1);
+			speed = Integer.max(5, speed - 1);
 			WaitUtil.wait(container, 1L);
 		}
 		container.removeObject(plane);
@@ -266,12 +276,12 @@ public class DeepSeaCity extends AbstractDrama {
 			moveCircle(plane, container.getWidth() / 6 * 2, -Math.PI / 6 / i);
 		}
 		for (int i = 0; i < 20; i++) {
-			plane.moveY(-SystemConf.prorate(15));
+			plane.moveY(-11);
 			WaitUtil.wait(container, 1L);
 		}
 		plane.rotate(Math.PI);
 		for (int i = 0; i < 20; i++) {
-			plane.moveY(SystemConf.prorate(15));
+			plane.moveY(11);
 			WaitUtil.wait(container, 1L);
 		}
 		container.removeObject(plane);
@@ -331,12 +341,14 @@ public class DeepSeaCity extends AbstractDrama {
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = new DramaDialog(
 			(int) (0.5 * container.getWidth()),
-			(int) (0.75 * container.getContentHeight()),
-			(FormContainer) container,
+			(int) (0.75 * container.getHeight()),
+			container,
 			DramaDialog.asParams(
 				str(stringCode),
 				speakerImg == null ? null : image(speakerImg),
-				speakerName == null ? "" : str(speakerName)));
+				speakerName == null ? "" : str(speakerName)
+			)
+		);
 		container.addObject(dialog);
 		WaitUtil.waitRemove(dialog, 5);
 	}
@@ -347,6 +359,16 @@ public class DeepSeaCity extends AbstractDrama {
 
 	private int centerY() {
 		return container.getHeight() / 2;
+	}
+
+	@Override
+	protected int initWidth() {
+		return 554;
+	}
+
+	@Override
+	protected int initHeight() {
+		return 689;
 	}
 
 }

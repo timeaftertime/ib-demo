@@ -3,8 +3,8 @@ package cn.milai.ib.demo.character.plane;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.weapn.bullet.shooter.BulletShooter;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.Image;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.demo.character.bullet.shooter.DoubleRedShooter;
 import cn.milai.ib.demo.character.bullet.shooter.MissileShooter;
 import cn.milai.ib.demo.character.explosion.BaseExplosion;
@@ -33,7 +33,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private final Image DANGER_IMG = ImageLoader.load(MissileBoss.class, "danger");
 
-	public MissileBoss(int x, int y, Container container) {
+	public MissileBoss(int x, int y, UIContainer container) {
 		super(x, y, container);
 		mainShooter = new DoubleRedShooter(this);
 		sideShooter = new MissileShooter(this);
@@ -71,7 +71,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Comming implements Status {
 
-		private final int COMMING_MAX_Y = proratedIntProp(P_COMMING_MAX_Y);
+		private final int COMMING_MAX_Y = intProp(P_COMMING_MAX_Y);
 
 		public Comming() {
 			setSpeedX(0);
@@ -94,8 +94,8 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pareparing implements Status {
 
-		private final int PREPARE_MIN_Y = proratedIntProp("prepareMinY");
-		private final int PREPARE_MAX_Y = proratedIntProp("prepareMaxY");
+		private final int PREPARE_MIN_Y = intProp("prepareMinY");
+		private final int PREPARE_MAX_Y = intProp("prepareMaxY");
 
 		private final double TURN_Y_CHANCE = doubleProp("turnYChance");
 
@@ -135,7 +135,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pursuing implements Status {
 
-		private final int PURSUING_SPEED_X = proratedIntProp(P_PURSUING_SPEED_X);
+		private final int PURSUING_SPEED_X = intProp(P_PURSUING_SPEED_X);
 
 		public Pursuing() {
 			setSpeedX(PURSUING_SPEED_X);

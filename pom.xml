@@ -7,7 +7,7 @@
 	<description>使用 Infinity Battle 的示例项目</description>
 
 	<properties>
-		<ib.version>1.0.0</ib.version>
+		<ib.version>1.0.1-SNAPSHOT</ib.version>
 		<ib.dramafile.version>1.0.0</ib.dramafile.version>
 		<spring.version>5.2.3.RELEASE</spring.version>
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
@@ -23,6 +23,12 @@
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-core</artifactId>
 			<version>${ib.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>
@@ -53,6 +59,12 @@
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-dramafile-compiler</artifactId>
 			<version>${ib.dramafile.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>

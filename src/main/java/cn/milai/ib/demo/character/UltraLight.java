@@ -36,11 +36,6 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 	}
 
 	@Override
-	protected int proratedIntProp(String key) {
-		return 0;
-	}
-
-	@Override
 	protected int intProp(String key) {
 		if (key.equals(Bullet.P_POWER)) {
 			return 100;

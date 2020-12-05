@@ -1,11 +1,11 @@
 package cn.milai.ib.demo.character;
 
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 
 public class ShiningStar extends AbstractIBCharacter {
 
-	public ShiningStar(int x, int y, Container container) {
+	public ShiningStar(int x, int y, UIContainer container) {
 		super(x, y, container);
 	}
 

@@ -4,7 +4,7 @@ import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.helper.AbstractHelper;
 import cn.milai.ib.character.property.Movable;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.container.Container;
+import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.loader.ImageLoader;
 
 public class AccelerateHelper extends AbstractHelper {
@@ -14,13 +14,13 @@ public class AccelerateHelper extends AbstractHelper {
 	public static final String P_MAX_RATED_SPEED_X = "maxRatedSpeedX";
 	public static final String P_MAX_RATED_SPEED_Y = "maxRatedSpeedY";
 
-	private int maxRatedSpeedX = SystemConf.prorate(30);
-	private int maxRatedSpeedY = SystemConf.prorate(30);
+	private int maxRatedSpeedX = 21;
+	private int maxRatedSpeedY = 21;
 
-	public AccelerateHelper(int x, int y, Container container) {
+	public AccelerateHelper(int x, int y, UIContainer container) {
 		super(x, y, container);
-		maxRatedSpeedX = proratedIntProp(P_MAX_RATED_SPEED_X);
-		maxRatedSpeedY = proratedIntProp(P_MAX_RATED_SPEED_Y);
+		maxRatedSpeedX = intProp(P_MAX_RATED_SPEED_X);
+		maxRatedSpeedY = intProp(P_MAX_RATED_SPEED_Y);
 	}
 
 	@Override

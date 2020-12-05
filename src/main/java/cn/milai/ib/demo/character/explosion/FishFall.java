@@ -24,7 +24,7 @@ public class FishFall extends AbstractExplosion {
 
 	public FishFall(IBCharacter character) {
 		super(0, 0, character.getContainer());
-		speed = proratedIntProp(P_SPEED);
+		speed = intProp(P_SPEED);
 		img = ImageUtil.verticalFlip(character.getNowImage());
 		setX(character.getX());
 		setY(character.getY() + character.getHeight());
@@ -33,11 +33,11 @@ public class FishFall extends AbstractExplosion {
 	}
 
 	@Override
-	protected int proratedIntProp(String key) {
+	protected int intProp(String key) {
 		if (key.equals(IBObject.P_WIDTH) || key.equals(IBObject.P_HEIGHT)) {
 			return 0;
 		}
-		return super.proratedIntProp(key);
+		return super.intProp(key);
 	}
 
 	@Override

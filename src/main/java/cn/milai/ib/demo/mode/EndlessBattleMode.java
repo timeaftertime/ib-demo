@@ -50,10 +50,10 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 	private static final int MAX_PLAYER_BULLET_NUM = 10;
 	private static final int INIT_MAX_ENEMY_NUM = 5;
 	private static final int LEVEL_UP_SCORE_INTERVAL = 10;
-	public static final int GAME_OVER_LABEL_POS_X = SystemConf.prorate(400);
-	public static final int GAME_OVER_LABEL_POS_Y = SystemConf.prorate(380);
-	public static final int RESTART_BUTTON_POS_X = SystemConf.prorate(390);
-	public static final int RESTART_BUTTON_POS_Y = SystemConf.prorate(576);
+	public static final int GAME_OVER_LABEL_POS_X = 280;
+	public static final int GAME_OVER_LABEL_POS_Y = 216;
+	public static final int RESTART_BUTTON_POS_X = 273;
+	public static final int RESTART_BUTTON_POS_Y = 403;
 
 	/**
 	 * 最短添加新敌机的时间间隔
@@ -136,9 +136,9 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 		}
 
 		private void addWelComePlayer() {
-			addVerticalWelcomePlayer(5, SystemConf.prorate(100));
-			addVerticalWelcomePlayer(5, SystemConf.prorate(200));
-			addLadderWelcomePlayer(5, SystemConf.prorate(35));
+			addVerticalWelcomePlayer(5, 70);
+			addVerticalWelcomePlayer(5, 140);
+			addLadderWelcomePlayer(5, 25);
 			WaitUtil.wait(form, 42);
 		}
 
@@ -178,8 +178,11 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 			int playerBulletNum = maxBulletNum + 1;
 			if (playerBulletNum > MAX_PLAYER_BULLET_NUM)
 				playerBulletNum = MAX_PLAYER_BULLET_NUM;
-			player.setShooter(new BlueShooter(
-				SystemConf.intProp(player.getClass(), PlayerPlane.P_SHOOT_INTERVAL), maxBulletNum, player));
+			player.setShooter(
+				new BlueShooter(
+					SystemConf.intProp(player.getClass(), PlayerPlane.P_SHOOT_INTERVAL), maxBulletNum, player
+				)
+			);
 
 			addNormalEnemyInterval = addNormalEnemyInterval * 2 / 3;
 			if (addNormalEnemyInterval < MIN_ADD_ENEMEY_FRAMES)
@@ -248,7 +251,6 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 		form.addObject(new RestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, form, () -> {
 			form.close();
 			try {
-				// 必须使用 getClass() 获取当前实例的实际 Class
 				EndlessBattleMode.class.newInstance().start();
 			} catch (InstantiationException | IllegalAccessException e1) {
 				throw new IBException("创建 EndlessBattleMode 实例失败");
