@@ -23,12 +23,6 @@
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-core</artifactId>
 			<version>${ib.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai</groupId>

@@ -5,7 +5,7 @@ import cn.milai.ib.Player;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.character.weapn.bullet.shooter.BulletShooter;
+import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.demo.character.bullet.shooter.BlueShooter;
 

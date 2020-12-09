@@ -7,7 +7,7 @@ import cn.milai.ib.IBObject;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.character.property.HasScore;
-import cn.milai.ib.character.weapn.bullet.Bullet;
+import cn.milai.ib.character.weapon.bullet.Bullet;
 import cn.milai.ib.component.GameOverLabel;
 import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.conf.SystemConf;

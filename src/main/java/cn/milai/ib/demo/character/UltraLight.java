@@ -2,8 +2,8 @@ package cn.milai.ib.demo.character;
 
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.character.weapn.bullet.AbstractBullet;
-import cn.milai.ib.character.weapn.bullet.Bullet;
+import cn.milai.ib.character.weapon.bullet.AbstractBullet;
+import cn.milai.ib.character.weapon.bullet.Bullet;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.listener.ContainerEventListener;
 

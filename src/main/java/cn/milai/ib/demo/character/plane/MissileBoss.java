@@ -2,7 +2,7 @@ package cn.milai.ib.demo.character.plane;
 
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.PlayerCharacter;
-import cn.milai.ib.character.weapn.bullet.shooter.BulletShooter;
+import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ib.container.Image;
 import cn.milai.ib.container.UIContainer;
 import cn.milai.ib.demo.character.bullet.shooter.DoubleRedShooter;

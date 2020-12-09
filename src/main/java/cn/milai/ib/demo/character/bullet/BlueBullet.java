@@ -1,7 +1,7 @@
 package cn.milai.ib.demo.character.bullet;
 
 import cn.milai.ib.character.IBCharacter;
-import cn.milai.ib.character.weapn.bullet.AbstractBullet;
+import cn.milai.ib.character.weapon.bullet.AbstractBullet;
 
 /**
  * 简单向上的子弹
