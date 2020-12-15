@@ -1,6 +1,6 @@
 package cn.milai.ib.demo.character.plane;
 
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 public class WelcomePlane extends EnemyPlane {
 

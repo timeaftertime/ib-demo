@@ -1,7 +1,7 @@
 package cn.milai.ib.demo.character;
 
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 public class UltraFly extends AbstractIBCharacter {
 

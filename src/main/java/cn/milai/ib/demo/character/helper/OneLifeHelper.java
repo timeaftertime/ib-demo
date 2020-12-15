@@ -2,7 +2,7 @@ package cn.milai.ib.demo.character.helper;
 
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.helper.AbstractHelper;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 public class OneLifeHelper extends AbstractHelper {
 

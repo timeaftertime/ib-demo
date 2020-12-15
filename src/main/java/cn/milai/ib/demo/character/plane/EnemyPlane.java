@@ -2,12 +2,12 @@ package cn.milai.ib.demo.character.plane;
 
 import java.util.List;
 
-import cn.milai.ib.BaseEnemy;
-import cn.milai.ib.Enemy;
-import cn.milai.ib.character.EnemyCharacter;
+import cn.milai.ib.character.BotCharacter;
+import cn.milai.ib.character.BaseBot;
+import cn.milai.ib.character.Bot;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.property.HasScore;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 import cn.milai.ib.util.RandomUtil;
 
 /**
@@ -15,9 +15,9 @@ import cn.milai.ib.util.RandomUtil;
  * @author milai
  * @date 2020.04.02
  */
-public abstract class EnemyPlane extends AbstractPlane implements EnemyCharacter, HasScore {
+public abstract class EnemyPlane extends AbstractPlane implements BotCharacter, HasScore {
 
-	private Enemy enemy;
+	private Bot enemy;
 	private int score;
 
 	public EnemyPlane(int x, int y, UIContainer container) {
@@ -25,7 +25,7 @@ public abstract class EnemyPlane extends AbstractPlane implements EnemyCharacter
 		// 没有实现 Rotatable 接口，所以图片不会旋转，这里是为使得子弹方向都朝下
 		setDirection(Math.PI);
 		score = intProp(P_SCORE);
-		enemy = new BaseEnemy();
+		enemy = new BaseBot();
 		selectAttackTarget();
 	}
 

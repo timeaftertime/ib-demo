@@ -2,11 +2,11 @@ package cn.milai.ib.demo.character.fish;
 
 import java.util.List;
 
-import cn.milai.ib.BaseEnemy;
-import cn.milai.ib.Enemy;
-import cn.milai.ib.character.EnemyCharacter;
+import cn.milai.ib.character.BotCharacter;
+import cn.milai.ib.character.BaseBot;
+import cn.milai.ib.character.Bot;
 import cn.milai.ib.character.PlayerCharacter;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 import cn.milai.ib.util.RandomUtil;
 
 /**
@@ -14,13 +14,13 @@ import cn.milai.ib.util.RandomUtil;
  * @author milai
  * @date 2020.04.04
  */
-public abstract class EnemyFish extends AbstractFish implements EnemyCharacter {
+public abstract class EnemyFish extends AbstractFish implements BotCharacter {
 
-	private Enemy enemy;
+	private Bot enemy;
 
 	public EnemyFish(int x, int y, UIContainer container) {
 		super(x, y, container);
-		enemy = new BaseEnemy();
+		enemy = new BaseBot();
 		selectAttackTarget();
 		setDirection(-Math.PI / 4);
 	}

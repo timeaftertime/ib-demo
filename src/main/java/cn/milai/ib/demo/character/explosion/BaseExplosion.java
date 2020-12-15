@@ -1,7 +1,7 @@
 package cn.milai.ib.demo.character.explosion;
 
 import cn.milai.ib.character.explosion.AbstractExplosion;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * 默认的爆炸实现

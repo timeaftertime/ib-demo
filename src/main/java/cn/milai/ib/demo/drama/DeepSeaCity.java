@@ -11,8 +11,9 @@ import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.component.text.Selections;
-import cn.milai.ib.container.Audio;
-import cn.milai.ib.container.Image;
+import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.ui.Audio;
+import cn.milai.ib.container.ui.Image;
 import cn.milai.ib.demo.character.EscapeCraft;
 import cn.milai.ib.demo.character.ShiningStar;
 import cn.milai.ib.demo.character.UltraSide;
@@ -22,7 +23,6 @@ import cn.milai.ib.demo.character.fish.Dolphin;
 import cn.milai.ib.demo.character.fish.Shark;
 import cn.milai.ib.demo.character.plane.PlayerPlane;
 import cn.milai.ib.drama.AbstractDrama;
-import cn.milai.ib.drama.DramaContainer;
 import cn.milai.ib.util.WaitUtil;
 
 /**

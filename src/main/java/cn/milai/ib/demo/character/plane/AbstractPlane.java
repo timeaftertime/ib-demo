@@ -3,7 +3,7 @@ package cn.milai.ib.demo.character.plane;
 import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.character.explosion.creator.ExplosionCreator;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 import cn.milai.ib.demo.character.explosion.creator.BaseExplosionCreator;
 
 /**

@@ -5,7 +5,7 @@ import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.weapon.bullet.AbstractBullet;
 import cn.milai.ib.character.weapon.bullet.Bullet;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.listener.ContainerEventListener;
+import cn.milai.ib.container.ContainerEventListener;
 
 /**
  * 光线特效窗口组件

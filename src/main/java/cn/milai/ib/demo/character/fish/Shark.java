@@ -1,16 +1,16 @@
 package cn.milai.ib.demo.character.fish;
 
-import cn.milai.ib.character.EnemyCharacter;
+import cn.milai.ib.character.BotCharacter;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 
 /**
  * 鲨鱼
  * @author milai
  * @date 2020.04.03
  */
-public class Shark extends EnemyFish implements EnemyCharacter {
+public class Shark extends EnemyFish implements BotCharacter {
 
 	/**
 	 * 属性 [Wait 状态持续帧数] 的 key

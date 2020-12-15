@@ -4,7 +4,7 @@ import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.helper.AbstractHelper;
 import cn.milai.ib.character.property.Movable;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.container.UIContainer;
+import cn.milai.ib.container.ui.UIContainer;
 import cn.milai.ib.loader.ImageLoader;
 
 public class AccelerateHelper extends AbstractHelper {
