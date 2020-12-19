@@ -8,7 +8,7 @@
 
 	<properties>
 		<ib.version>1.0.1-SNAPSHOT</ib.version>
-		<ib.dramafile.version>1.0.0</ib.dramafile.version>
+		<ib.dramafile.version>1.0.1-SNAPSHOT</ib.dramafile.version>
 		<spring.version>5.2.3.RELEASE</spring.version>
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
 	</properties>
@@ -44,7 +44,6 @@
 			<artifactId>ib-dramafile-api</artifactId>
 			<version>${ib.dramafile.version}</version>
 		</dependency>
-		<!-- 用于支持剧本文件解析
 		<dependency>
 			<groupId>cn.milai</groupId>
 			<artifactId>ib-dramafile-compiler</artifactId>
@@ -61,7 +60,6 @@
 			<artifactId>ib-dramafile-interpreter</artifactId>
 			<version>${ib.dramafile.version}</version>
 		</dependency>
-		-->
 	</dependencies>
 
 	<build>
