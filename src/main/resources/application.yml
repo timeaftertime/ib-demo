@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: ib-demo
+  profiles:    active:    - dev
+    
+nexus:  mode: client
