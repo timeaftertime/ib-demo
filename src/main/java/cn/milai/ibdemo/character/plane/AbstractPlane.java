@@ -14,15 +14,13 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane 
 
 	private ExplosionCreator explosionCreator;
 
-	public AbstractPlane(int x, int y, UIContainer container) {
+	public AbstractPlane(double x, double y, UIContainer container) {
 		super(x, y, container);
 		explosionCreator = new BaseExplosionCreator();
 	}
 
 	@Override
-	public ExplosionCreator getExplosionCreator() {
-		return explosionCreator;
-	}
+	public ExplosionCreator getExplosionCreator() { return explosionCreator; }
 
 	@Override
 	public void onCrash(CanCrash crashed) {

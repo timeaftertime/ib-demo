@@ -18,7 +18,7 @@ public abstract class EnemyFish extends AbstractFish implements BotCharacter {
 
 	private Bot enemy;
 
-	public EnemyFish(int x, int y, UIContainer container) {
+	public EnemyFish(double x, double y, UIContainer container) {
 		super(x, y, container);
 		enemy = new BaseBot();
 		selectAttackTarget();
@@ -26,7 +26,7 @@ public abstract class EnemyFish extends AbstractFish implements BotCharacter {
 	}
 
 	@Override
-	public void setACCX(int accX) {
+	public void setACCX(double accX) {
 		if (accX < 0) {
 			setDirection(-Math.PI / 4);
 		} else if (accX > 0) {

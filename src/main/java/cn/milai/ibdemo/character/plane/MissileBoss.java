@@ -33,7 +33,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private final Image DANGER_IMG = ImageLoader.load(MissileBoss.class, "danger");
 
-	public MissileBoss(int x, int y, UIContainer container) {
+	public MissileBoss(double x, double y, UIContainer container) {
 		super(x, y, container);
 		mainShooter = new DoubleRedShooter(this);
 		sideShooter = new MissileShooter(this);
@@ -56,7 +56,7 @@ public class MissileBoss extends EnemyPlane {
 		super.loseLife(character, life);
 		if (isAlive()) {
 			getContainer().addObject(
-				new BaseExplosion((int) character.getCenterX(), (int) character.getCenterY(), getContainer())
+				new BaseExplosion(character.getCenterX(), character.getCenterY(), getContainer())
 			);
 		}
 		if (getImage() != DANGER_IMG && getLife() <= DANGER_LIFE) {
@@ -72,7 +72,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Comming implements Status {
 
-		private final int COMMING_MAX_Y = intProp(P_COMMING_MAX_Y);
+		private final double COMMING_MAX_Y = doubleProp(P_COMMING_MAX_Y);
 
 		public Comming() {
 			setSpeedX(0);
@@ -81,7 +81,7 @@ public class MissileBoss extends EnemyPlane {
 
 		@Override
 		public void beforeMove() {
-			if (getY() + getHeight() >= COMMING_MAX_Y) {
+			if (getY() + getH() >= COMMING_MAX_Y) {
 				status = new Pareparing();
 				return;
 			}
@@ -94,8 +94,8 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pareparing implements Status {
 
-		private final int PREPARE_MIN_Y = intProp("prepareMinY");
-		private final int PREPARE_MAX_Y = intProp("prepareMaxY");
+		private final double PREPARE_MIN_Y = doubleProp("prepareMinY");
+		private final double PREPARE_MAX_Y = doubleProp("prepareMaxY");
 
 		private final double TURN_Y_CHANCE = doubleProp("turnYChance");
 
@@ -113,12 +113,15 @@ public class MissileBoss extends EnemyPlane {
 
 		@Override
 		public void beforeMove() {
-			if (getX() + getWidth() >= getContainer().getWidth()) {
+			if (getX() + getW() >= getContainer().getWidth()) {
 				setSpeedX(-Math.abs(getSpeedX()));
-			} else if (getX() <= 0) {
+			} else if (getIntX() <= 0) {
 				setSpeedX(Math.abs(getSpeedX()));
 			}
 			if (Randoms.nextLess(TURN_Y_CHANCE)) {
+				setSpeedY(getSpeedY() * -1);
+			}
+			if (getAttackTarget().getCenterY() < getCenterY() && getSpeedY() > 0 && Randoms.nextLess(TURN_Y_CHANCE)) {
 				setSpeedY(getSpeedY() * -1);
 			}
 		}
@@ -135,7 +138,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pursuing implements Status {
 
-		private final int PURSUING_SPEED_X = intProp(P_PURSUING_SPEED_X);
+		private final double PURSUING_SPEED_X = doubleProp(P_PURSUING_SPEED_X);
 
 		public Pursuing() {
 			setSpeedX(PURSUING_SPEED_X);
@@ -158,7 +161,7 @@ public class MissileBoss extends EnemyPlane {
 		@Override
 		public void afterMove() {
 			PlayerCharacter target = getAttackTarget();
-			if (target == null || (getCenterX() > target.getX() && getCenterX() < target.getX() + target.getWidth())) {
+			if (target == null || (getCenterX() > target.getX() && getCenterX() < target.getX() + target.getW())) {
 				sideShooter.attack();
 				status = new Pareparing();
 			}

@@ -10,7 +10,7 @@ import cn.milai.ib.container.ui.UIContainer;
  */
 public class EscapeCraft extends AbstractIBCharacter {
 
-	public EscapeCraft(int x, int y, UIContainer container) {
+	public EscapeCraft(double x, double y, UIContainer container) {
 		super(x, y, container);
 	}
 

@@ -19,30 +19,30 @@ public class FishFall extends AbstractExplosion {
 	 */
 	public static final String P_SPEED = "speed";
 
-	private int speed;
+	private double speed;
 	private BufferedImage img;
 
 	public FishFall(IBCharacter character) {
 		super(0, 0, character.getContainer());
-		speed = intProp(P_SPEED);
+		speed = doubleProp(P_SPEED);
 		img = ImageUtil.verticalFlip(character.getNowImage());
-		setX(character.getX());
-		setY(character.getY() + character.getHeight());
-		setWidth(character.getWidth());
-		setHeight(character.getHeight());
+		setX(character.getIntX());
+		setY(character.getIntY() + character.getIntH());
+		setW(character.getIntW());
+		setH(character.getIntH());
 	}
 
 	@Override
-	protected int intProp(String key) {
+	protected double doubleProp(String key) {
 		if (key.equals(IBObject.P_WIDTH) || key.equals(IBObject.P_HEIGHT)) {
 			return 0;
 		}
-		return super.intProp(key);
+		return super.doubleProp(key);
 	}
 
 	@Override
 	public BufferedImage getNowImage() {
-		setY(getY() + speed);
+		setY(getIntY() + speed);
 		return img;
 	}
 }

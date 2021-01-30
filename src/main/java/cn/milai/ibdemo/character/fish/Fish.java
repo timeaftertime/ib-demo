@@ -28,11 +28,11 @@ public interface Fish extends Movable {
 	 * 获取 X 方向额定加速度大小
 	 * @return
 	 */
-	int getRatedACCX();
+	double getRatedACCX();
 
 	/**
 	 * 获取 Y 方向额定加速度大小
 	 * @return
 	 */
-	int getRatedACCY();
+	double getRatedACCY();
 }

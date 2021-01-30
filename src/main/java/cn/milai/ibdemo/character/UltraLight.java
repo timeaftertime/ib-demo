@@ -16,8 +16,8 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 
 	private long durationFrame;
 	private double deltaRadian;
-	private int width = 0;
-	private int height = 0;
+	private double width = 0;
+	private double height = 0;
 
 	public UltraLight(IBCharacter owner, long durationFrame) {
 		super(0, 0, owner);
@@ -28,9 +28,9 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 		int w = getContainer().getWidth();
 		int h = getContainer().getHeight();
 		width = w / 8 + 1;
-		height = (int) Math.sqrt(h * h + w * w);
-		setWidth(width);
-		setHeight(height * 2);
+		height = Math.sqrt(h * h + w * w);
+		setW(width);
+		setH(height * 2);
 		setY(h - height);
 		getContainer().addEventListener(this);
 	}
@@ -44,9 +44,12 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 	}
 
 	@Override
-	public boolean isAlive() {
-		return true;
+	protected double doubleProp(String key) {
+		return 0;
 	}
+
+	@Override
+	public boolean isAlive() { return true; }
 
 	@Override
 	public void afterRefresh(Container container) {

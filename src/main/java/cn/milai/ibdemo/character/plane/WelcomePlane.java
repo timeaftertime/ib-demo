@@ -4,7 +4,7 @@ import cn.milai.ib.container.ui.UIContainer;
 
 public class WelcomePlane extends EnemyPlane {
 
-	public WelcomePlane(int x, int y, UIContainer container) {
+	public WelcomePlane(double x, double y, UIContainer container) {
 		super(x, y, container);
 		setSpeedX(getRatedSpeedX());
 		setSpeedY(getRatedSpeedY());
@@ -21,7 +21,7 @@ public class WelcomePlane extends EnemyPlane {
 	}
 
 	private void removeIfOutOfOwner() {
-		if (getY() > getContainer().getHeight())
+		if (getIntY() > getContainer().getHeight())
 			getContainer().removeObject(this);
 	}
 

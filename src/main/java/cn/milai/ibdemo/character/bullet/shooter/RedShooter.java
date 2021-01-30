@@ -22,7 +22,7 @@ public class RedShooter extends AbstractBulletShooter {
 
 	@Override
 	protected Bullet[] createBullets0() {
-		return new Bullet[] { new RedBullet((int) owner.getCenterX(), owner.getY() + owner.getHeight(), owner) };
+		return new Bullet[] { new RedBullet((int) owner.getCenterX(), owner.getIntY() + owner.getIntH(), owner) };
 	}
 
 }

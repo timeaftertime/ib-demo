@@ -27,7 +27,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	private final Status INIT_STATUS;
 	private Stack<Status> statusStack = new Stack<>();
 
-	public PlayerPlane(int x, int y, UIContainer container) {
+	public PlayerPlane(double x, double y, UIContainer container) {
 		super(x, y, container);
 		player = new BasePlayer();
 		shooter = new BlueShooter(intProp(P_SHOOT_INTERVAL), intProp(P_MAX_BULLET_NUM), this);
@@ -39,9 +39,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	 * 设置使用的子弹发射器
 	 * @param shooter
 	 */
-	public void setShooter(BulletShooter shooter) {
-		this.shooter = shooter;
-	}
+	public void setShooter(BulletShooter shooter) { this.shooter = shooter; }
 
 	@Override
 	public void beforeMove() {
@@ -70,9 +68,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	}
 
 	@Override
-	public int getDamage() {
-		return 1;
-	}
+	public int getDamage() { return 1; }
 
 	@Override
 	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
@@ -113,8 +109,8 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	}
 
 	private void resetStatus(Status status) {
-		setWidth(status.width);
-		setHeight(status.height);
+		setW(status.width);
+		setH(status.height);
 		setRatedSpeedX(status.ratedSpeedX);
 		setRatedSpeedY(status.ratedSpeedY);
 		setShooter(status.shooter);
@@ -126,17 +122,17 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	 * @author milai
 	 */
 	private class Status implements Cloneable {
-		private int width;
-		private int height;
-		private int ratedSpeedX;
-		private int ratedSpeedY;
+		private double width;
+		private double height;
+		private double ratedSpeedX;
+		private double ratedSpeedY;
 		private BulletShooter shooter;
 		private Image img;
 
 		Status() {
 			PlayerPlane plane = PlayerPlane.this;
-			this.width = plane.getWidth();
-			this.height = plane.getHeight();
+			this.width = plane.getIntW();
+			this.height = plane.getIntH();
 			this.ratedSpeedX = plane.getRatedSpeedX();
 			this.ratedSpeedY = plane.getRatedSpeedY();
 			this.shooter = plane.shooter;
@@ -161,9 +157,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	}
 
 	@Override
-	public boolean isUp() {
-		return player.isUp();
-	}
+	public boolean isUp() { return player.isUp(); }
 
 	@Override
 	public void setDown() {
@@ -176,9 +170,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	}
 
 	@Override
-	public boolean isDown() {
-		return player.isDown();
-	}
+	public boolean isDown() { return player.isDown(); }
 
 	@Override
 	public void setLeft() {
@@ -191,9 +183,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	}
 
 	@Override
-	public boolean isLeft() {
-		return player.isLeft();
-	}
+	public boolean isLeft() { return player.isLeft(); }
 
 	@Override
 	public void setRight() {
@@ -206,9 +196,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	}
 
 	@Override
-	public boolean isRight() {
-		return player.isRight();
-	}
+	public boolean isRight() { return player.isRight(); }
 
 	@Override
 	public void setA() {
@@ -221,8 +209,6 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	}
 
 	@Override
-	public boolean isA() {
-		return player.isA();
-	}
+	public boolean isA() { return player.isA(); }
 
 }

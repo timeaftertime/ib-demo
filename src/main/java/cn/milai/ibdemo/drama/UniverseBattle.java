@@ -98,8 +98,8 @@ public class UniverseBattle extends Battle {
 			0, 0, container(),
 			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 10L, 40L, 10L
 		);
-		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getWidth());
-		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getHeight());
+		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getIntW());
+		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getIntH());
 		container().addObject(bgmInfo);
 	}
 
@@ -212,7 +212,7 @@ public class UniverseBattle extends Battle {
 			container()
 		);
 		LifeCounter lifeCounter = new LifeCounter(
-			container().getWidth() / 10,
+			container().getWidth() / 9,
 			container().getHeight() / 10 * 9,
 			container(), player
 		);

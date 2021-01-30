@@ -4,13 +4,17 @@ import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.helper.AbstractHelper;
 import cn.milai.ib.container.ui.UIContainer;
 
+/**
+ * 生命道具
+ * @author milai
+ */
 public class OneLifeHelper extends AbstractHelper {
 
 	private static final int MAX_LIFE = 7;
 
 	private static final int GAIN_LIFE = 1;
 
-	public OneLifeHelper(int x, int y, UIContainer container) {
+	public OneLifeHelper(double x, double y, UIContainer container) {
 		super(x, y, container);
 	}
 

@@ -41,9 +41,7 @@ public class UnknownVisitor extends AbstractDrama {
 	private Image starsBGI = image("/img/stars.gif");
 
 	@Override
-	public String getName() {
-		return "未知来访者";
-	}
+	public String getName() { return "未知来访者"; }
 
 	@Override
 	public void doRun(DramaContainer container) {
@@ -59,11 +57,11 @@ public class UnknownVisitor extends AbstractDrama {
 	private void victory() {
 		memberSay("what_happened");
 		PlayerCharacter player = container.getAll(PlayerCharacter.class).get(0);
-		int x = player.getX() > container.getWidth() / 2 ? container.getWidth() / 4 : container.getWidth() / 4 * 3;
+		int x = player.getIntX() > container.getWidth() / 2 ? container.getWidth() / 4 : container.getWidth() / 4 * 3;
 		UltraFly ultraFly = new UltraFly(x, container.getHeight(), container);
 		container.addObject(ultraFly);
-		while (ultraFly.getY() > player.getY()) {
-			ultraFly.setY(ultraFly.getY() - 14);
+		while (ultraFly.getIntY() > player.getIntY()) {
+			ultraFly.setY(ultraFly.getIntY() - 14);
 			WaitUtil.wait(container, 1L);
 		}
 		memberSay("it_is_ultra");
@@ -71,8 +69,8 @@ public class UnknownVisitor extends AbstractDrama {
 		ultraSay("nod");
 		CommandShield shield = new CommandShield(container);
 		container.addObject(shield);
-		while (ultraFly.getY() + ultraFly.getHeight() > 0) {
-			ultraFly.setY(ultraFly.getY() - 21);
+		while (ultraFly.getIntY() + ultraFly.getIntH() > 0) {
+			ultraFly.setY(ultraFly.getIntY() - 21);
 			WaitUtil.wait(container, 1L);
 		}
 		container.removeObject(shield);
@@ -100,7 +98,7 @@ public class UnknownVisitor extends AbstractDrama {
 			0, 0, container,
 			StringUtil.lines(str("bgm_info2")), Color.BLACK, 7L, 28L, 7L
 		);
-		bgmInfo.setX(container.getWidth() - 1 - bgmInfo.getWidth());
+		bgmInfo.setX(container.getWidth() - 1 - bgmInfo.getIntW());
 		bgmInfo.setY(container.getHeight() - container.getHeight());
 		container.addObject(bgmInfo);
 	}
@@ -163,7 +161,7 @@ public class UnknownVisitor extends AbstractDrama {
 			missile.moveY(missileSpeedY);
 			WaitUtil.wait(container, 1L);
 		}
-		while (missile.getY() + missile.getHeight() < container.getHeight()) {
+		while (missile.getIntY() + missile.getIntH() < container.getHeight()) {
 			missile.moveY(missileSpeedY);
 			WaitUtil.wait(container, 1L);
 		}
@@ -205,7 +203,7 @@ public class UnknownVisitor extends AbstractDrama {
 		int y = 350;
 		ViewObject plane = new ViewObject(x, y, container, PlayerPlane.class);
 		container.addObject(plane);
-		for (int speed = 0; plane.getY() + plane.getHeight() > 0; speed -= 1) {
+		for (int speed = 0; plane.getIntY() + plane.getIntH() > 0; speed -= 1) {
 			plane.moveY(speed);
 			WaitUtil.wait(container, 1L);
 		}

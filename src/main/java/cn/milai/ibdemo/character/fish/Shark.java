@@ -45,7 +45,7 @@ public class Shark extends EnemyFish implements BotCharacter {
 	}
 
 	@Override
-	public void setACCY(int accY) {
+	public void setACCY(double accY) {
 		long nowFrame = getContainer().getFrame();
 		if (lastSetACCFrame + changeACCInterval > nowFrame) {
 			return;
@@ -55,14 +55,14 @@ public class Shark extends EnemyFish implements BotCharacter {
 	}
 
 	// TODO 鲨鱼上面部分空白不进入判定，临时方案
-	private int top() {
-		return (int) (getY() + getHeight() * 0.4);
+	private double top() {
+		return getY() + getH() * 0.4;
 	}
 
 	@Override
 	public void onCrash(CanCrash crashed) {
 		// TODO 鲨鱼上面部分空白不进入判定，临时方案
-		if (crashed.getY() + crashed.getHeight() < top()) {
+		if (crashed.getY() + crashed.getH() < top()) {
 			return;
 		}
 		crashed.loseLife(this, 1);
@@ -123,7 +123,7 @@ public class Shark extends EnemyFish implements BotCharacter {
 			setACCX(0);
 			setACCY(0);
 			lastSetACCFrame = getContainer().getFrame() - changeACCInterval;
-			setY((int) (getAttackTarget().getCenterY() - getHeight() * 0.7));
+			setY(getAttackTarget().getCenterY() - getH() * 0.7);
 			if (getDirection() > 0) {
 				setACCX(getRatedACCX());
 			} else {
@@ -133,14 +133,14 @@ public class Shark extends EnemyFish implements BotCharacter {
 
 		@Override
 		public void afterMove() {
-			int targetY = (int) getAttackTarget().getCenterY();
+			double targetY = getAttackTarget().getCenterY();
 			if (targetY < top()) {
 				setACCY(-getRatedACCY());
-			} else if (targetY > getY() + getHeight()) {
+			} else if (targetY > getY() + getH()) {
 				setACCY(getRatedACCY());
 			} else {
 				if (getSpeedY() != 0) {
-					int accY = Integer.min(Math.abs(getSpeedY()), getRatedACCY());
+					double accY = Math.min(Math.abs(getSpeedY()), getRatedACCY());
 					accY *= getSpeedY() > 0 ? -1 : 1;
 					setACCY(accY);
 				}
@@ -152,8 +152,10 @@ public class Shark extends EnemyFish implements BotCharacter {
 		}
 
 		private boolean outOfContainer() {
-			return (getDirection() < 0 && getX() + getWidth() < 0)
-				|| (getDirection() > 0 && getX() >= getContainer().getWidth());
+			if (getDirection() < 0) {
+				return getX() + getW() < 0;
+			}
+			return getX() >= getContainer().getWidth();
 		}
 
 		@Override

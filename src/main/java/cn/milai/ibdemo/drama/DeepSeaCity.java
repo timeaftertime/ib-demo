@@ -134,7 +134,7 @@ public class DeepSeaCity extends AbstractDrama {
 			container.addObject(missile);
 			Audio bomb = audio(BOMB_CODE, AUDIO_BOMB_FILE);
 			container.addObject(star);
-			while (missile.getX() + missile.getWidth() < centerX()) {
+			while (missile.getIntX() + missile.getIntW() < centerX()) {
 				craft.moveX(craftSpeed);
 				missile.moveX(14);
 				WaitUtil.wait(container, 1L);
@@ -146,8 +146,8 @@ public class DeepSeaCity extends AbstractDrama {
 			int size = 140;
 			explosion.setX(centerX() - size / 2);
 			explosion.setY(centerY() - size / 2);
-			explosion.setWidth(size);
-			explosion.setHeight(size);
+			explosion.setW(size);
+			explosion.setH(size);
 			container.playAudio(bomb);
 			container.addObject(explosion);
 		}
@@ -155,7 +155,7 @@ public class DeepSeaCity extends AbstractDrama {
 			craft.moveX(craftSpeed);
 			WaitUtil.wait(container, 1L);
 		}
-		while (craft.getX() <= container.getWidth()) {
+		while (craft.getIntX() <= container.getWidth()) {
 			craft.moveX(craftSpeed);
 			WaitUtil.wait(container, 1L);
 		}
@@ -238,11 +238,11 @@ public class DeepSeaCity extends AbstractDrama {
 		memberSay("is_this_the_submarine");
 		info("we_have_no_more_picture");
 		memberSay("ok_fine");
-		ViewObject shark = new ViewObject(container.getWidth(), dolphin.getY(), container, Shark.class);
+		ViewObject shark = new ViewObject(container.getWidth(), dolphin.getIntY(), container, Shark.class);
 		shark.horzontalFlip();
 		container.addObject(shark);
 		for (int i = 0; i < 15; i++) {
-			shark.setX(shark.getX() - 14);
+			shark.setX(shark.getIntX() - 14);
 			WaitUtil.wait(container, 1L);
 		}
 		memberSay("i_am_not_dolphin");
@@ -318,9 +318,9 @@ public class DeepSeaCity extends AbstractDrama {
 	 * @param deltaRadian 每一帧移动的弧度
 	 */
 	public void moveCircle(ViewObject obj, int circleX, double deltaRadian) {
-		double x = obj.getX();
-		double y = obj.getY();
-		int r = circleX - obj.getX();
+		double x = obj.getIntX();
+		double y = obj.getIntY();
+		int r = circleX - obj.getIntX();
 		double radian = 0;
 		while (Math.abs(radian) < 2 * Math.PI) {
 			radian += deltaRadian;

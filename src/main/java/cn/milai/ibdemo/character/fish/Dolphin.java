@@ -25,7 +25,7 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 	private BulletShooter shooter;
 	private int damagedCnt;
 
-	public Dolphin(int x, int y, UIContainer container) {
+	public Dolphin(double x, double y, UIContainer container) {
 		super(x, y, container);
 		setDirection(Math.PI / 2);
 		player = new BasePlayer();
@@ -83,7 +83,7 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 
 	@Override
 	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
-		damagedCnt = 10;
+		damagedCnt = 8;
 		setStatus(STATUS_DAMAGED);
 		super.loseLife(character, life);
 	}
@@ -141,29 +141,19 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 	}
 
 	@Override
-	public boolean isUp() {
-		return player.isUp();
-	}
+	public boolean isUp() { return player.isUp(); }
 
 	@Override
-	public boolean isDown() {
-		return player.isDown();
-	}
+	public boolean isDown() { return player.isDown(); }
 
 	@Override
-	public boolean isLeft() {
-		return player.isLeft();
-	}
+	public boolean isLeft() { return player.isLeft(); }
 
 	@Override
-	public boolean isRight() {
-		return player.isRight();
-	}
+	public boolean isRight() { return player.isRight(); }
 
 	@Override
-	public boolean isA() {
-		return player.isA();
-	}
+	public boolean isA() { return player.isA(); }
 
 	@Override
 	public void pushStatus(boolean createNew) {
@@ -171,7 +161,6 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 	}
 
 	@Override
-	public void onCrash(CanCrash crashed) {
-	}
+	public void onCrash(CanCrash crashed) {}
 
 }

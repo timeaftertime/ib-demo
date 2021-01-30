@@ -11,7 +11,7 @@ import cn.milai.ib.character.property.HasScore;
 import cn.milai.ib.container.ui.UIContainer;
 
 /**
- * 
+ * 敌机
  * @author milai
  * @date 2020.04.02
  */
@@ -20,7 +20,7 @@ public abstract class EnemyPlane extends AbstractPlane implements BotCharacter, 
 	private Bot enemy;
 	private int score;
 
-	public EnemyPlane(int x, int y, UIContainer container) {
+	public EnemyPlane(double x, double y, UIContainer container) {
 		super(x, y, container);
 		// 没有实现 Rotatable 接口，所以图片不会旋转，这里是为使得子弹方向都朝下
 		setDirection(Math.PI);

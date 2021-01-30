@@ -10,7 +10,7 @@ import cn.milai.ib.container.ui.UIContainer;
  */
 public class BaseExplosion extends AbstractExplosion {
 
-	public BaseExplosion(int x, int y, UIContainer container) {
+	public BaseExplosion(double x, double y, UIContainer container) {
 		super(x, y, container);
 	}
 

@@ -20,21 +20,21 @@ import cn.milai.ibdemo.character.explosion.creator.FishFallCreator;
  */
 public abstract class AbstractFish extends MovableIBCharacter implements Fish, CanCrash, Explosible {
 
-	private int ratedACCX;
-	private int ratedACCY;
-	private int accX;
-	private int accY;
-	private int stopACC;
+	private double ratedACCX;
+	private double ratedACCY;
+	private double accX;
+	private double accY;
+	private double stopACC;
 
 	private Map<BufferedImage, BufferedImage> flipped = Maps.newConcurrentMap();
 
-	public AbstractFish(int x, int y, UIContainer container) {
+	public AbstractFish(double x, double y, UIContainer container) {
 		super(x, y, container);
-		ratedACCX = intProp(P_RATED_ACC_X);
-		ratedACCY = intProp(P_RATED_ACC_Y);
+		ratedACCX = doubleProp(P_RATED_ACC_X);
+		ratedACCY = doubleProp(P_RATED_ACC_Y);
 		accX = 0;
 		accY = 0;
-		stopACC = intProp(P_STOP_ACC);
+		stopACC = doubleProp(P_STOP_ACC);
 	}
 
 	@Override
@@ -43,25 +43,21 @@ public abstract class AbstractFish extends MovableIBCharacter implements Fish, C
 		setSpeedX(getSpeedX() + getACCX());
 		setSpeedY(getSpeedY() + getACCY());
 		// 计算阻力加速度
-		int speedX = getSpeedX();
-		int speedY = getSpeedY();
+		double speedX = getSpeedX();
+		double speedY = getSpeedY();
 		double speed = Math.sqrt(speedX * speedX + speedY * speedY);
-		int deltaSpeedX = (int) (stopACC * -speedX / speed);
-		int deltaSpeedY = (int) (stopACC * -speedY / speed);
-		if (deltaSpeedX == 0) {
-			deltaSpeedX = speedX > 0 ? -1 : 1;
+		if (speed != 0) {
+			double deltaSpeedX = -stopACC * speedX / speed;
+			double deltaSpeedY = -stopACC * speedY / speed;
+			if (Math.abs(deltaSpeedX) > Math.abs(getSpeedX())) {
+				deltaSpeedX = -getSpeedX();
+			}
+			if (Math.abs(deltaSpeedY) > Math.abs(getSpeedY())) {
+				deltaSpeedY = -getSpeedY();
+			}
+			setSpeedX(getSpeedX() + deltaSpeedX);
+			setSpeedY(getSpeedY() + deltaSpeedY);
 		}
-		if (deltaSpeedY == 0) {
-			deltaSpeedY = speedY > 0 ? -1 : 1;
-		}
-		if (Math.abs(deltaSpeedX) > Math.abs(getSpeedX())) {
-			deltaSpeedX = -getSpeedX();
-		}
-		if (Math.abs(deltaSpeedY) > Math.abs(getSpeedY())) {
-			deltaSpeedY = -getSpeedY();
-		}
-		setSpeedX(getSpeedX() + deltaSpeedX);
-		setSpeedY(getSpeedY() + deltaSpeedY);
 		// 不超过额定速度
 		if (getSpeedX() > getRatedSpeedX()) {
 			setSpeedX(getRatedSpeedX());
@@ -85,50 +81,36 @@ public abstract class AbstractFish extends MovableIBCharacter implements Fish, C
 	}
 
 	@Override
-	public ExplosionCreator getExplosionCreator() {
-		return new FishFallCreator();
-	}
+	public ExplosionCreator getExplosionCreator() { return new FishFallCreator(); }
 
 	@Override
-	public int getRatedACCX() {
-		return ratedACCX;
-	}
+	public double getRatedACCX() { return ratedACCX; }
 
 	@Override
-	public int getRatedACCY() {
-		return ratedACCY;
-	}
+	public double getRatedACCY() { return ratedACCY; }
 
 	/**
 	 * 获取 X 方向加速度
 	 * @return
 	 */
-	protected int getACCX() {
-		return accX;
-	}
+	protected double getACCX() { return accX; }
 
 	/**
 	 * 获取 Y 方向加速度
 	 * @return
 	 */
-	protected int getACCY() {
-		return accY;
-	}
+	protected double getACCY() { return accY; }
 
 	/**
 	 * 设置 X 方向加速度
 	 * @param accX
 	 */
-	public void setACCX(int accX) {
-		this.accX = accX;
-	}
+	public void setACCX(double accX) { this.accX = accX; }
 
 	/**
 	 * 设置 Y 方向加速度
 	 * @param accY
 	 */
-	public void setACCY(int accY) {
-		this.accY = accY;
-	}
+	public void setACCY(double accY) { this.accY = accY; }
 
 }

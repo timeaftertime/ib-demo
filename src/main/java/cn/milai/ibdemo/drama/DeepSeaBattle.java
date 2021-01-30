@@ -60,8 +60,8 @@ public class DeepSeaBattle extends Battle {
 	private void showBGMInfo() {
 		TextLines bgmInfo = new TextLines(0, 0, container(),
 			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 7L, 28L, 7L);
-		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getWidth());
-		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getHeight());
+		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getIntW());
+		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getIntH());
 		container().addObject(bgmInfo);
 	}
 

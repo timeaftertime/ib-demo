@@ -9,7 +9,7 @@ import cn.milai.ib.character.weapon.bullet.AbstractBullet;
  */
 public class RedBullet extends AbstractBullet {
 
-	public RedBullet(int x, int y, IBCharacter owner) {
+	public RedBullet(double x, double y, IBCharacter owner) {
 		super(x, y, owner);
 	}
 

@@ -21,7 +21,7 @@ public class FollowPlane extends EnemyPlane {
 
 	private BulletShooter shooter = new RedShooter(this);
 
-	public FollowPlane(int x, int y, UIContainer container) {
+	public FollowPlane(double x, double y, UIContainer container) {
 		super(x, y, container);
 		setSpeedX(getRatedSpeedX());
 		setSpeedY(getRatedSpeedY());
@@ -61,22 +61,22 @@ public class FollowPlane extends EnemyPlane {
 	}
 
 	private void redirectIfNeed() {
-		if (getX() <= 0) {
+		if (getIntX() <= 0) {
 			setSpeedX(Math.abs(getSpeedX()));
-		} else if (getX() + getWidth() > getContainer().getWidth()) {
+		} else if (getIntX() + getIntW() > getContainer().getWidth()) {
 			setSpeedX(-Math.abs(getSpeedX()));
 		}
 	}
 
 	private void removeIfOutOfOwner() {
-		if (getY() > getContainer().getHeight()) {
+		if (getIntY() > getContainer().getHeight()) {
 			getContainer().removeObject(this);
 		}
 	}
 
 	private boolean nearTarget() {
-		int targetX = (int) getAttackTarget().getCenterX();
-		int targetWidth = getAttackTarget().getWidth();
+		double targetX = getAttackTarget().getCenterX();
+		double targetWidth = getAttackTarget().getW();
 		return getCenterX() > targetX - targetWidth && getCenterX() < targetX + targetWidth;
 	}
 

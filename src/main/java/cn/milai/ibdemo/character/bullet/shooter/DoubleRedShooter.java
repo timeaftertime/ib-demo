@@ -24,17 +24,23 @@ public class DoubleRedShooter extends AbstractBulletShooter {
 
 	@Override
 	public boolean canShoot() {
-		setShootInterval(Long.max(MIN_SHOOT_INTERVAL,
-			(long) (1.0 * owner.getLife() / owner.getInitLife() * INIT_SHOOT_INTERVAL)));
+		setShootInterval(
+			Long.max(
+				MIN_SHOOT_INTERVAL,
+				(long) (1.0 * owner.getLife() / owner.getInitLife() * INIT_SHOOT_INTERVAL)
+			)
+		);
 		return super.canShoot();
 	}
 
 	@Override
 	public Bullet[] createBullets0() {
-		Point p1 = new Point((int) (owner.getCenterX() - owner.getWidth() / 4.0), (int) owner.getCenterY())
-			.rotate(owner.getCenterX(), owner.getCenterY(), owner.getDirection());
-		Point p2 = new Point((int) (owner.getCenterX() + owner.getWidth() / 4.0), (int) owner.getCenterY())
-			.rotate(owner.getCenterX(), owner.getCenterY(), owner.getDirection());
+		Point p1 = new Point(
+			(long) (owner.getCenterX() - owner.getW() / 4), (long) owner.getCenterY()
+		).rotate(owner.getCenterX(), owner.getCenterY(), owner.getDirection());
+		Point p2 = new Point(
+			(long) (owner.getCenterX() + owner.getW() / 4), (long) owner.getCenterY()
+		).rotate(owner.getCenterX(), owner.getCenterY(), owner.getDirection());
 		return new Bullet[] {
 			new RedBullet(p1.getX(), p1.getY(), owner),
 			new RedBullet(p2.getX(), p2.getY(), owner)
