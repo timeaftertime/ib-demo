@@ -2,12 +2,12 @@ package cn.milai.ibdemo.character.fish;
 
 import java.util.List;
 
-import cn.milai.ib.character.BotCharacter;
+import cn.milai.common.util.Randoms;
 import cn.milai.ib.character.BaseBot;
 import cn.milai.ib.character.Bot;
+import cn.milai.ib.character.BotCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.container.ui.UIContainer;
-import cn.milai.ib.util.RandomUtil;
 
 /**
  * 敌方鱼类
@@ -41,7 +41,7 @@ public abstract class EnemyFish extends AbstractFish implements BotCharacter {
 		if (targets.size() <= 0) {
 			return;
 		}
-		setAttackTarget(targets.get(RandomUtil.nextInt(targets.size())));
+		setAttackTarget(targets.get(Randoms.nextInt(targets.size())));
 	}
 
 	@Override
@@ -50,8 +50,6 @@ public abstract class EnemyFish extends AbstractFish implements BotCharacter {
 	}
 
 	@Override
-	public PlayerCharacter getAttackTarget() {
-		return enemy.getAttackTarget();
-	}
+	public PlayerCharacter getAttackTarget() { return enemy.getAttackTarget(); }
 
 }

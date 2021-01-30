@@ -2,13 +2,13 @@ package cn.milai.ibdemo.character.plane;
 
 import java.util.List;
 
-import cn.milai.ib.character.BotCharacter;
+import cn.milai.common.util.Randoms;
 import cn.milai.ib.character.BaseBot;
 import cn.milai.ib.character.Bot;
+import cn.milai.ib.character.BotCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.property.HasScore;
 import cn.milai.ib.container.ui.UIContainer;
-import cn.milai.ib.util.RandomUtil;
 
 /**
  * 
@@ -35,7 +35,7 @@ public abstract class EnemyPlane extends AbstractPlane implements BotCharacter, 
 		if (targets.size() <= 0) {
 			return;
 		}
-		setAttackTarget(targets.get(RandomUtil.nextInt(targets.size())));
+		setAttackTarget(targets.get(Randoms.nextInt(targets.size())));
 	}
 
 	@Override
@@ -43,18 +43,12 @@ public abstract class EnemyPlane extends AbstractPlane implements BotCharacter, 
 		enemy.setAttackTarget(target);
 	}
 
-	public PlayerCharacter getAttackTarget() {
-		return enemy.getAttackTarget();
-	}
+	public PlayerCharacter getAttackTarget() { return enemy.getAttackTarget(); }
 
 	@Override
-	public int getDamage() {
-		return 1;
-	}
+	public int getDamage() { return 1; }
 
 	@Override
-	public final int getScore() {
-		return score;
-	}
+	public final int getScore() { return score; }
 
 }

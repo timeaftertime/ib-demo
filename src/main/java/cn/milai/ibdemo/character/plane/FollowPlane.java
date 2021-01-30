@@ -1,8 +1,8 @@
 package cn.milai.ibdemo.character.plane;
 
+import cn.milai.common.util.Randoms;
 import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ib.container.ui.UIContainer;
-import cn.milai.ib.util.RandomUtil;
 import cn.milai.ibdemo.character.bullet.shooter.RedShooter;
 
 /**
@@ -30,13 +30,10 @@ public class FollowPlane extends EnemyPlane {
 	}
 
 	@Override
-	protected String getStatus() {
-		return STATUS[RandomUtil.nextInt(STATUS.length)];
-	}
+	protected String getStatus() { return STATUS[Randoms.nextInt(STATUS.length)]; }
 
 	@Override
-	protected void beforeMove() {
-	}
+	protected void beforeMove() {}
 
 	@Override
 	protected void afterMove() {
@@ -53,11 +50,11 @@ public class FollowPlane extends EnemyPlane {
 
 	private void randomRedirect() {
 		if (getX() < getAttackTarget().getX() && getSpeedX() < 0) {
-			if (RandomUtil.nextLess(followChance)) {
+			if (Randoms.nextLess(followChance)) {
 				setSpeedX(-getSpeedX());
 			}
 		} else if (getX() > getAttackTarget().getX() && getSpeedX() > 0) {
-			if (RandomUtil.nextLess(followChance)) {
+			if (Randoms.nextLess(followChance)) {
 				setSpeedX(-getSpeedX());
 			}
 		}
@@ -84,7 +81,7 @@ public class FollowPlane extends EnemyPlane {
 	}
 
 	private void randomShoot() {
-		if (RandomUtil.nextLess(shootChance)) {
+		if (Randoms.nextLess(shootChance)) {
 			shooter.attack();
 		}
 	}

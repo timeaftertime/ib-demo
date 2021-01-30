@@ -2,6 +2,7 @@ package cn.milai.ibdemo.drama;
 
 import java.awt.Color;
 
+import cn.milai.common.util.Randoms;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.explosion.Explosion;
@@ -12,7 +13,6 @@ import cn.milai.ib.container.ContainerEventListener;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.ui.Audio;
 import cn.milai.ib.drama.AbstractDrama;
-import cn.milai.ib.util.RandomUtil;
 import cn.milai.ib.util.StringUtil;
 import cn.milai.ib.util.WaitUtil;
 import cn.milai.ibdemo.character.UltraLight;
@@ -80,7 +80,7 @@ public class UniverseBattle extends Battle {
 			randomAddFollowPlane();
 			container().addObject(
 				new OneLifeHelper(
-					RandomUtil.nextInt(container().getWidth()), 0,
+					Randoms.nextInt(container().getWidth()), 0,
 					container()
 				)
 			);
@@ -160,7 +160,7 @@ public class UniverseBattle extends Battle {
 	private void largeEnemyApear() {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 3; j++) {
-				addWelcomes(RandomUtil.nextInt(container().getWidth()));
+				addWelcomes(Randoms.nextInt(container().getWidth()));
 				WaitUtil.wait(container(), 1L);
 			}
 			for (int j = 0; j < 3; j++) {
@@ -223,7 +223,7 @@ public class UniverseBattle extends Battle {
 	private void randomAddFollowPlane() {
 		container().addObject(
 			new FollowPlane(
-				RandomUtil.nextInt(container().getWidth()), 0, container()
+				Randoms.nextInt(container().getWidth()), 0, container()
 			)
 		);
 	}

@@ -3,6 +3,7 @@ package cn.milai.ibdemo.mode;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import cn.milai.common.util.Randoms;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.explosion.Explosion;
@@ -21,7 +22,6 @@ import cn.milai.ib.ex.IBException;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.mode.AbstractGameMode;
-import cn.milai.ib.util.RandomUtil;
 import cn.milai.ib.util.WaitUtil;
 import cn.milai.ibdemo.character.bullet.shooter.BlueShooter;
 import cn.milai.ibdemo.character.plane.FollowPlane;
@@ -192,8 +192,8 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 		}
 
 		private void randomAddEnemy() {
-			if (RandomUtil.nextLess(ADD_ENEMY_CHANCE)) {
-				form.addObject(new FollowPlane(RandomUtil.nextInt(form.getWidth()), 0, form));
+			if (Randoms.nextLess(ADD_ENEMY_CHANCE)) {
+				form.addObject(new FollowPlane(Randoms.nextInt(form.getWidth()), 0, form));
 				WaitUtil.wait(form, addNormalEnemyInterval);
 			}
 		}

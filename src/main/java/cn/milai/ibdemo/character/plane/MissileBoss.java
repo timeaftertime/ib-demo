@@ -1,12 +1,12 @@
 package cn.milai.ibdemo.character.plane;
 
+import cn.milai.common.util.Randoms;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ib.container.ui.Image;
 import cn.milai.ib.container.ui.UIContainer;
 import cn.milai.ib.loader.ImageLoader;
-import cn.milai.ib.util.RandomUtil;
 import cn.milai.ibdemo.character.bullet.shooter.DoubleRedShooter;
 import cn.milai.ibdemo.character.bullet.shooter.MissileShooter;
 import cn.milai.ibdemo.character.explosion.BaseExplosion;
@@ -56,7 +56,8 @@ public class MissileBoss extends EnemyPlane {
 		super.loseLife(character, life);
 		if (isAlive()) {
 			getContainer().addObject(
-				new BaseExplosion((int) character.getCenterX(), (int) character.getCenterY(), getContainer()));
+				new BaseExplosion((int) character.getCenterX(), (int) character.getCenterY(), getContainer())
+			);
 		}
 		if (getImage() != DANGER_IMG && getLife() <= DANGER_LIFE) {
 			setImage(DANGER_IMG);
@@ -87,8 +88,7 @@ public class MissileBoss extends EnemyPlane {
 		}
 
 		@Override
-		public void afterMove() {
-		}
+		public void afterMove() {}
 
 	}
 
@@ -107,7 +107,7 @@ public class MissileBoss extends EnemyPlane {
 		private final long CREATE_FRAME = getContainer().getFrame();
 
 		public Pareparing() {
-			setSpeedX((RandomUtil.nextLess(0.5) ? 1 : (-1)) * getRatedSpeedX());
+			setSpeedX((Randoms.nextLess(0.5) ? 1 : (-1)) * getRatedSpeedX());
 			setSpeedY(-getRatedSpeedY());
 		}
 
@@ -118,7 +118,7 @@ public class MissileBoss extends EnemyPlane {
 			} else if (getX() <= 0) {
 				setSpeedX(Math.abs(getSpeedX()));
 			}
-			if (RandomUtil.nextLess(TURN_Y_CHANCE)) {
+			if (Randoms.nextLess(TURN_Y_CHANCE)) {
 				setSpeedY(getSpeedY() * -1);
 			}
 		}
