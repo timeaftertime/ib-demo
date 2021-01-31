@@ -13,7 +13,6 @@ import cn.milai.ibdemo.character.explosion.BaseExplosion;
 
 /**
  * 导弹 BOSS
- *
  * @author milai
  */
 public class MissileBoss extends EnemyPlane {
@@ -47,16 +46,14 @@ public class MissileBoss extends EnemyPlane {
 	}
 
 	@Override
-	protected void afterMove() {
-		status.afterMove();
-	}
+	protected void afterMove() { status.afterMove(); }
 
 	@Override
 	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
 		super.loseLife(character, life);
 		if (isAlive()) {
 			getContainer().addObject(
-				new BaseExplosion(character.getCenterX(), character.getCenterY(), getContainer())
+				new BaseExplosion(character.centerX(), character.centerY(), getContainer())
 			);
 		}
 		if (getImage() != DANGER_IMG && getLife() <= DANGER_LIFE) {
@@ -113,7 +110,7 @@ public class MissileBoss extends EnemyPlane {
 
 		@Override
 		public void beforeMove() {
-			if (getX() + getW() >= getContainer().getWidth()) {
+			if (getX() + getW() >= getContainer().getW()) {
 				setSpeedX(-Math.abs(getSpeedX()));
 			} else if (getIntX() <= 0) {
 				setSpeedX(Math.abs(getSpeedX()));
@@ -121,14 +118,14 @@ public class MissileBoss extends EnemyPlane {
 			if (Randoms.nextLess(TURN_Y_CHANCE)) {
 				setSpeedY(getSpeedY() * -1);
 			}
-			if (getAttackTarget().getCenterY() < getCenterY() && getSpeedY() > 0 && Randoms.nextLess(TURN_Y_CHANCE)) {
+			if (getAttackTarget().centerY() < centerY() && getSpeedY() > 0 && Randoms.nextLess(TURN_Y_CHANCE)) {
 				setSpeedY(getSpeedY() * -1);
 			}
 		}
 
 		@Override
 		public void afterMove() {
-			ensureIn(0, getContainer().getWidth(), PREPARE_MIN_Y, PREPARE_MAX_Y);
+			ensureIn(0, getContainer().getW(), PREPARE_MIN_Y, PREPARE_MAX_Y);
 			if (getContainer().getFrame() >= CREATE_FRAME + PREPARE_INTERVAL) {
 				status = new Pursuing();
 			}
@@ -150,10 +147,10 @@ public class MissileBoss extends EnemyPlane {
 			if (getAttackTarget() == null) {
 				return;
 			}
-			if (getCenterX() > getAttackTarget().getCenterX()) {
+			if (centerX() > getAttackTarget().centerX()) {
 				setSpeedX(-Math.abs(getSpeedX()));
 			}
-			if (getCenterX() < getAttackTarget().getCenterX()) {
+			if (centerX() < getAttackTarget().centerX()) {
 				setSpeedX(Math.abs(getSpeedX()));
 			}
 		}
@@ -161,7 +158,7 @@ public class MissileBoss extends EnemyPlane {
 		@Override
 		public void afterMove() {
 			PlayerCharacter target = getAttackTarget();
-			if (target == null || (getCenterX() > target.getX() && getCenterX() < target.getX() + target.getW())) {
+			if (target == null || (centerX() > target.getX() && centerX() < target.getX() + target.getW())) {
 				sideShooter.attack();
 				status = new Pareparing();
 			}

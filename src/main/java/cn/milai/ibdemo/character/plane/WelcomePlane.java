@@ -21,7 +21,7 @@ public class WelcomePlane extends EnemyPlane {
 	}
 
 	private void removeIfOutOfOwner() {
-		if (getIntY() > getContainer().getHeight())
+		if (getIntY() > getContainer().getH())
 			getContainer().removeObject(this);
 	}
 

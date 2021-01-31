@@ -8,7 +8,7 @@ import  cn.milai.ibdemo.character.plane.MissileBoss;
 cn.milai.ibdemo.drama.Hello("测试用的剧本") {
 	# 这条注释更华丽
 	void main() {
-	    add PlayerPlane(300, 600);
+	    add PlayerPlane(300.0, 600.0);
 	    add DramaDialog(277, 517, img("/img/speaker.png"),
 	    "敌星弹雨游戏引擎新版本发布了！
 		新特性：
@@ -21,15 +21,15 @@ cn.milai.ibdemo.drama.Hello("测试用的剧本") {
 			4.~~~~
 	    ");
 	    
-	    add WelcomePlane(10, 0);
-	    add WelcomePlane(222, 0);
-	    add WelcomePlane(277, -138);
+	    add WelcomePlane(10.0, 0.0);
+	    add WelcomePlane(222.0, 0.0);
+	    add WelcomePlane(277.0, -138.0);
 	    sleep(10);
 ################### 你见过这么帅的注释吗  ##########################
-	    add FollowPlane(111, 0);
-	    add FollowPlane(444, 0);
+	    add FollowPlane(111.0, 0.0);
+	    add FollowPlane(444.0, 0.0);
 	    sleep(20);
-	    add MissileBoss(277, -67);
+	    add MissileBoss(277.0, -67.0);
 	    sleep(9999);
 	}
 }

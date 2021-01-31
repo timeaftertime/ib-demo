@@ -31,8 +31,8 @@ public class DeepSeaBattle extends Battle {
 	protected boolean doRun() {
 		container().playAudio(drama.audio(Audio.BGM_CODE, BATTLE_BGM));
 		showBGMInfo();
-		Dolphin dolphin = new Dolphin(container().getWidth() / 5, container().getHeight() / 2, container());
-		BloodStrip dolphinBlood = new BloodStrip(container().getWidth() / 4, container().getHeight() * 9 / 10,
+		Dolphin dolphin = new Dolphin(container().getW() / 5, container().getH() / 2, container());
+		BloodStrip dolphinBlood = new BloodStrip(container().getW() / 4, container().getH() * 9 / 10,
 			container(), dolphin);
 		container().addObject(dolphin);
 		container().addObject(dolphinBlood);
@@ -46,7 +46,7 @@ public class DeepSeaBattle extends Battle {
 			}
 		});
 		Shark shark = new Shark(container());
-		BloodStrip sharkBlood = new BloodStrip(container().getWidth() * 3 / 4, container().getHeight() / 10,
+		BloodStrip sharkBlood = new BloodStrip(container().getW() * 3 / 4, container().getH() / 10,
 			container(), shark);
 		container().addObject(shark);
 		container().addObject(sharkBlood);
@@ -60,8 +60,8 @@ public class DeepSeaBattle extends Battle {
 	private void showBGMInfo() {
 		TextLines bgmInfo = new TextLines(0, 0, container(),
 			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 7L, 28L, 7L);
-		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getIntW());
-		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getIntH());
+		bgmInfo.setX(container().getW() - 1 - bgmInfo.getIntW());
+		bgmInfo.setY(container().getH() - 1 - bgmInfo.getIntH());
 		container().addObject(bgmInfo);
 	}
 

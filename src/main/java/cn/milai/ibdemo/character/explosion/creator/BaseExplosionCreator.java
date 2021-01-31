@@ -15,7 +15,7 @@ public class BaseExplosionCreator implements ExplosionCreator {
 	@Override
 	public Explosion[] createExplosions(Explosible owner) {
 		return new Explosion[] {
-			new BaseExplosion(owner.getCenterX(), owner.getCenterY(), owner.getContainer()),
+			new BaseExplosion(owner.centerX(), owner.centerY(), owner.getContainer()),
 		};
 	}
 

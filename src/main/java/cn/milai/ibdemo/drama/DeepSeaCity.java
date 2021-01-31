@@ -70,20 +70,20 @@ public class DeepSeaCity extends AbstractDrama {
 		container.reset();
 		container.setBackgroud(deepSeaBGI);
 		ViewObject dolphin = new ViewObject(
-			container.getWidth() / 8, container.getHeight() / 3, container,
+			container.getW() / 8, container.getH() / 3, container,
 			Dolphin.class
 		);
-		ViewObject craft = new ViewObject(centerX(), container.getHeight(), container, EscapeCraft.class);
+		ViewObject craft = new ViewObject(centerX(), container.getH(), container, EscapeCraft.class);
 		ViewObject ultra = new ViewObject(centerX(), centerY(), container, UltraSide.class);
 		ViewObject star = new ViewObject(
-			(int) ultra.getCenterX(), (int) ultra.getCenterY(), container,
+			(int) ultra.centerX(), (int) ultra.centerY(), container,
 			ShiningStar.class
 		);
 		container.addObject(dolphin);
 		container.addObject(craft);
 		int craftSpeed = 7;
 		int dolphinSpeed = 11;
-		while (craft.getCenterY() > centerY()) {
+		while (craft.centerY() > centerY()) {
 			craft.moveY(-craftSpeed);
 			WaitUtil.wait(container, 1L);
 		}
@@ -121,13 +121,13 @@ public class DeepSeaCity extends AbstractDrama {
 			attack = selections.getValue() == 0;
 		}
 		if (attack) {
-			while (dolphin.getCenterY() < craft.getCenterY()) {
+			while (dolphin.centerY() < craft.centerY()) {
 				dolphin.moveY(dolphinSpeed);
 				craft.moveX(craftSpeed);
 				WaitUtil.wait(container, 1L);
 			}
 			ViewObject missile = new ViewObject(
-				(int) dolphin.getCenterX(), (int) dolphin.getCenterY(), container,
+				(int) dolphin.centerX(), (int) dolphin.centerY(), container,
 				Missile.class
 			);
 			missile.rotate(Math.PI / 2);
@@ -155,7 +155,7 @@ public class DeepSeaCity extends AbstractDrama {
 			craft.moveX(craftSpeed);
 			WaitUtil.wait(container, 1L);
 		}
-		while (craft.getIntX() <= container.getWidth()) {
+		while (craft.getIntX() <= container.getW()) {
 			craft.moveX(craftSpeed);
 			WaitUtil.wait(container, 1L);
 		}
@@ -175,8 +175,8 @@ public class DeepSeaCity extends AbstractDrama {
 
 		container.removeObject(ultra);
 		container.addObject(star);
-		while (star.getCenterX() > dolphin.getCenterX()) {
-			if (star.getCenterY() > dolphin.getCenterY()) {
+		while (star.centerX() > dolphin.centerX()) {
+			if (star.centerY() > dolphin.centerY()) {
 				star.moveY(-6);
 			}
 			star.moveX(-6);
@@ -238,7 +238,7 @@ public class DeepSeaCity extends AbstractDrama {
 		memberSay("is_this_the_submarine");
 		info("we_have_no_more_picture");
 		memberSay("ok_fine");
-		ViewObject shark = new ViewObject(container.getWidth(), dolphin.getIntY(), container, Shark.class);
+		ViewObject shark = new ViewObject(container.getW(), dolphin.getIntY(), container, Shark.class);
 		shark.horzontalFlip();
 		container.addObject(shark);
 		for (int i = 0; i < 15; i++) {
@@ -256,7 +256,7 @@ public class DeepSeaCity extends AbstractDrama {
 		ViewObject plane = new ViewObject(baseX, 0, container, PlayerPlane.class);
 		container.addObject(plane);
 		int speed = 14;
-		while (plane.getCenterY() < baseY) {
+		while (plane.centerY() < baseY) {
 			plane.moveY(speed);
 			speed = Integer.max(5, speed - 1);
 			WaitUtil.wait(container, 1L);
@@ -272,8 +272,8 @@ public class DeepSeaCity extends AbstractDrama {
 		plane.setY(baseY);
 		container.addObject(plane);
 		for (int i = 5; i >= 1; i -= 2) {
-			moveCircle(plane, container.getWidth() / 6 * 4, Math.PI / 6 / i);
-			moveCircle(plane, container.getWidth() / 6 * 2, -Math.PI / 6 / i);
+			moveCircle(plane, container.getW() / 6 * 4, Math.PI / 6 / i);
+			moveCircle(plane, container.getW() / 6 * 2, -Math.PI / 6 / i);
 		}
 		for (int i = 0; i < 20; i++) {
 			plane.moveY(-11);
@@ -340,8 +340,8 @@ public class DeepSeaCity extends AbstractDrama {
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = new DramaDialog(
-			(int) (0.5 * container.getWidth()),
-			(int) (0.75 * container.getHeight()),
+			(int) (0.5 * container.getW()),
+			(int) (0.75 * container.getH()),
 			container,
 			DramaDialog.asParams(
 				str(stringCode),
@@ -354,20 +354,20 @@ public class DeepSeaCity extends AbstractDrama {
 	}
 
 	private int centerX() {
-		return container.getWidth() / 2;
+		return container.getW() / 2;
 	}
 
 	private int centerY() {
-		return container.getHeight() / 2;
+		return container.getH() / 2;
 	}
 
 	@Override
-	protected int initWidth() {
+	protected int initW() {
 		return 554;
 	}
 
 	@Override
-	protected int initHeight() {
+	protected int initH() {
 		return 689;
 	}
 

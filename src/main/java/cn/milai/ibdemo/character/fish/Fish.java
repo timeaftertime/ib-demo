@@ -12,27 +12,27 @@ public interface Fish extends Movable {
 	/**
 	 * 属性 [X 方向加速度] 的 key
 	 */
-	String P_RATED_ACC_X = "ratedACCX";
+	String P_RATED_ACC_X = "ratedAccX";
 
 	/**
 	 * 属性 [Y 方向加速度] 的 key
 	 */
-	String P_RATED_ACC_Y = "ratedACCY";
+	String P_RATED_ACC_Y = "ratedAccY";
 
 	/**
 	 * 属性 [阻力加速度大小]
 	 */
-	String P_STOP_ACC = "stopACC";
+	String P_STOP_ACC = "stopAcc";
 
 	/**
 	 * 获取 X 方向额定加速度大小
 	 * @return
 	 */
-	double getRatedACCX();
+	double getRatedAccX();
 
 	/**
 	 * 获取 Y 方向额定加速度大小
 	 * @return
 	 */
-	double getRatedACCY();
+	double getRatedAccY();
 }

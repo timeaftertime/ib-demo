@@ -25,8 +25,8 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 		this.durationFrame = durationFrame;
 		deltaRadian = getDirection() / durationFrame;
 		// 计算实际坐标、宽度和高度
-		int w = getContainer().getWidth();
-		int h = getContainer().getHeight();
+		int w = getContainer().getW();
+		int h = getContainer().getH();
 		width = w / 8 + 1;
 		height = Math.sqrt(h * h + w * w);
 		setW(width);

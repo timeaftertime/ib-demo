@@ -35,8 +35,8 @@ public class Shark extends EnemyFish implements BotCharacter {
 
 	public Shark(UIContainer container) {
 		super(0, 0, container);
-		setX(getContainer().getWidth());
-		setY(getContainer().getHeight());
+		setX(getContainer().getW());
+		setY(getContainer().getH());
 		changeACCInterval = intProp(P_CHANGE_ACC_INTERVAL);
 		lastSetACCFrame = -changeACCInterval;
 		waitFrame = intProp(P_WAIT_FRAME);
@@ -76,7 +76,7 @@ public class Shark extends EnemyFish implements BotCharacter {
 	@Override
 	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {
 		// TODO 鲨鱼上面部分空白不进入判定，临时方案
-		if (character.getCenterY() < top()) {
+		if (character.centerY() < top()) {
 			return;
 		}
 		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * intProp(P_WAIT_FRAME)));
@@ -123,24 +123,24 @@ public class Shark extends EnemyFish implements BotCharacter {
 			setACCX(0);
 			setACCY(0);
 			lastSetACCFrame = getContainer().getFrame() - changeACCInterval;
-			setY(getAttackTarget().getCenterY() - getH() * 0.7);
+			setY(getAttackTarget().centerY() - getH() * 0.7);
 			if (getDirection() > 0) {
-				setACCX(getRatedACCX());
+				setACCX(getRatedAccX());
 			} else {
-				setACCX(-getRatedACCX());
+				setACCX(-getRatedAccX());
 			}
 		}
 
 		@Override
 		public void afterMove() {
-			double targetY = getAttackTarget().getCenterY();
+			double targetY = getAttackTarget().centerY();
 			if (targetY < top()) {
-				setACCY(-getRatedACCY());
+				setACCY(-getRatedAccY());
 			} else if (targetY > getY() + getH()) {
-				setACCY(getRatedACCY());
+				setACCY(getRatedAccY());
 			} else {
 				if (getSpeedY() != 0) {
-					double accY = Math.min(Math.abs(getSpeedY()), getRatedACCY());
+					double accY = Math.min(Math.abs(getSpeedY()), getRatedAccY());
 					accY *= getSpeedY() > 0 ? -1 : 1;
 					setACCY(accY);
 				}
@@ -155,7 +155,7 @@ public class Shark extends EnemyFish implements BotCharacter {
 			if (getDirection() < 0) {
 				return getX() + getW() < 0;
 			}
-			return getX() >= getContainer().getWidth();
+			return getX() >= getContainer().getW();
 		}
 
 		@Override

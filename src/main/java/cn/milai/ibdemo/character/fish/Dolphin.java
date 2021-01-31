@@ -39,21 +39,21 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 		setACCY(0);
 		if (isUp()) {
 			setStatus(STATUS_MOVE);
-			setACCY(-getRatedACCY());
+			setACCY(-getRatedAccY());
 		}
 		if (isDown()) {
 			setStatus(STATUS_MOVE);
-			setACCY(getRatedACCY());
+			setACCY(getRatedAccY());
 		}
 		if (isLeft()) {
 			setStatus(STATUS_MOVE);
-			setACCX(-getRatedACCX());
+			setACCX(-getRatedAccX());
 		}
 		if (isRight()) {
 			setStatus(STATUS_MOVE);
-			setACCX(getRatedACCX());
+			setACCX(getRatedAccX());
 		}
-		if (getACCX() == 0 && getACCY() == 0) {
+		if (getAccX() == 0 && getAccY() == 0) {
 			setStatus(null);
 		}
 		if (player.isA()) {

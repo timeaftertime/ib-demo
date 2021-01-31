@@ -63,21 +63,21 @@ public class FollowPlane extends EnemyPlane {
 	private void redirectIfNeed() {
 		if (getIntX() <= 0) {
 			setSpeedX(Math.abs(getSpeedX()));
-		} else if (getIntX() + getIntW() > getContainer().getWidth()) {
+		} else if (getIntX() + getIntW() > getContainer().getW()) {
 			setSpeedX(-Math.abs(getSpeedX()));
 		}
 	}
 
 	private void removeIfOutOfOwner() {
-		if (getIntY() > getContainer().getHeight()) {
+		if (getIntY() > getContainer().getH()) {
 			getContainer().removeObject(this);
 		}
 	}
 
 	private boolean nearTarget() {
-		double targetX = getAttackTarget().getCenterX();
+		double targetX = getAttackTarget().centerX();
 		double targetWidth = getAttackTarget().getW();
-		return getCenterX() > targetX - targetWidth && getCenterX() < targetX + targetWidth;
+		return centerX() > targetX - targetWidth && centerX() < targetX + targetWidth;
 	}
 
 	private void randomShoot() {

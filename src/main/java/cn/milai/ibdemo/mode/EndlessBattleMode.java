@@ -95,7 +95,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 	public void init() {
 		form = new BattleFormContainer();
 		form.addEventListener(this);
-		player = new PlayerPlane(form.getWidth() / 2, (int) (form.getHeight() * 0.93), form);
+		player = new PlayerPlane(form.getW() / 2, (int) (form.getH() * 0.93), form);
 		playerScore = 0;
 		formTitle = form.getTitle();
 		BGI = ImageLoader.load(DRAMA_CODE, IMG_BACKGROUD_FILE);
@@ -146,8 +146,8 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
 			for (int i = 0; i < row; i++) {
-				form.addObject(new WelcomePlane(form.getWidth() / 2 - disFromCenter, 0, form));
-				form.addObject(new WelcomePlane(form.getWidth() / 2 + disFromCenter, 0, form));
+				form.addObject(new WelcomePlane(form.getW() / 2 - disFromCenter, 0, form));
+				form.addObject(new WelcomePlane(form.getW() / 2 + disFromCenter, 0, form));
 				WaitUtil.wait(form, ADD_VERTICAL_WELCOME_PLANE_FRAMES);
 			}
 		}
@@ -155,11 +155,11 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 		private void addLadderWelcomePlayer(int row, int disOfX) {
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
-			form.addObject(new WelcomePlane(form.getWidth() / 2, 0, form));
+			form.addObject(new WelcomePlane(form.getW() / 2, 0, form));
 			WaitUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			for (int i = 2; i <= row; i++) {
-				form.addObject(new WelcomePlane(form.getWidth() / 2 - i * disOfX, 0, form));
-				form.addObject(new WelcomePlane(form.getWidth() / 2 + i * disOfX, 0, form));
+				form.addObject(new WelcomePlane(form.getW() / 2 - i * disOfX, 0, form));
+				form.addObject(new WelcomePlane(form.getW() / 2 + i * disOfX, 0, form));
 				WaitUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			}
 		}
@@ -193,7 +193,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 
 		private void randomAddEnemy() {
 			if (Randoms.nextLess(ADD_ENEMY_CHANCE)) {
-				form.addObject(new FollowPlane(Randoms.nextInt(form.getWidth()), 0, form));
+				form.addObject(new FollowPlane(Randoms.nextInt(form.getW()), 0, form));
 				WaitUtil.wait(form, addNormalEnemyInterval);
 			}
 		}

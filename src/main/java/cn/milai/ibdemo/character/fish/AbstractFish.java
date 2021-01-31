@@ -24,7 +24,7 @@ public abstract class AbstractFish extends MovableIBCharacter implements Fish, C
 	private double ratedACCY;
 	private double accX;
 	private double accY;
-	private double stopACC;
+	private double stopAcc;
 
 	private Map<BufferedImage, BufferedImage> flipped = Maps.newConcurrentMap();
 
@@ -34,21 +34,21 @@ public abstract class AbstractFish extends MovableIBCharacter implements Fish, C
 		ratedACCY = doubleProp(P_RATED_ACC_Y);
 		accX = 0;
 		accY = 0;
-		stopACC = doubleProp(P_STOP_ACC);
+		stopAcc = doubleProp(P_STOP_ACC);
 	}
 
 	@Override
 	protected void beforeMove() {
 		// 计算加速度
-		setSpeedX(getSpeedX() + getACCX());
-		setSpeedY(getSpeedY() + getACCY());
+		setSpeedX(getSpeedX() + getAccX());
+		setSpeedY(getSpeedY() + getAccY());
 		// 计算阻力加速度
 		double speedX = getSpeedX();
 		double speedY = getSpeedY();
 		double speed = Math.sqrt(speedX * speedX + speedY * speedY);
 		if (speed != 0) {
-			double deltaSpeedX = -stopACC * speedX / speed;
-			double deltaSpeedY = -stopACC * speedY / speed;
+			double deltaSpeedX = -stopAcc * speedX / speed;
+			double deltaSpeedY = -stopAcc * speedY / speed;
 			if (Math.abs(deltaSpeedX) > Math.abs(getSpeedX())) {
 				deltaSpeedX = -getSpeedX();
 			}
@@ -84,22 +84,22 @@ public abstract class AbstractFish extends MovableIBCharacter implements Fish, C
 	public ExplosionCreator getExplosionCreator() { return new FishFallCreator(); }
 
 	@Override
-	public double getRatedACCX() { return ratedACCX; }
+	public double getRatedAccX() { return ratedACCX; }
 
 	@Override
-	public double getRatedACCY() { return ratedACCY; }
+	public double getRatedAccY() { return ratedACCY; }
 
 	/**
 	 * 获取 X 方向加速度
 	 * @return
 	 */
-	protected double getACCX() { return accX; }
+	protected double getAccX() { return accX; }
 
 	/**
 	 * 获取 Y 方向加速度
 	 * @return
 	 */
-	protected double getACCY() { return accY; }
+	protected double getAccY() { return accY; }
 
 	/**
 	 * 设置 X 方向加速度

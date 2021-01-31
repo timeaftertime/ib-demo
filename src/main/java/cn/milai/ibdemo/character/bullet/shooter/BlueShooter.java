@@ -18,7 +18,7 @@ public class BlueShooter extends AbstractBulletShooter {
 
 	@Override
 	public Bullet[] createBullets0() {
-		return new Bullet[] { new BlueBullet(owner.getCenterX(), owner.getCenterY(), owner) };
+		return new Bullet[] { new BlueBullet(owner.centerX(), owner.centerY(), owner) };
 	}
 
 }

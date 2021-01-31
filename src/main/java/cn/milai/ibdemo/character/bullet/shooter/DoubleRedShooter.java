@@ -36,11 +36,11 @@ public class DoubleRedShooter extends AbstractBulletShooter {
 	@Override
 	public Bullet[] createBullets0() {
 		Point p1 = new Point(
-			(long) (owner.getCenterX() - owner.getW() / 4), (long) owner.getCenterY()
-		).rotate(owner.getCenterX(), owner.getCenterY(), owner.getDirection());
+			(long) (owner.centerX() - owner.getW() / 4), (long) owner.centerY()
+		).rotate(owner.centerX(), owner.centerY(), owner.getDirection());
 		Point p2 = new Point(
-			(long) (owner.getCenterX() + owner.getW() / 4), (long) owner.getCenterY()
-		).rotate(owner.getCenterX(), owner.getCenterY(), owner.getDirection());
+			(long) (owner.centerX() + owner.getW() / 4), (long) owner.centerY()
+		).rotate(owner.centerX(), owner.centerY(), owner.getDirection());
 		return new Bullet[] {
 			new RedBullet(p1.getX(), p1.getY(), owner),
 			new RedBullet(p2.getX(), p2.getY(), owner)

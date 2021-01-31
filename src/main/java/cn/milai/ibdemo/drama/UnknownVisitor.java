@@ -57,8 +57,8 @@ public class UnknownVisitor extends AbstractDrama {
 	private void victory() {
 		memberSay("what_happened");
 		PlayerCharacter player = container.getAll(PlayerCharacter.class).get(0);
-		int x = player.getIntX() > container.getWidth() / 2 ? container.getWidth() / 4 : container.getWidth() / 4 * 3;
-		UltraFly ultraFly = new UltraFly(x, container.getHeight(), container);
+		int x = player.getIntX() > container.getW() / 2 ? container.getW() / 4 : container.getW() / 4 * 3;
+		UltraFly ultraFly = new UltraFly(x, container.getH(), container);
 		container.addObject(ultraFly);
 		while (ultraFly.getIntY() > player.getIntY()) {
 			ultraFly.setY(ultraFly.getIntY() - 14);
@@ -98,8 +98,8 @@ public class UnknownVisitor extends AbstractDrama {
 			0, 0, container,
 			StringUtil.lines(str("bgm_info2")), Color.BLACK, 7L, 28L, 7L
 		);
-		bgmInfo.setX(container.getWidth() - 1 - bgmInfo.getIntW());
-		bgmInfo.setY(container.getHeight() - container.getHeight());
+		bgmInfo.setX(container.getW() - 1 - bgmInfo.getIntW());
+		bgmInfo.setY(container.getH() - container.getH());
 		container.addObject(bgmInfo);
 	}
 
@@ -117,10 +117,10 @@ public class UnknownVisitor extends AbstractDrama {
 			container.addLifeCycleListener(() -> {
 				latch.countDown();
 			});
-			container.addObject(new GameOverLabel(container.getWidth() / 2, GAME_OVER_LABEL_POS_Y, container));
+			container.addObject(new GameOverLabel(container.getW() / 2, GAME_OVER_LABEL_POS_Y, container));
 			container.addObject(
 				new RestartButton(
-					container.getWidth() / 2, RESTART_BUTTON_POS_Y, container,
+					container.getW() / 2, RESTART_BUTTON_POS_Y, container,
 					() -> {
 						latch.countDown();
 					}
@@ -138,8 +138,8 @@ public class UnknownVisitor extends AbstractDrama {
 	private void inUniverse() {
 		container.setBackgroud(universeBGI);
 		ViewObject dodgePlane = new ViewObject(
-			container.getWidth() / 2,
-			container.getHeight() / 6 * 5,
+			container.getW() / 2,
+			container.getH() / 6 * 5,
 			container, PlayerPlane.class
 		);
 		container.addObject(dodgePlane);
@@ -147,7 +147,7 @@ public class UnknownVisitor extends AbstractDrama {
 		visitorSay("surrender_as_soon_as_possible");
 		leaderSay("why_do_you_want_to_aggress_the_earth");
 		visitorSay("the_earth_belongs_to_us");
-		ViewObject missile = new ViewObject(container.getWidth() / 2, 0, container, Missile.class);
+		ViewObject missile = new ViewObject(container.getW() / 2, 0, container, Missile.class);
 		missile.rotate(Math.PI);
 		container.addObject(missile);
 		int missileSpeedY = 35;
@@ -161,7 +161,7 @@ public class UnknownVisitor extends AbstractDrama {
 			missile.moveY(missileSpeedY);
 			WaitUtil.wait(container, 1L);
 		}
-		while (missile.getIntY() + missile.getIntH() < container.getHeight()) {
+		while (missile.getIntY() + missile.getIntH() < container.getH()) {
 			missile.moveY(missileSpeedY);
 			WaitUtil.wait(container, 1L);
 		}
@@ -199,7 +199,7 @@ public class UnknownVisitor extends AbstractDrama {
 
 	private void showPlaneTakeOff() {
 		info("take_off");
-		int x = container.getWidth() / 2;
+		int x = container.getW() / 2;
 		int y = 350;
 		ViewObject plane = new ViewObject(x, y, container, PlayerPlane.class);
 		container.addObject(plane);
@@ -235,8 +235,8 @@ public class UnknownVisitor extends AbstractDrama {
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = new DramaDialog(
-			(int) (0.5 * container.getWidth()),
-			(int) (0.75 * container.getHeight()),
+			(int) (0.5 * container.getW()),
+			(int) (0.75 * container.getH()),
 			container,
 			DramaDialog.asParams(
 				str(stringCode),
@@ -249,12 +249,12 @@ public class UnknownVisitor extends AbstractDrama {
 	}
 
 	@Override
-	protected int initWidth() {
+	protected int initW() {
 		return 554;
 	}
 
 	@Override
-	protected int initHeight() {
+	protected int initH() {
 		return 689;
 	}
 

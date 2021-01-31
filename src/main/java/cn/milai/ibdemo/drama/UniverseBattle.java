@@ -69,9 +69,9 @@ public class UniverseBattle extends Battle {
 		container().playAudio(drama.audio(Audio.BGM_CODE, BATTLE_BGM));
 		showBGMInfo();
 		beforeBoss();
-		MissileBoss boss = new MissileBoss(container().getWidth() / 2, 0, container());
+		MissileBoss boss = new MissileBoss(container().getW() / 2, 0, container());
 		BloodStrip bossBloodStrip = new BloodStrip(
-			container().getWidth() / 2, BLOOD_STRP_Y, container(), boss
+			container().getW() / 2, BLOOD_STRP_Y, container(), boss
 		);
 		WaitUtil.wait(container(), 10L);
 		container().addObject(boss);
@@ -80,7 +80,7 @@ public class UniverseBattle extends Battle {
 			randomAddFollowPlane();
 			container().addObject(
 				new OneLifeHelper(
-					Randoms.nextInt(container().getWidth()), 0,
+					Randoms.nextInt(container().getW()), 0,
 					container()
 				)
 			);
@@ -98,13 +98,13 @@ public class UniverseBattle extends Battle {
 			0, 0, container(),
 			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 10L, 40L, 10L
 		);
-		bgmInfo.setX(container().getWidth() - 1 - bgmInfo.getIntW());
-		bgmInfo.setY(container().getHeight() - 1 - bgmInfo.getIntH());
+		bgmInfo.setX(container().getW() - 1 - bgmInfo.getIntW());
+		bgmInfo.setY(container().getH() - 1 - bgmInfo.getIntH());
 		container().addObject(bgmInfo);
 	}
 
 	private void afterBoss() {
-		container().addObject(new AccelerateHelper(container().getWidth() / 2, 0, container()));
+		container().addObject(new AccelerateHelper(container().getW() / 2, 0, container()));
 		largeEnemyApear();
 		UltraLight light = new UltraLight(player, 25L);
 		container().playAudio(drama.audio("ULTRAMAN", "/audio/ultraman.mp3"));
@@ -114,7 +114,7 @@ public class UniverseBattle extends Battle {
 
 	private void beforeBoss() {
 		// 阶梯 Welcome
-		int midX = container().getWidth() / 2;
+		int midX = container().getW() / 2;
 		int interval = 25;
 		addLadderWelcome(8, midX, interval, 20L);
 		// Welcome Follow 混合
@@ -125,11 +125,11 @@ public class UniverseBattle extends Battle {
 			}
 			WaitUtil.wait(container(), 25L);
 			addWelcomes(
-				(int) (container().getWidth() * 0.1),
-				(int) (container().getWidth() * 0.3),
-				(int) (container().getWidth() * 0.5),
-				(int) (container().getWidth() * 0.7),
-				(int) (container().getWidth() * 0.9)
+				(int) (container().getW() * 0.1),
+				(int) (container().getW() * 0.3),
+				(int) (container().getW() * 0.5),
+				(int) (container().getW() * 0.7),
+				(int) (container().getW() * 0.9)
 			);
 		}
 		WaitUtil.wait(container(), 30L);
@@ -150,7 +150,7 @@ public class UniverseBattle extends Battle {
 		container().addObject(new AccelerateHelper(midX, 0, container()));
 		// 间距逐渐变小的 Welcome 列队
 		for (int i = 0; i < 6; i++) {
-			addWelcomes((int) (container().getWidth() * 0.4), (int) (container().getWidth() * 0.6));
+			addWelcomes((int) (container().getW() * 0.4), (int) (container().getW() * 0.6));
 			WaitUtil.wait(container(), 5 + 60L / (i + 1));
 		}
 		WaitUtil.wait(container(), 10L);
@@ -160,7 +160,7 @@ public class UniverseBattle extends Battle {
 	private void largeEnemyApear() {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 3; j++) {
-				addWelcomes(Randoms.nextInt(container().getWidth()));
+				addWelcomes(Randoms.nextInt(container().getW()));
 				WaitUtil.wait(container(), 1L);
 			}
 			for (int j = 0; j < 3; j++) {
@@ -207,13 +207,13 @@ public class UniverseBattle extends Battle {
 
 	private void addPlayer() {
 		player = new PlayerPlane(
-			container().getWidth() / 2,
-			container().getHeight() * 5 / 6,
+			container().getW() / 2,
+			container().getH() * 5 / 6,
 			container()
 		);
 		LifeCounter lifeCounter = new LifeCounter(
-			container().getWidth() / 9,
-			container().getHeight() / 10 * 9,
+			container().getW() / 9,
+			container().getH() / 10 * 9,
 			container(), player
 		);
 		container().addObject(player);
@@ -223,7 +223,7 @@ public class UniverseBattle extends Battle {
 	private void randomAddFollowPlane() {
 		container().addObject(
 			new FollowPlane(
-				Randoms.nextInt(container().getWidth()), 0, container()
+				Randoms.nextInt(container().getW()), 0, container()
 			)
 		);
 	}
