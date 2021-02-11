@@ -4,7 +4,7 @@ import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.helper.AbstractHelper;
 import cn.milai.ib.character.property.Movable;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.loader.ImageLoader;
 
 /**
@@ -21,7 +21,7 @@ public class AccelerateHelper extends AbstractHelper {
 	private double maxRatedSpeedX = 21;
 	private double maxRatedSpeedY = 21;
 
-	public AccelerateHelper(double x, double y, UIContainer container) {
+	public AccelerateHelper(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		maxRatedSpeedX = doubleProp(P_MAX_RATED_SPEED_X);
 		maxRatedSpeedY = doubleProp(P_MAX_RATED_SPEED_Y);

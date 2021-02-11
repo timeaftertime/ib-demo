@@ -4,8 +4,8 @@ import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.weapon.bullet.AbstractBullet;
 import cn.milai.ib.character.weapon.bullet.Bullet;
-import cn.milai.ib.container.Container;
-import cn.milai.ib.container.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 光线特效窗口组件
@@ -52,7 +52,7 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 	public boolean isAlive() { return true; }
 
 	@Override
-	public void afterRefresh(Container container) {
+	public void afterRefresh(LifecycleContainer container) {
 		durationFrame--;
 		if (durationFrame < 0) {
 			getContainer().removeObject(this);

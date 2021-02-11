@@ -1,7 +1,7 @@
 package cn.milai.ibdemo.character;
 
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 逃生飞船
@@ -10,7 +10,7 @@ import cn.milai.ib.container.ui.UIContainer;
  */
 public class EscapeCraft extends AbstractIBCharacter {
 
-	public EscapeCraft(double x, double y, UIContainer container) {
+	public EscapeCraft(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 	}
 

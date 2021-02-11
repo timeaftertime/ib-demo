@@ -12,8 +12,9 @@ import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.component.text.Selections;
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.ui.Audio;
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.plugin.media.Audio;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.drama.AbstractDrama;
 import cn.milai.ib.util.WaitUtil;
 import cn.milai.ibdemo.character.EscapeCraft;
@@ -35,6 +36,9 @@ public class DeepSeaCity extends AbstractDrama {
 	private static final int GAME_OVER_LABEL_POS_Y = 266;
 	private static final int RESTART_BUTTON_POS_Y = 403;
 
+	private final int SEA_SCENE_WIDTH = 1190;
+	private final int SEA_SCENE_HEIGHT = 603;
+
 	private DramaContainer container;
 
 	private Image baseBGI = image("/img/tpc.png");
@@ -45,18 +49,14 @@ public class DeepSeaCity extends AbstractDrama {
 	private static final String AUDIO_BOMB_FILE = "/audio/bomb.mp3";
 
 	@Override
-	public String getName() {
-		return "深海城市";
-	}
+	public String getName() { return "深海城市"; }
 
 	@Override
 	public void doRun(DramaContainer container) {
 		this.container = container;
 		inBase();
-		int seaSceneWidth = 1190;
-		int seaSceneHeight = 603;
-		container.newSize(seaSceneWidth, seaSceneHeight);
-		container.newUISize(seaSceneWidth, seaSceneHeight);
+		container.newSize(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
+		container.newUISize(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
 		inSea();
 		while (!battle()) {
 		}
@@ -68,6 +68,7 @@ public class DeepSeaCity extends AbstractDrama {
 
 	private void victory() {
 		container.reset();
+		container.resizeWithUI(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
 		container.setBackgroud(deepSeaBGI);
 		ViewObject dolphin = new ViewObject(
 			container.getW() / 8, container.getH() / 3, container,
@@ -189,6 +190,7 @@ public class DeepSeaCity extends AbstractDrama {
 
 	private void toBeContinued(DramaContainer container) {
 		container.reset();
+		container.resizeWithUI(initW(), initH());
 		IBComponent component = new LinesFullScreenPass(
 			10L, Integer.MAX_VALUE, 0L, Arrays.asList("未完待续…", "To Be Continued..."), 10,
 			container
@@ -199,12 +201,16 @@ public class DeepSeaCity extends AbstractDrama {
 
 	private boolean battle() {
 		container.reset();
+		container.resizeWithUI(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
 		container.setBackgroud(deepSeaBGI);
 		DeepSeaBattle deepSeaBattle = new DeepSeaBattle(this, container);
 		if (!deepSeaBattle.run()) {
 			CountDownLatch latch = new CountDownLatch(1);
-			container.addLifeCycleListener(() -> {
-				latch.countDown();
+			container.addEventListener(new ContainerEventListener() {
+				@Override
+				public void onContainerClosed() {
+					latch.countDown();
+				}
 			});
 			container.addObject(new GameOverLabel(centerX(), GAME_OVER_LABEL_POS_Y, container));
 			container.addObject(

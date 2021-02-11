@@ -8,8 +8,10 @@ import cn.milai.ib.character.Player;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
-import cn.milai.ib.container.ui.Image;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.container.plugin.control.cmd.CmdType;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ibdemo.character.bullet.shooter.BlueShooter;
 
 /**
@@ -27,7 +29,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 	private final Status INIT_STATUS;
 	private Stack<Status> statusStack = new Stack<>();
 
-	public PlayerPlane(double x, double y, UIContainer container) {
+	public PlayerPlane(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		player = new BasePlayer();
 		shooter = new BlueShooter(intProp(P_SHOOT_INTERVAL), intProp(P_MAX_BULLET_NUM), this);
@@ -210,5 +212,10 @@ public class PlayerPlane extends AbstractPlane implements PlayerCharacter {
 
 	@Override
 	public boolean isA() { return player.isA(); }
+
+	@Override
+	public boolean accept(Cmd c) {
+		return c.getType() != CmdType.CLICKED;
+	}
 
 }

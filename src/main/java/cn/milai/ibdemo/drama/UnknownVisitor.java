@@ -11,9 +11,10 @@ import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.ui.Audio;
-import cn.milai.ib.container.ui.BaseImage;
-import cn.milai.ib.container.ui.Image;
+import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.plugin.media.Audio;
+import cn.milai.ib.container.plugin.ui.BaseImage;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.drama.AbstractDrama;
 import cn.milai.ib.util.ImageUtil;
 import cn.milai.ib.util.StringUtil;
@@ -55,6 +56,7 @@ public class UnknownVisitor extends AbstractDrama {
 	}
 
 	private void victory() {
+		container.setPined(true);
 		memberSay("what_happened");
 		PlayerCharacter player = container.getAll(PlayerCharacter.class).get(0);
 		int x = player.getIntX() > container.getW() / 2 ? container.getW() / 4 : container.getW() / 4 * 3;
@@ -76,7 +78,9 @@ public class UnknownVisitor extends AbstractDrama {
 		container.removeObject(shield);
 		leaderSay("please_come_back");
 		memberSay("gig");
+		container.setPined(true);
 		container.reset();
+		container.resizeWithUI(initW(), initH());
 		container.setBackgroud(starsBGI);
 		container.playAudio(audio(Audio.BGM_CODE, HEIR_OF_LIGHT));
 		showBGMInfo();
@@ -110,12 +114,16 @@ public class UnknownVisitor extends AbstractDrama {
 
 	private boolean battle() {
 		container.reset();
+		container.resizeWithUI(initW(), initH());
 		container.setBackgroud(universeBGI);
 		UniverseBattle universeBattle = new UniverseBattle(this, container);
 		if (!universeBattle.run()) {
 			CountDownLatch latch = new CountDownLatch(1);
-			container.addLifeCycleListener(() -> {
-				latch.countDown();
+			container.addEventListener(new ContainerEventListener() {
+				@Override
+				public void onContainerClosed() {
+					latch.countDown();
+				}
 			});
 			container.addObject(new GameOverLabel(container.getW() / 2, GAME_OVER_LABEL_POS_Y, container));
 			container.addObject(

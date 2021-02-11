@@ -2,7 +2,7 @@ package cn.milai.ibdemo.character.plane;
 
 import cn.milai.common.util.Randoms;
 import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ibdemo.character.bullet.shooter.RedShooter;
 
 /**
@@ -21,7 +21,7 @@ public class FollowPlane extends EnemyPlane {
 
 	private BulletShooter shooter = new RedShooter(this);
 
-	public FollowPlane(double x, double y, UIContainer container) {
+	public FollowPlane(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		setSpeedX(getRatedSpeedX());
 		setSpeedY(getRatedSpeedY());

@@ -7,7 +7,7 @@ import cn.milai.ib.character.BaseBot;
 import cn.milai.ib.character.Bot;
 import cn.milai.ib.character.BotCharacter;
 import cn.milai.ib.character.PlayerCharacter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 敌方鱼类
@@ -18,7 +18,7 @@ public abstract class EnemyFish extends AbstractFish implements BotCharacter {
 
 	private Bot enemy;
 
-	public EnemyFish(double x, double y, UIContainer container) {
+	public EnemyFish(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		enemy = new BaseBot();
 		selectAttackTarget();

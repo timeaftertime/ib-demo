@@ -3,7 +3,7 @@ package cn.milai.ibdemo.character.plane;
 import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.character.explosion.creator.ExplosionCreator;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ibdemo.character.explosion.creator.BaseExplosionCreator;
 
 /**
@@ -14,7 +14,7 @@ public abstract class AbstractPlane extends MovableIBCharacter implements Plane 
 
 	private ExplosionCreator explosionCreator;
 
-	public AbstractPlane(double x, double y, UIContainer container) {
+	public AbstractPlane(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		explosionCreator = new BaseExplosionCreator();
 	}

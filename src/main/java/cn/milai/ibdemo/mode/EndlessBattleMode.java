@@ -12,12 +12,12 @@ import cn.milai.ib.character.weapon.bullet.Bullet;
 import cn.milai.ib.component.GameOverLabel;
 import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.conf.SystemConf;
-import cn.milai.ib.container.ContainerEventListener;
-import cn.milai.ib.container.lifecycle.ContainerClosedException;
-import cn.milai.ib.container.ui.Audio;
-import cn.milai.ib.container.ui.Image;
-import cn.milai.ib.container.ui.form.BattleFormContainer;
-import cn.milai.ib.container.ui.form.FormContainer;
+import cn.milai.ib.container.ContainerClosedException;
+import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.plugin.media.Audio;
+import cn.milai.ib.container.plugin.media.MediaPlugin;
+import cn.milai.ib.container.plugin.ui.Image;
+import cn.milai.ib.container.plugin.ui.form.BattleFormContainer;
 import cn.milai.ib.ex.IBException;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.ImageLoader;
@@ -45,6 +45,16 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 	private static final String DRAMA_CODE = "cn.milai.ibdemo.mode.EndlessBattleMode";
 
 	private static final String BOMB_CODE = "BOMB";
+
+	/**
+	 * 默认宽度
+	 */
+	private static final int WIDTH = 554;
+
+	/**
+	 * 默认高度
+	 */
+	private static final int HEIGHT = 689;
 
 	private static final int INIT_LEVEL_UP_GAME_SCORE = 30;
 	private static final int MAX_PLAYER_BULLET_NUM = 10;
@@ -84,7 +94,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 	private PlayerPlane player;
 	private String formTitle;
 	private int playerScore;
-	protected FormContainer form;
+	protected BattleFormContainer form;
 
 	@Override
 	public String name() {
@@ -94,8 +104,9 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 	@Override
 	public void init() {
 		form = new BattleFormContainer();
+		form.resizeWithUI(WIDTH, HEIGHT);
 		form.addEventListener(this);
-		player = new PlayerPlane(form.getW() / 2, (int) (form.getH() * 0.93), form);
+		player = new PlayerPlane(form.getW() / 2, form.getH() * 0.93, form);
 		playerScore = 0;
 		formTitle = form.getTitle();
 		BGI = ImageLoader.load(DRAMA_CODE, IMG_BACKGROUD_FILE);
@@ -117,7 +128,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 		@Override
 		public void run() {
 			try {
-				form.playAudio(BGM);
+				form.fire(MediaPlugin.class, m -> m.playAudio(BGM));
 				form.setBackgroud(BGI);
 				addWelComePlayer();
 				// 消灭所有欢迎机则奖励分数

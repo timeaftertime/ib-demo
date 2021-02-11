@@ -4,8 +4,8 @@ import cn.milai.common.util.Randoms;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
-import cn.milai.ib.container.ui.Image;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ibdemo.character.bullet.shooter.DoubleRedShooter;
 import cn.milai.ibdemo.character.bullet.shooter.MissileShooter;
@@ -32,7 +32,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private final Image DANGER_IMG = ImageLoader.load(MissileBoss.class, "danger");
 
-	public MissileBoss(double x, double y, UIContainer container) {
+	public MissileBoss(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		mainShooter = new DoubleRedShooter(this);
 		sideShooter = new MissileShooter(this);
@@ -46,7 +46,9 @@ public class MissileBoss extends EnemyPlane {
 	}
 
 	@Override
-	protected void afterMove() { status.afterMove(); }
+	protected void afterMove() {
+		status.afterMove();
+	}
 
 	@Override
 	public synchronized void loseLife(IBCharacter character, int life) throws IllegalArgumentException {

@@ -1,7 +1,7 @@
 package cn.milai.ibdemo.character;
 
 import cn.milai.ib.character.AbstractIBCharacter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 飞行乌托拉
@@ -9,7 +9,7 @@ import cn.milai.ib.container.ui.UIContainer;
  */
 public class UltraFly extends AbstractIBCharacter {
 
-	public UltraFly(double x, double y, UIContainer container) {
+	public UltraFly(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 	}
 

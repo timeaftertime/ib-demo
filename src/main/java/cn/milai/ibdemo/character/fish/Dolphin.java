@@ -6,7 +6,9 @@ import cn.milai.ib.character.Player;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.container.plugin.control.cmd.CmdType;
 import cn.milai.ibdemo.character.bullet.shooter.BlueShooter;
 
 /**
@@ -25,7 +27,7 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 	private BulletShooter shooter;
 	private int damagedCnt;
 
-	public Dolphin(double x, double y, UIContainer container) {
+	public Dolphin(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		setDirection(Math.PI / 2);
 		player = new BasePlayer();
@@ -162,5 +164,10 @@ public class Dolphin extends AbstractFish implements PlayerCharacter {
 
 	@Override
 	public void onCrash(CanCrash crashed) {}
+
+	@Override
+	public boolean accept(Cmd c) {
+		return c.getType() != CmdType.CLICKED;
+	}
 
 }

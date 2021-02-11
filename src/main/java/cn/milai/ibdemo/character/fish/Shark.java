@@ -3,7 +3,7 @@ package cn.milai.ibdemo.character.fish;
 import cn.milai.ib.character.BotCharacter;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
-import cn.milai.ib.container.ui.UIContainer;
+import cn.milai.ib.container.lifecycle.LifecycleContainer;
 
 /**
  * 鲨鱼
@@ -33,7 +33,7 @@ public class Shark extends EnemyFish implements BotCharacter {
 	private int minWaitFrame;
 	private long lastSetACCFrame;
 
-	public Shark(UIContainer container) {
+	public Shark(LifecycleContainer container) {
 		super(0, 0, container);
 		setX(getContainer().getW());
 		setY(getContainer().getH());
