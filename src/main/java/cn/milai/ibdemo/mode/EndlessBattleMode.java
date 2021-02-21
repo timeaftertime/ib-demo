@@ -1,5 +1,7 @@
 package cn.milai.ibdemo.mode;
 
+import java.util.List;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,7 @@ import cn.milai.ib.component.GameOverLabel;
 import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.ContainerClosedException;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.MediaPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
@@ -34,7 +36,7 @@ import cn.milai.ibdemo.character.plane.WelcomePlane;
  */
 @Order(100)
 @Component
-public class EndlessBattleMode extends AbstractGameMode implements ContainerEventListener {
+public class EndlessBattleMode extends AbstractGameMode implements ObjectListener {
 
 	private static final String AUDIO_BG_FILE = "/audio/bg.mp3";
 
@@ -105,7 +107,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 	public void init() {
 		form = new BattleFormContainer();
 		form.resizeWithUI(WIDTH, HEIGHT);
-		form.addEventListener(this);
+		form.addObjectListener(this);
 		player = new PlayerPlane(form.getW() / 2, form.getH() * 0.93, form);
 		playerScore = 0;
 		formTitle = form.getTitle();
@@ -218,20 +220,26 @@ public class EndlessBattleMode extends AbstractGameMode implements ContainerEven
 	}
 
 	@Override
-	public void onObjectRemoved(IBObject obj) {
-		if (obj == player) {
-			gameOver();
-		} else {
-			if (obj instanceof HasScore) {
-				HasScore hasScore = ((HasScore) obj);
-				IBCharacter lastAttacker = hasScore.getLastAttacker();
-				if (lastAttacker instanceof Bullet) {
-					if (((Bullet) lastAttacker).getOwner() == player) {
-						addPlayerScore(hasScore.getScore());
+	public void onObjectRemoved(List<IBObject> objs) {
+		for (IBObject obj : objs) {
+			if (obj == player) {
+				gameOver();
+				return;
+			} else {
+				if (obj instanceof HasScore) {
+					HasScore hasScore = ((HasScore) obj);
+					if (hasScore.isAlive()) {
+						continue;
+					}
+					IBCharacter lastAttacker = hasScore.getLastAttacker();
+					if (lastAttacker instanceof Bullet) {
+						if (((Bullet) lastAttacker).getOwner() == player) {
+							addPlayerScore(hasScore.getScore());
+						}
 					}
 				}
+				refreshFormTitle();
 			}
-			refreshFormTitle();
 		}
 	}
 

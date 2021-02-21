@@ -11,7 +11,7 @@ import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.BaseImage;
 import cn.milai.ib.container.plugin.ui.Image;
@@ -119,7 +119,7 @@ public class UnknownVisitor extends AbstractDrama {
 		UniverseBattle universeBattle = new UniverseBattle(this, container);
 		if (!universeBattle.run()) {
 			CountDownLatch latch = new CountDownLatch(1);
-			container.addEventListener(new ContainerEventListener() {
+			container.addLifecycleListener(new LifecycleListener() {
 				@Override
 				public void onContainerClosed() {
 					latch.countDown();

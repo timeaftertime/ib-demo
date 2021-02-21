@@ -1,6 +1,7 @@
 package cn.milai.ibdemo.drama;
 
 import java.awt.Color;
+import java.util.List;
 
 import cn.milai.common.util.Randoms;
 import cn.milai.ib.IBObject;
@@ -10,7 +11,7 @@ import cn.milai.ib.component.BloodStrip;
 import cn.milai.ib.component.LifeCounter;
 import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.drama.AbstractDrama;
 import cn.milai.ib.util.StringUtil;
@@ -47,12 +48,14 @@ public class UniverseBattle extends Battle {
 	@Override
 	public boolean doRun() {
 		addPlayer();
-		container().addEventListener(new ContainerEventListener() {
+		container().addObjectListener(new ObjectListener() {
 			@Override
-			public void onObjectRemoved(IBObject obj) {
-				if (player == obj) {
-					container().stopAudio(Audio.BGM_CODE);
-					stop();
+			public void onObjectRemoved(List<IBObject> objs) {
+				for (IBObject obj : objs) {
+					if (player == obj) {
+						container().stopAudio(Audio.BGM_CODE);
+						stop();
+					}
 				}
 			}
 
@@ -115,15 +118,15 @@ public class UniverseBattle extends Battle {
 	private void beforeBoss() {
 		// 阶梯 Welcome
 		int midX = container().getW() / 2;
-		int interval = 25;
-		addLadderWelcome(8, midX, interval, 20L);
+		int interval = 20;
+		addLadderWelcome(7, midX, interval, 20L);
 		// Welcome Follow 混合
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j <= i; j++) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j <= 3; j++) {
 				randomAddFollowPlane();
 				WaitUtil.wait(container(), 10L);
 			}
-			WaitUtil.wait(container(), 25L);
+			WaitUtil.wait(container(), 23L);
 			addWelcomes(
 				(int) (container().getW() * 0.1),
 				(int) (container().getW() * 0.3),
@@ -132,7 +135,7 @@ public class UniverseBattle extends Battle {
 				(int) (container().getW() * 0.9)
 			);
 		}
-		WaitUtil.wait(container(), 30L);
+		WaitUtil.wait(container(), 70L);
 		hideBoss();
 		// 双重阶梯 Welcome
 		for (int i = 0; i < 8; i++) {
@@ -151,9 +154,9 @@ public class UniverseBattle extends Battle {
 		// 间距逐渐变小的 Welcome 列队
 		for (int i = 0; i < 6; i++) {
 			addWelcomes((int) (container().getW() * 0.4), (int) (container().getW() * 0.6));
-			WaitUtil.wait(container(), 5 + 60L / (i + 1));
+			WaitUtil.wait(container(), 5 + 45L / (i + 1));
 		}
-		WaitUtil.wait(container(), 10L);
+		WaitUtil.wait(container(), 20L);
 		hideBoss();
 	}
 

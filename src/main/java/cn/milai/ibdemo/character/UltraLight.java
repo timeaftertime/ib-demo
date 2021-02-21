@@ -4,15 +4,15 @@ import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.property.CanCrash;
 import cn.milai.ib.character.weapon.bullet.AbstractBullet;
 import cn.milai.ib.character.weapon.bullet.Bullet;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 
 /**
  * 光线特效窗口组件
  * @author milai
  * @date 2020.03.25
  */
-public class UltraLight extends AbstractBullet implements ContainerEventListener {
+public class UltraLight extends AbstractBullet implements LifecycleListener {
 
 	private long durationFrame;
 	private double deltaRadian;
@@ -32,7 +32,7 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 		setW(width);
 		setH(height * 2);
 		setY(h - height);
-		getContainer().addEventListener(this);
+		getContainer().addLifecycleListener(this);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class UltraLight extends AbstractBullet implements ContainerEventListener
 		durationFrame--;
 		if (durationFrame < 0) {
 			getContainer().removeObject(this);
-			getContainer().removeEventListener(this);
+			getContainer().removeLifecycleListener(this);
 		}
 		setDirection(getDirection() - deltaRadian);
 	}

@@ -12,7 +12,7 @@ import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.LinesFullScreenPass;
 import cn.milai.ib.component.text.Selections;
 import cn.milai.ib.container.DramaContainer;
-import cn.milai.ib.container.lifecycle.ContainerEventListener;
+import cn.milai.ib.container.lifecycle.LifecycleListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.drama.AbstractDrama;
@@ -206,7 +206,7 @@ public class DeepSeaCity extends AbstractDrama {
 		DeepSeaBattle deepSeaBattle = new DeepSeaBattle(this, container);
 		if (!deepSeaBattle.run()) {
 			CountDownLatch latch = new CountDownLatch(1);
-			container.addEventListener(new ContainerEventListener() {
+			container.addLifecycleListener(new LifecycleListener() {
 				@Override
 				public void onContainerClosed() {
 					latch.countDown();
