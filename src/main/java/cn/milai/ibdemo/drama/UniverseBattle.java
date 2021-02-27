@@ -10,6 +10,7 @@ import cn.milai.ib.character.explosion.Explosion;
 import cn.milai.ib.component.BloodStrip;
 import cn.milai.ib.component.LifeCounter;
 import cn.milai.ib.component.text.TextLines;
+import cn.milai.ib.container.Container;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
@@ -50,7 +51,7 @@ public class UniverseBattle extends Battle {
 		addPlayer();
 		container().addObjectListener(new ObjectListener() {
 			@Override
-			public void onObjectRemoved(List<IBObject> objs) {
+			public void onObjectRemoved(Container container, List<IBObject> objs) {
 				for (IBObject obj : objs) {
 					if (player == obj) {
 						container().stopAudio(Audio.BGM_CODE);
@@ -60,7 +61,7 @@ public class UniverseBattle extends Battle {
 			}
 
 			@Override
-			public void onObjectAdded(IBObject obj) {
+			public void onObjectAdded(Container container, IBObject obj) {
 				if (obj instanceof Explosion) {
 					try {
 						container().playAudio(drama.audio(BOMB_CODE, AUDIO_BOMB_FILE));

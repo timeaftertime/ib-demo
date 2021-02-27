@@ -4,3 +4,11 @@ spring:
   profiles:    active:    - dev
     
 nexus:  mode: client
+  
+ib:  container:    plugin:      metrics:
+        interval: 60        categories:
+          aliveCheck: true
+          crashCheck: true
+          movable: true
+          control: true
+          metrics: true          ui: true

@@ -14,6 +14,7 @@ import cn.milai.ib.character.weapon.bullet.Bullet;
 import cn.milai.ib.component.GameOverLabel;
 import cn.milai.ib.component.RestartButton;
 import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
@@ -213,14 +214,14 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 	}
 
 	@Override
-	public void onObjectAdded(IBObject obj) {
+	public void onObjectAdded(Container container, IBObject obj) {
 		if (obj instanceof Explosion) {
 			form.playAudio(AudioLoader.load(BOMB_CODE, DRAMA_CODE, AUDIO_BOMB_FILE));
 		}
 	}
 
 	@Override
-	public void onObjectRemoved(List<IBObject> objs) {
+	public void onObjectRemoved(Container container, List<IBObject> objs) {
 		for (IBObject obj : objs) {
 			if (obj == player) {
 				gameOver();

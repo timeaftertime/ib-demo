@@ -14,12 +14,10 @@ public abstract class Battle {
 	protected Drama drama;
 	private DramaContainer container;
 	private Thread battleThread;
-	private volatile boolean closed;
 
 	public Battle(Drama drama, DramaContainer container) {
 		this.drama = drama;
 		this.container = container;
-		closed = false;
 	}
 
 	/**
@@ -30,7 +28,8 @@ public abstract class Battle {
 	 */
 	public DramaContainer container() throws BattleStoppedException {
 		DramaContainer c = this.container;
-		if (c == null) {
+		if (c == null || c.isClosed()) {
+			this.container = null;
 			throw new BattleStoppedException();
 		}
 		return container;
@@ -41,10 +40,9 @@ public abstract class Battle {
 	 * 实际是否停止由 Battle 当前状态是否响应决定
 	 */
 	public void stop() {
-		this.container = null;
 		// 使得 WaitUtil 相关操作被中断
 		battleThread.interrupt();
-		closed = true;
+		this.container = null;
 	}
 
 	/**
@@ -56,7 +54,7 @@ public abstract class Battle {
 		try {
 			return doRun();
 		} catch (BattleStoppedException e) {
-			while (!closed) {
+			while (container != null) {
 				// 等待 stop() 中的线程中断操作被调用
 			}
 			// 确保退出时清除线程中断状态

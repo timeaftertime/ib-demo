@@ -6,6 +6,7 @@ import java.util.List;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.component.BloodStrip;
 import cn.milai.ib.component.text.TextLines;
+import cn.milai.ib.container.Container;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
@@ -40,7 +41,7 @@ public class DeepSeaBattle extends Battle {
 		container().addObject(dolphinBlood);
 		container().addObjectListener(new ObjectListener() {
 			@Override
-			public void onObjectRemoved(List<IBObject> objs) {
+			public void onObjectRemoved(Container container, List<IBObject> objs) {
 				for (IBObject obj : objs) {
 					if (dolphin == obj) {
 						container().stopAudio(Audio.BGM_CODE);
