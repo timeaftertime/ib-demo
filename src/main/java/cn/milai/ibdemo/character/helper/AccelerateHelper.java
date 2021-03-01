@@ -3,7 +3,6 @@ package cn.milai.ibdemo.character.helper;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.helper.AbstractHelper;
 import cn.milai.ib.character.property.Movable;
-import cn.milai.ib.conf.SystemConf;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.loader.ImageLoader;
 
@@ -34,18 +33,8 @@ public class AccelerateHelper extends AbstractHelper {
 		}
 		player.pushStatus(false);
 		Movable movable = (Movable) player;
-		movable.setRatedSpeedX(
-			Math.min(
-				maxRatedSpeedX,
-				movable.getRatedSpeedX() + SystemConf.frameProrate(2)
-			)
-		);
-		movable.setRatedSpeedY(
-			Math.min(
-				maxRatedSpeedY,
-				movable.getRatedSpeedY() + SystemConf.frameProrate(2)
-			)
-		);
+		movable.setRatedSpeedX(Math.min(maxRatedSpeedX, movable.getRatedSpeedX() + 2));
+		movable.setRatedSpeedY(Math.min(maxRatedSpeedY, movable.getRatedSpeedY() + 2));
 		player.setImage(ImageLoader.load(player.getClass(), ACC_STATUS));
 	}
 

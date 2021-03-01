@@ -3,7 +3,7 @@ package cn.milai.ibdemo.drama;
 import java.awt.Color;
 import java.util.List;
 
-import cn.milai.common.util.Randoms;
+import cn.milai.common.base.Randoms;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.explosion.Explosion;

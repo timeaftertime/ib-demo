@@ -12,8 +12,9 @@
 		<fileSet>
 			<directory>${project.build.directory}/classes</directory>
 			<includes>
-				<include>*.conf</include>
+				<include>*.yml</include>
 				<include>startup.*</include>
+				<include>logback-spring.xml</include>
 			</includes>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
@@ -22,6 +23,9 @@
 			<includes>
 				<include>*.jar</include>
 			</includes>
+			<excludes>
+				<exclude>*-sources.jar</exclude>
+			</excludes>
 			<outputDirectory>/lib</outputDirectory>
 		</fileSet>
 	</fileSets>

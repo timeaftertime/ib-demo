@@ -1,6 +1,6 @@
 package cn.milai.ibdemo.character.plane;
 
-import cn.milai.common.util.Randoms;
+import cn.milai.common.base.Randoms;
 import cn.milai.ib.character.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ibdemo.character.bullet.shooter.RedShooter;

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import cn.milai.common.util.Randoms;
+import cn.milai.common.base.Randoms;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.IBCharacter;
 import cn.milai.ib.character.explosion.Explosion;
@@ -13,7 +13,7 @@ import cn.milai.ib.character.property.HasScore;
 import cn.milai.ib.character.weapon.bullet.Bullet;
 import cn.milai.ib.component.GameOverLabel;
 import cn.milai.ib.component.RestartButton;
-import cn.milai.ib.conf.SystemConf;
+import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.listener.ObjectListener;
@@ -194,7 +194,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 				playerBulletNum = MAX_PLAYER_BULLET_NUM;
 			player.setShooter(
 				new BlueShooter(
-					SystemConf.intProp(player.getClass(), PlayerPlane.P_SHOOT_INTERVAL), maxBulletNum, player
+					IBConf.intProp(player.getClass(), PlayerPlane.P_SHOOT_INTERVAL), maxBulletNum, player
 				)
 			);
 

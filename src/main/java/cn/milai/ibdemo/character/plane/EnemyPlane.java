@@ -2,7 +2,7 @@ package cn.milai.ibdemo.character.plane;
 
 import java.util.List;
 
-import cn.milai.common.util.Randoms;
+import cn.milai.common.base.Randoms;
 import cn.milai.ib.character.BaseBot;
 import cn.milai.ib.character.Bot;
 import cn.milai.ib.character.BotCharacter;
