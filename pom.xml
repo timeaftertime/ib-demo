@@ -12,6 +12,7 @@
 		<ib.client.version>0.0.1-SNAPSHOT</ib.client.version>
 		<spring.version>5.2.3.RELEASE</spring.version>
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -52,19 +53,27 @@
 			<!-- 编译插件 -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.8.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!-- 资源文件拷贝插件 -->
+			<!-- 打 jar 包时排除部分文件 -->
 			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.1.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version>
 				<configuration>
-					<encoding>UTF-8</encoding>
+					<excludes>
+						<exclude>drama/</exclude>
+						<exclude>dramaRes/</exclude>
+						<exclude>application.yml</exclude>
+						<exclude>logback-spring.xml</exclude>
+						<exclude>assembly.xml</exclude>
+						<exclude>startup.*</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<!-- 打包源码 -->
@@ -74,6 +83,14 @@
 				<version>3.2.0</version>
 				<configuration>
 					<attach>true</attach>
+					<excludes>
+						<exclude>drama/</exclude>
+						<exclude>dramaRes/</exclude>
+						<exclude>application.yml</exclude>
+						<exclude>logback-spring.xml</exclude>
+						<exclude>assembly.xml</exclude>
+						<exclude>startup.*</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
