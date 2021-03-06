@@ -3,6 +3,7 @@ package cn.milai.ibdemo.drama;
 import java.awt.Color;
 import java.util.List;
 
+import cn.milai.common.base.Strings;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.component.BloodStrip;
 import cn.milai.ib.component.text.TextLines;
@@ -11,7 +12,6 @@ import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.drama.Drama;
-import cn.milai.ib.util.StringUtil;
 import cn.milai.ib.util.WaitUtil;
 import cn.milai.ibdemo.character.fish.Dolphin;
 import cn.milai.ibdemo.character.fish.Shark;
@@ -65,7 +65,7 @@ public class DeepSeaBattle extends Battle {
 
 	private void showBGMInfo() {
 		TextLines bgmInfo = new TextLines(
-			0, 0, container(), StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 7L, 28L, 7L
+			0, 0, container(), Strings.toLines(drama.str("bgm_info")), Color.BLACK, 7L, 28L, 7L
 		);
 		bgmInfo.setX(container().getW() - 1 - bgmInfo.getIntW());
 		bgmInfo.setY(container().getH() - 1 - bgmInfo.getIntH());

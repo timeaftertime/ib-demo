@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 import cn.milai.common.base.Randoms;
+import cn.milai.common.base.Strings;
 import cn.milai.ib.IBObject;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.character.explosion.Explosion;
@@ -15,7 +16,6 @@ import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.drama.AbstractDrama;
-import cn.milai.ib.util.StringUtil;
 import cn.milai.ib.util.WaitUtil;
 import cn.milai.ibdemo.character.UltraLight;
 import cn.milai.ibdemo.character.helper.AccelerateHelper;
@@ -100,7 +100,7 @@ public class UniverseBattle extends Battle {
 	private void showBGMInfo() {
 		TextLines bgmInfo = new TextLines(
 			0, 0, container(),
-			StringUtil.lines(drama.str("bgm_info")), Color.BLACK, 10L, 40L, 10L
+			Strings.toLines(drama.str("bgm_info")), Color.BLACK, 10L, 40L, 10L
 		);
 		bgmInfo.setX(container().getW() - 1 - bgmInfo.getIntW());
 		bgmInfo.setY(container().getH() - 1 - bgmInfo.getIntH());

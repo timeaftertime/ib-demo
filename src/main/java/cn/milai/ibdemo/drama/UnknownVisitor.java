@@ -3,6 +3,7 @@ package cn.milai.ibdemo.drama;
 import java.awt.Color;
 import java.util.concurrent.CountDownLatch;
 
+import cn.milai.common.base.Strings;
 import cn.milai.ib.ViewObject;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.component.CommandShield;
@@ -18,7 +19,6 @@ import cn.milai.ib.container.plugin.ui.BaseImage;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.drama.AbstractDrama;
 import cn.milai.ib.util.ImageUtil;
-import cn.milai.ib.util.StringUtil;
 import cn.milai.ib.util.WaitUtil;
 import cn.milai.ibdemo.character.UltraFly;
 import cn.milai.ibdemo.character.bullet.Missile;
@@ -101,7 +101,7 @@ public class UnknownVisitor extends AbstractDrama {
 	private void showBGMInfo() {
 		TextLines bgmInfo = new TextLines(
 			0, 0, container,
-			StringUtil.lines(str("bgm_info2")), Color.BLACK, 7L, 28L, 7L
+			Strings.toLines(str("bgm_info2")), Color.BLACK, 7L, 28L, 7L
 		);
 		bgmInfo.setX(container.getW() - 1 - bgmInfo.getIntW());
 		bgmInfo.setY(container.getH() - container.getH());
