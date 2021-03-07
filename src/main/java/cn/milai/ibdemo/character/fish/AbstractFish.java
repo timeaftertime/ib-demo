@@ -2,8 +2,7 @@ package cn.milai.ibdemo.character.fish;
 
 import java.awt.image.BufferedImage;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
+import java.util.concurrent.ConcurrentHashMap;
 
 import cn.milai.ib.character.MovableIBCharacter;
 import cn.milai.ib.character.explosion.creator.ExplosionCreator;
@@ -26,7 +25,7 @@ public abstract class AbstractFish extends MovableIBCharacter implements Fish, C
 	private double accY;
 	private double stopAcc;
 
-	private Map<BufferedImage, BufferedImage> flipped = Maps.newConcurrentMap();
+	private Map<BufferedImage, BufferedImage> flipped = new ConcurrentHashMap<>();
 
 	public AbstractFish(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
