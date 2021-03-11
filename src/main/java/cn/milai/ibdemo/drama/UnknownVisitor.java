@@ -1,9 +1,10 @@
 package cn.milai.ibdemo.drama;
 
 import java.awt.Color;
-import java.util.concurrent.CountDownLatch;
 
 import cn.milai.common.base.Strings;
+import cn.milai.common.thread.counter.BlockDownCounter;
+import cn.milai.common.thread.counter.Counter;
 import cn.milai.ib.ViewObject;
 import cn.milai.ib.character.PlayerCharacter;
 import cn.milai.ib.component.CommandShield;
@@ -13,13 +14,13 @@ import cn.milai.ib.component.text.DramaDialog;
 import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.lifecycle.LifecycleListener;
+import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.BaseImage;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.drama.AbstractDrama;
 import cn.milai.ib.util.ImageUtil;
-import cn.milai.ib.util.WaitUtil;
+import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.character.UltraFly;
 import cn.milai.ibdemo.character.bullet.Missile;
 import cn.milai.ibdemo.character.plane.PlayerPlane;
@@ -32,8 +33,8 @@ import cn.milai.ibdemo.character.plane.PlayerPlane;
 public class UnknownVisitor extends AbstractDrama {
 
 	private static final String HEIR_OF_LIGHT = "/audio/heirOfLight.mp3";
-	private static final int GAME_OVER_LABEL_POS_Y = 266;
-	private static final int RESTART_BUTTON_POS_Y = 403;
+	private static final int GAME_OVER_LABEL_Y = 266;
+	private static final int RESTART_BUTTON_Y = 403;
 	private static final String WARNING_AUDIO = "WARNING";
 
 	private DramaContainer container;
@@ -65,7 +66,7 @@ public class UnknownVisitor extends AbstractDrama {
 		container.addObject(ultraFly);
 		while (ultraFly.getIntY() > player.getIntY()) {
 			ultraFly.setY(ultraFly.getIntY() - 14);
-			WaitUtil.wait(container, 1L);
+			Waits.wait(container, 1L);
 		}
 		memberSay("it_is_ultra");
 		leaderSay("he_is_always_appear_at_critical_time");
@@ -74,7 +75,7 @@ public class UnknownVisitor extends AbstractDrama {
 		container.addObject(shield);
 		while (ultraFly.getIntY() + ultraFly.getIntH() > 0) {
 			ultraFly.setY(ultraFly.getIntY() - 21);
-			WaitUtil.wait(container, 1L);
+			Waits.wait(container, 1L);
 		}
 		container.removeObject(shield);
 		leaderSay("please_come_back");
@@ -85,7 +86,7 @@ public class UnknownVisitor extends AbstractDrama {
 		container.setBackgroud(starsBGI);
 		container.playAudio(audio(Audio.BGM_CODE, HEIR_OF_LIGHT));
 		showBGMInfo();
-		WaitUtil.wait(container, 30L);
+		Waits.wait(container, 30L);
 		visitorSay("why_you_protect_human");
 		ultraSay("aggression_is_not_permit");
 		visitorSay("human_is_the_real_aggressor");
@@ -119,26 +120,16 @@ public class UnknownVisitor extends AbstractDrama {
 		container.setBackgroud(universeBGI);
 		UniverseBattle universeBattle = new UniverseBattle(this, container);
 		if (!universeBattle.run()) {
-			CountDownLatch latch = new CountDownLatch(1);
+			Counter counter = new BlockDownCounter(1);
 			container.addLifecycleListener(new LifecycleListener() {
 				@Override
 				public void onContainerClosed(LifecycleContainer container) {
-					latch.countDown();
+					counter.count();
 				}
 			});
-			container.addObject(new GameOverLabel(container.getW() / 2, GAME_OVER_LABEL_POS_Y, container));
-			container.addObject(
-				new RestartButton(
-					container.getW() / 2, RESTART_BUTTON_POS_Y, container,
-					() -> {
-						latch.countDown();
-					}
-				)
-			);
-			try {
-				latch.await();
-			} catch (InterruptedException e) {
-			}
+			container.addObject(new GameOverLabel(container.getW() / 2, GAME_OVER_LABEL_Y, container));
+			container.addObject(new RestartButton(container.getW() / 2, RESTART_BUTTON_Y, container, counter::count));
+			counter.await();
 			return false;
 		}
 		return true;
@@ -162,17 +153,17 @@ public class UnknownVisitor extends AbstractDrama {
 		int missileSpeedY = 35;
 		for (int i = 0; i < 5; i++) {
 			missile.moveY(missileSpeedY);
-			WaitUtil.wait(container, 1L);
+			Waits.wait(container, 1L);
 		}
 		memberSay("it_is_dangerous");
 		for (int i = 0; i < 5; i++) {
 			dodgePlane.moveX(11);
 			missile.moveY(missileSpeedY);
-			WaitUtil.wait(container, 1L);
+			Waits.wait(container, 1L);
 		}
 		while (missile.getIntY() + missile.getIntH() < container.getH()) {
 			missile.moveY(missileSpeedY);
-			WaitUtil.wait(container, 1L);
+			Waits.wait(container, 1L);
 		}
 		container.removeObject(missile);
 		memberSay("apply_for_counterattack");
@@ -214,7 +205,7 @@ public class UnknownVisitor extends AbstractDrama {
 		container.addObject(plane);
 		for (int speed = 0; plane.getIntY() + plane.getIntH() > 0; speed -= 1) {
 			plane.moveY(speed);
-			WaitUtil.wait(container, 1L);
+			Waits.wait(container, 1L);
 		}
 	}
 
@@ -254,7 +245,7 @@ public class UnknownVisitor extends AbstractDrama {
 			)
 		);
 		container.addObject(dialog);
-		WaitUtil.waitRemove(dialog, 5);
+		Waits.waitRemove(dialog, 5);
 	}
 
 	@Override

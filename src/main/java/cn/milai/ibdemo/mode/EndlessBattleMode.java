@@ -25,7 +25,7 @@ import cn.milai.ib.ex.IBException;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.mode.AbstractGameMode;
-import cn.milai.ib.util.WaitUtil;
+import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.character.bullet.shooter.BlueShooter;
 import cn.milai.ibdemo.character.plane.FollowPlane;
 import cn.milai.ibdemo.character.plane.PlayerPlane;
@@ -153,7 +153,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 			addVerticalWelcomePlayer(5, 70);
 			addVerticalWelcomePlayer(5, 140);
 			addLadderWelcomePlayer(5, 25);
-			WaitUtil.wait(form, 42);
+			Waits.wait(form, 42);
 		}
 
 		private void addVerticalWelcomePlayer(int row, int disFromCenter) {
@@ -162,7 +162,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 			for (int i = 0; i < row; i++) {
 				form.addObject(new WelcomePlane(form.getW() / 2 - disFromCenter, 0, form));
 				form.addObject(new WelcomePlane(form.getW() / 2 + disFromCenter, 0, form));
-				WaitUtil.wait(form, ADD_VERTICAL_WELCOME_PLANE_FRAMES);
+				Waits.wait(form, ADD_VERTICAL_WELCOME_PLANE_FRAMES);
 			}
 		}
 
@@ -170,11 +170,11 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
 			form.addObject(new WelcomePlane(form.getW() / 2, 0, form));
-			WaitUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
+			Waits.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			for (int i = 2; i <= row; i++) {
 				form.addObject(new WelcomePlane(form.getW() / 2 - i * disOfX, 0, form));
 				form.addObject(new WelcomePlane(form.getW() / 2 + i * disOfX, 0, form));
-				WaitUtil.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
+				Waits.wait(form, ADD_LADDER_WELCOME_PLANE_FRAMES);
 			}
 		}
 
@@ -208,7 +208,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 		private void randomAddEnemy() {
 			if (Randoms.nextLess(ADD_ENEMY_CHANCE)) {
 				form.addObject(new FollowPlane(Randoms.nextInt(form.getW()), 0, form));
-				WaitUtil.wait(form, addNormalEnemyInterval);
+				Waits.wait(form, addNormalEnemyInterval);
 			}
 		}
 	}

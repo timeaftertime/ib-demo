@@ -12,7 +12,7 @@ import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.drama.Drama;
-import cn.milai.ib.util.WaitUtil;
+import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.character.fish.Dolphin;
 import cn.milai.ibdemo.character.fish.Shark;
 
@@ -57,7 +57,7 @@ public class DeepSeaBattle extends Battle {
 		container().addObject(shark);
 		container().addObject(sharkBlood);
 		while (shark.isAlive()) {
-			WaitUtil.wait(container(), 10L);
+			Waits.wait(container(), 10L);
 		}
 		container().removeObject(sharkBlood);
 		return dolphin.isAlive();

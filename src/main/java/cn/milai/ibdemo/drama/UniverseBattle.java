@@ -16,7 +16,7 @@ import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.drama.AbstractDrama;
-import cn.milai.ib.util.WaitUtil;
+import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.character.UltraLight;
 import cn.milai.ibdemo.character.helper.AccelerateHelper;
 import cn.milai.ibdemo.character.helper.OneLifeHelper;
@@ -77,7 +77,7 @@ public class UniverseBattle extends Battle {
 		BloodStrip bossBloodStrip = new BloodStrip(
 			container().getW() / 2, BLOOD_STRP_Y, container(), boss
 		);
-		WaitUtil.wait(container(), 10L);
+		Waits.wait(container(), 10L);
 		container().addObject(boss);
 		container().addObject(bossBloodStrip);
 		while (boss.isAlive()) {
@@ -88,9 +88,9 @@ public class UniverseBattle extends Battle {
 					container()
 				)
 			);
-			WaitUtil.wait(container(), 100L);
+			Waits.wait(container(), 100L);
 			randomAddFollowPlane();
-			WaitUtil.wait(container(), 100L);
+			Waits.wait(container(), 100L);
 		}
 		container().removeObject(bossBloodStrip);
 		afterBoss();
@@ -113,7 +113,7 @@ public class UniverseBattle extends Battle {
 		UltraLight light = new UltraLight(player, 25L);
 		container().playAudio(drama.audio("ULTRAMAN", "/audio/ultraman.mp3"));
 		container().addObject(light);
-		WaitUtil.waitRemove(light, 5L);
+		Waits.waitRemove(light, 5L);
 	}
 
 	private void beforeBoss() {
@@ -125,9 +125,9 @@ public class UniverseBattle extends Battle {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j <= 3; j++) {
 				randomAddFollowPlane();
-				WaitUtil.wait(container(), 10L);
+				Waits.wait(container(), 10L);
 			}
-			WaitUtil.wait(container(), 23L);
+			Waits.wait(container(), 23L);
 			addWelcomes(
 				(int) (container().getW() * 0.1),
 				(int) (container().getW() * 0.3),
@@ -136,7 +136,7 @@ public class UniverseBattle extends Battle {
 				(int) (container().getW() * 0.9)
 			);
 		}
-		WaitUtil.wait(container(), 70L);
+		Waits.wait(container(), 70L);
 		hideBoss();
 		// 双重阶梯 Welcome
 		for (int i = 0; i < 8; i++) {
@@ -144,20 +144,20 @@ public class UniverseBattle extends Battle {
 			if (i > 0) {
 				container().addObject(new WelcomePlane(midX + interval * i, 0, container()));
 			}
-			WaitUtil.wait(container(), 10L);
+			Waits.wait(container(), 10L);
 			container().addObject(new WelcomePlane(midX - interval * i, 0, container()));
 			if (i > 0) {
 				container().addObject(new WelcomePlane(midX + interval * i, 0, container()));
 			}
-			WaitUtil.wait(container(), 20L);
+			Waits.wait(container(), 20L);
 		}
 		container().addObject(new AccelerateHelper(midX, 0, container()));
 		// 间距逐渐变小的 Welcome 列队
 		for (int i = 0; i < 6; i++) {
 			addWelcomes((int) (container().getW() * 0.4), (int) (container().getW() * 0.6));
-			WaitUtil.wait(container(), 5 + 45L / (i + 1));
+			Waits.wait(container(), 5 + 45L / (i + 1));
 		}
-		WaitUtil.wait(container(), 20L);
+		Waits.wait(container(), 20L);
 		hideBoss();
 	}
 
@@ -165,11 +165,11 @@ public class UniverseBattle extends Battle {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 3; j++) {
 				addWelcomes(Randoms.nextInt(container().getW()));
-				WaitUtil.wait(container(), 1L);
+				Waits.wait(container(), 1L);
 			}
 			for (int j = 0; j < 3; j++) {
 				randomAddFollowPlane();
-				WaitUtil.wait(container(), 3L);
+				Waits.wait(container(), 3L);
 			}
 		}
 	}
@@ -178,7 +178,7 @@ public class UniverseBattle extends Battle {
 	private void hideBoss() {
 		while (!player.isAlive()) {
 			randomAddFollowPlane();
-			WaitUtil.wait(container(), 30L);
+			Waits.wait(container(), 30L);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class UniverseBattle extends Battle {
 			if (i > 0) {
 				container().addObject(new WelcomePlane(midX + horInterval * i, 0, container()));
 			}
-			WaitUtil.wait(container(), waitFrame);
+			Waits.wait(container(), waitFrame);
 		}
 	}
 
