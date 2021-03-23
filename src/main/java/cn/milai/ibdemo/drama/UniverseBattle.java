@@ -15,7 +15,7 @@ import cn.milai.ib.container.Container;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
-import cn.milai.ib.drama.AbstractDrama;
+import cn.milai.ib.mode.drama.AbstractDrama;
 import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.character.UltraLight;
 import cn.milai.ibdemo.character.helper.AccelerateHelper;
