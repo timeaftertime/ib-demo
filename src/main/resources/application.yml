@@ -17,7 +17,7 @@ ib:
       - cn.milai.ibdemo.drama.DeepSeaCity
   container:
     plugin:      metrics:
-        interval: 60        categories:
+        interval: 0        categories:
           aliveCheck: true
           crashCheck: true
           movable: true

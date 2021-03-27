@@ -5,28 +5,28 @@ import java.util.Arrays;
 import cn.milai.common.thread.counter.BlockDownCounter;
 import cn.milai.common.thread.counter.Counter;
 import cn.milai.ib.ViewObject;
-import cn.milai.ib.character.explosion.Explosion;
-import cn.milai.ib.component.GameOverLabel;
-import cn.milai.ib.component.IBComponent;
-import cn.milai.ib.component.button.RestartButton;
-import cn.milai.ib.component.text.DramaDialog;
-import cn.milai.ib.component.text.LinesFullScreenPass;
-import cn.milai.ib.component.text.Selections;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.Image;
+import cn.milai.ib.control.Control;
+import cn.milai.ib.control.GameOverLabel;
+import cn.milai.ib.control.button.RestartButton;
+import cn.milai.ib.control.text.DramaDialog;
+import cn.milai.ib.control.text.LinesFullScreenPass;
+import cn.milai.ib.control.text.Selections;
 import cn.milai.ib.mode.drama.AbstractDrama;
+import cn.milai.ib.role.explosion.Explosion;
 import cn.milai.ib.util.Waits;
-import cn.milai.ibdemo.character.EscapeCraft;
-import cn.milai.ibdemo.character.ShiningStar;
-import cn.milai.ibdemo.character.UltraSide;
-import cn.milai.ibdemo.character.bullet.Missile;
-import cn.milai.ibdemo.character.explosion.BaseExplosion;
-import cn.milai.ibdemo.character.fish.Dolphin;
-import cn.milai.ibdemo.character.fish.Shark;
-import cn.milai.ibdemo.character.plane.PlayerPlane;
+import cn.milai.ibdemo.role.EscapeCraft;
+import cn.milai.ibdemo.role.ShiningStar;
+import cn.milai.ibdemo.role.UltraSide;
+import cn.milai.ibdemo.role.bullet.Missile;
+import cn.milai.ibdemo.role.explosion.BaseExplosion;
+import cn.milai.ibdemo.role.fish.Dolphin;
+import cn.milai.ibdemo.role.fish.Shark;
+import cn.milai.ibdemo.role.plane.PlayerPlane;
 
 /**
  * 深海城市剧本
@@ -189,16 +189,16 @@ public class DeepSeaCity extends AbstractDrama {
 		memberSay("what_should_we_do");
 		ultraSay("let_us_find_the_leader_first");
 	}
-
+	
 	private void toBeContinued(DramaContainer container) {
 		container.reset();
 		container.resizeWithUI(initW(), initH());
-		IBComponent component = new LinesFullScreenPass(
+		Control c = new LinesFullScreenPass(
 			10L, Integer.MAX_VALUE, 0L, Arrays.asList("未完待续…", "To Be Continued..."), 10,
 			container
 		);
-		container.addObject(component);
-		Waits.waitRemove(component, 100L);
+		container.addObject(c);
+		Waits.waitRemove(c, 100L);
 	}
 
 	private boolean battle() {

@@ -7,12 +7,6 @@ import org.springframework.stereotype.Component;
 
 import cn.milai.common.base.Randoms;
 import cn.milai.ib.IBObject;
-import cn.milai.ib.character.IBCharacter;
-import cn.milai.ib.character.explosion.Explosion;
-import cn.milai.ib.character.property.HasScore;
-import cn.milai.ib.character.weapon.bullet.Bullet;
-import cn.milai.ib.component.GameOverLabel;
-import cn.milai.ib.component.button.RestartButton;
 import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
@@ -21,15 +15,21 @@ import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.MediaPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.container.plugin.ui.form.BattleFormContainer;
+import cn.milai.ib.control.GameOverLabel;
+import cn.milai.ib.control.button.RestartButton;
 import cn.milai.ib.ex.IBException;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.mode.AbstractGameMode;
+import cn.milai.ib.role.Role;
+import cn.milai.ib.role.explosion.Explosion;
+import cn.milai.ib.role.property.HasScore;
+import cn.milai.ib.role.weapon.bullet.Bullet;
 import cn.milai.ib.util.Waits;
-import cn.milai.ibdemo.character.bullet.shooter.BlueShooter;
-import cn.milai.ibdemo.character.plane.FollowPlane;
-import cn.milai.ibdemo.character.plane.PlayerPlane;
-import cn.milai.ibdemo.character.plane.WelcomePlane;
+import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
+import cn.milai.ibdemo.role.plane.FollowPlane;
+import cn.milai.ibdemo.role.plane.PlayerPlane;
+import cn.milai.ibdemo.role.plane.WelcomePlane;
 
 /**
  * 无尽模式
@@ -232,7 +232,7 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 					if (hasScore.isAlive()) {
 						continue;
 					}
-					IBCharacter lastAttacker = hasScore.getLastAttacker();
+					Role lastAttacker = hasScore.getLastAttacker();
 					if (lastAttacker instanceof Bullet) {
 						if (((Bullet) lastAttacker).getOwner() == player) {
 							addPlayerScore(hasScore.getScore());

@@ -6,24 +6,24 @@ import java.util.List;
 import cn.milai.common.base.Randoms;
 import cn.milai.common.base.Strings;
 import cn.milai.ib.IBObject;
-import cn.milai.ib.character.PlayerCharacter;
-import cn.milai.ib.character.explosion.Explosion;
-import cn.milai.ib.component.BloodStrip;
-import cn.milai.ib.component.LifeCounter;
-import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
+import cn.milai.ib.control.BloodStrip;
+import cn.milai.ib.control.LifeCounter;
+import cn.milai.ib.control.text.TextLines;
 import cn.milai.ib.mode.drama.AbstractDrama;
+import cn.milai.ib.role.PlayerRole;
+import cn.milai.ib.role.explosion.Explosion;
 import cn.milai.ib.util.Waits;
-import cn.milai.ibdemo.character.UltraLight;
-import cn.milai.ibdemo.character.helper.AccelerateHelper;
-import cn.milai.ibdemo.character.helper.OneLifeHelper;
-import cn.milai.ibdemo.character.plane.FollowPlane;
-import cn.milai.ibdemo.character.plane.MissileBoss;
-import cn.milai.ibdemo.character.plane.PlayerPlane;
-import cn.milai.ibdemo.character.plane.WelcomePlane;
+import cn.milai.ibdemo.role.UltraLight;
+import cn.milai.ibdemo.role.helper.AccelerateHelper;
+import cn.milai.ibdemo.role.helper.OneLifeHelper;
+import cn.milai.ibdemo.role.plane.FollowPlane;
+import cn.milai.ibdemo.role.plane.MissileBoss;
+import cn.milai.ibdemo.role.plane.PlayerPlane;
+import cn.milai.ibdemo.role.plane.WelcomePlane;
 
 /**
 * 控制战斗进程的类
@@ -40,7 +40,7 @@ public class UniverseBattle extends Battle {
 
 	private static final int BLOOD_STRP_Y = 70;
 
-	private PlayerCharacter player;
+	private PlayerRole player;
 
 	public UniverseBattle(AbstractDrama drama, DramaContainer container) {
 		super(drama, container);

@@ -5,16 +5,16 @@ import java.util.List;
 
 import cn.milai.common.base.Strings;
 import cn.milai.ib.IBObject;
-import cn.milai.ib.component.BloodStrip;
-import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.listener.ObjectListener;
 import cn.milai.ib.container.plugin.media.Audio;
+import cn.milai.ib.control.BloodStrip;
+import cn.milai.ib.control.text.TextLines;
 import cn.milai.ib.drama.Drama;
 import cn.milai.ib.util.Waits;
-import cn.milai.ibdemo.character.fish.Dolphin;
-import cn.milai.ibdemo.character.fish.Shark;
+import cn.milai.ibdemo.role.fish.Dolphin;
+import cn.milai.ibdemo.role.fish.Shark;
 
 /**
  * 深海战斗

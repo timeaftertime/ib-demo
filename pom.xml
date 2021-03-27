@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>cn.milai</groupId>
+	<groupId>cn.milai.ibdemo</groupId>
 	<artifactId>ib-demo</artifactId>
 	<version>0.0.4-SNAPSHOT</version>
 	<description>使用 Infinity Battle 的示例项目</description>
@@ -15,32 +15,32 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-character</artifactId>
+			<groupId>cn.milai.ib</groupId>
+			<artifactId>ib-role</artifactId>
 			<version>${ib.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.milai</groupId>
-			<artifactId>ib-component</artifactId>
+			<groupId>cn.milai.ib</groupId>
+			<artifactId>ib-control</artifactId>
 			<version>${ib.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.milai</groupId>
+			<groupId>cn.milai.ib</groupId>
 			<artifactId>ib-container</artifactId>
 			<version>${ib.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.milai</groupId>
+			<groupId>cn.milai.ib</groupId>
 			<artifactId>ib-start</artifactId>
 			<version>${ib.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.milai</groupId>
+			<groupId>cn.milai.ibdramafile</groupId>
 			<artifactId>ib-dramafile-interpreter</artifactId>
 			<version>${ib.dramafile.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>cn.milai</groupId>
+			<groupId>cn.milai.ibclient</groupId>
 			<artifactId>ib-client</artifactId>
 			<version>${ib.client.version}</version>
 		</dependency>

@@ -6,24 +6,24 @@ import cn.milai.common.base.Strings;
 import cn.milai.common.thread.counter.BlockDownCounter;
 import cn.milai.common.thread.counter.Counter;
 import cn.milai.ib.ViewObject;
-import cn.milai.ib.character.PlayerCharacter;
-import cn.milai.ib.component.CommandShield;
-import cn.milai.ib.component.GameOverLabel;
-import cn.milai.ib.component.button.RestartButton;
-import cn.milai.ib.component.text.DramaDialog;
-import cn.milai.ib.component.text.TextLines;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.BaseImage;
 import cn.milai.ib.container.plugin.ui.Image;
+import cn.milai.ib.control.CommandShield;
+import cn.milai.ib.control.GameOverLabel;
+import cn.milai.ib.control.button.RestartButton;
+import cn.milai.ib.control.text.DramaDialog;
+import cn.milai.ib.control.text.TextLines;
 import cn.milai.ib.mode.drama.AbstractDrama;
+import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.util.ImageUtil;
 import cn.milai.ib.util.Waits;
-import cn.milai.ibdemo.character.UltraFly;
-import cn.milai.ibdemo.character.bullet.Missile;
-import cn.milai.ibdemo.character.plane.PlayerPlane;
+import cn.milai.ibdemo.role.UltraFly;
+import cn.milai.ibdemo.role.bullet.Missile;
+import cn.milai.ibdemo.role.plane.PlayerPlane;
 
 /**
  * 未知来访者 剧本
@@ -60,7 +60,7 @@ public class UnknownVisitor extends AbstractDrama {
 	private void victory() {
 		container.setPined(true);
 		memberSay("what_happened");
-		PlayerCharacter player = container.getAll(PlayerCharacter.class).get(0);
+		PlayerRole player = container.getAll(PlayerRole.class).get(0);
 		int x = player.getIntX() > container.getW() / 2 ? container.getW() / 4 : container.getW() / 4 * 3;
 		UltraFly ultraFly = new UltraFly(x, container.getH(), container);
 		container.addObject(ultraFly);
