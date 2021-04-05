@@ -8,25 +8,25 @@ import cn.milai.ib.role.BaseBot;
 import cn.milai.ib.role.Bot;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.PlayerRole;
-import cn.milai.ib.role.property.HasScore;
+import cn.milai.ib.role.property.Score;
+import cn.milai.ib.role.property.base.BaseScore;
+import cn.milai.ib.role.property.holder.ScoreHolder;
 
 /**
  * 敌机
  * @author milai
  * @date 2020.04.02
  */
-public abstract class EnemyPlane extends AbstractPlane implements BotRole, HasScore {
+public abstract class EnemyPlane extends AbstractPlane implements BotRole, ScoreHolder {
 
 	private Bot enemy;
-	private int score;
 
 	public EnemyPlane(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
-		// 没有实现 Rotatable 接口，所以图片不会旋转，这里是为使得子弹方向都朝下
 		setDirection(Math.PI);
-		score = intProp(P_SCORE);
 		enemy = new BaseBot();
 		selectAttackTarget();
+		setScore(new BaseScore(this, intProp(Score.P_SCORE)));
 	}
 
 	@Override
@@ -46,9 +46,6 @@ public abstract class EnemyPlane extends AbstractPlane implements BotRole, HasSc
 	public PlayerRole getAttackTarget() { return enemy.getAttackTarget(); }
 
 	@Override
-	public int getDamage() { return 1; }
-
-	@Override
-	public final int getScore() { return score; }
+	protected int getDamage() { return 1; }
 
 }

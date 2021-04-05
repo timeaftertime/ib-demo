@@ -8,6 +8,8 @@ import cn.milai.ib.role.BaseBot;
 import cn.milai.ib.role.Bot;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.PlayerRole;
+import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.Rigidbody;
 
 /**
  * 敌方鱼类
@@ -26,13 +28,13 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 	}
 
 	@Override
-	public void setACCX(double accX) {
-		if (accX < 0) {
+	protected void afterRefreshSpeeds(Movable m) {
+		Rigidbody r = rigidbody();
+		if (r.getACCX() < 0) {
 			setDirection(-Math.PI / 4);
-		} else if (accX > 0) {
+		} else if (r.getACCX() > 0) {
 			setDirection(Math.PI / 4);
 		}
-		super.setACCX(accX);
 	}
 
 	@Override

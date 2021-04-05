@@ -28,11 +28,11 @@ public class AccelerateHelper extends AbstractHelper {
 
 	@Override
 	public void makeFunction(PlayerRole player) {
-		if (!(player instanceof Movable)) {
+		if (!(player.hasProperty(Movable.class))) {
 			return;
 		}
 		player.pushStatus(false);
-		Movable movable = (Movable) player;
+		Movable movable = player.getProperty(Movable.class);
 		movable.setRatedSpeedX(Math.min(maxRatedSpeedX, movable.getRatedSpeedX() + 2));
 		movable.setRatedSpeedY(Math.min(maxRatedSpeedY, movable.getRatedSpeedY() + 2));
 		player.setImage(ImageLoader.load(player.getClass(), ACC_STATUS));

@@ -3,13 +3,14 @@ package cn.milai.ibdemo.role.fish;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.CmdType;
-import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.CanCrash;
-import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
-import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
 import cn.milai.ib.role.PlayerRole;
+import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.Rigidbody;
+import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 
 /**
  * 海豚
@@ -36,32 +37,33 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 	}
 
 	@Override
-	protected void beforeMove() {
-		setACCX(0);
-		setACCY(0);
+	protected void beforeRefreshSpeeds(Movable m) {
+		Rigidbody r = rigidbody();
+		if (r == null) {
+			return;
+		}
 		if (isUp()) {
 			setStatus(STATUS_MOVE);
-			setACCY(-getRatedAccY());
+			r.addForceY(-r.confForceY());
 		}
 		if (isDown()) {
 			setStatus(STATUS_MOVE);
-			setACCY(getRatedAccY());
+			r.addForceY(r.confForceY());
 		}
 		if (isLeft()) {
 			setStatus(STATUS_MOVE);
-			setACCX(-getRatedAccX());
+			r.addForceX(-r.confForceX());
 		}
 		if (isRight()) {
 			setStatus(STATUS_MOVE);
-			setACCX(getRatedAccX());
+			r.addForceX(r.confForceX());
 		}
-		if (getAccX() == 0 && getAccY() == 0) {
+		if (r.getForceX() == 0 && r.getForceY() == 0) {
 			setStatus(null);
 		}
 		if (player.isA()) {
 			shooter.attack();
 		}
-		super.beforeMove();
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 	}
 
 	@Override
-	protected void afterMove() {
+	protected void afterMove(Movable m) {
 		ensureInContainer();
 		if (damagedCnt > 0) {
 			damagedCnt--;
@@ -161,9 +163,6 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 	public void pushStatus(boolean createNew) {
 		throw new UnsupportedOperationException("暂不支持保存状态");
 	}
-
-	@Override
-	public void onCrash(CanCrash crashed) {}
 
 	@Override
 	public boolean accept(Cmd c) {

@@ -1,16 +1,12 @@
 package cn.milai.ibdemo.mode;
 
-import java.util.List;
-
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.IBObject;
 import cn.milai.ib.conf.IBConf;
-import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
-import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.container.listener.Listeners;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.MediaPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
@@ -23,7 +19,7 @@ import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.mode.AbstractGameMode;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.Explosion;
-import cn.milai.ib.role.property.HasScore;
+import cn.milai.ib.role.property.Score;
 import cn.milai.ib.role.weapon.bullet.Bullet;
 import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
@@ -37,7 +33,7 @@ import cn.milai.ibdemo.role.plane.WelcomePlane;
  */
 @Order(100)
 @Component
-public class EndlessBattleMode extends AbstractGameMode implements ObjectListener {
+public class EndlessBattleMode extends AbstractGameMode {
 
 	private static final String AUDIO_BG_FILE = "/audio/bg.mp3";
 
@@ -108,7 +104,31 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 	public void init() {
 		form = new BattleFormContainer();
 		form.resizeWithUI(WIDTH, HEIGHT);
-		form.addObjectListener(this);
+		form.addObjectListener(Listeners.roleListener((c, r) -> {
+			if (r instanceof Explosion) {
+				form.playAudio(AudioLoader.load(BOMB_CODE, DRAMA_CODE, AUDIO_BOMB_FILE));
+			}
+		}, (c, rs) -> {
+			for (Role r : rs) {
+				if (r.isAlive()) {
+					continue;
+				}
+				if (r == player) {
+					gameOver();
+					return;
+				}
+				if (r.hasProperty(Score.class)) {
+					Score s = r.getProperty(Score.class);
+					Role lastAttacker = r.getLastAttacker();
+					if (lastAttacker instanceof Bullet) {
+						if (((Bullet) lastAttacker).getOwner() == player) {
+							addPlayerScore(s.getValue());
+						}
+					}
+				}
+				refreshFormTitle();
+			}
+		}));
 		player = new PlayerPlane(form.getW() / 2, form.getH() * 0.93, form);
 		playerScore = 0;
 		formTitle = form.getTitle();
@@ -209,37 +229,6 @@ public class EndlessBattleMode extends AbstractGameMode implements ObjectListene
 			if (Randoms.nextLess(ADD_ENEMY_CHANCE)) {
 				form.addObject(new FollowPlane(Randoms.nextInt(form.getW()), 0, form));
 				Waits.wait(form, addNormalEnemyInterval);
-			}
-		}
-	}
-
-	@Override
-	public void onObjectAdded(Container container, IBObject obj) {
-		if (obj instanceof Explosion) {
-			form.playAudio(AudioLoader.load(BOMB_CODE, DRAMA_CODE, AUDIO_BOMB_FILE));
-		}
-	}
-
-	@Override
-	public void onObjectRemoved(Container container, List<IBObject> objs) {
-		for (IBObject obj : objs) {
-			if (obj == player) {
-				gameOver();
-				return;
-			} else {
-				if (obj instanceof HasScore) {
-					HasScore hasScore = ((HasScore) obj);
-					if (hasScore.isAlive()) {
-						continue;
-					}
-					Role lastAttacker = hasScore.getLastAttacker();
-					if (lastAttacker instanceof Bullet) {
-						if (((Bullet) lastAttacker).getOwner() == player) {
-							addPlayerScore(hasScore.getScore());
-						}
-					}
-				}
-				refreshFormTitle();
 			}
 		}
 	}

@@ -1,38 +1,14 @@
 package cn.milai.ibdemo.role.fish;
 
-import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.holder.ColliderHolder;
+import cn.milai.ib.role.property.holder.ExplosibleHolder;
+import cn.milai.ib.role.property.holder.MovableHolder;
+import cn.milai.ib.role.property.holder.RigidbodyHolder;
 
 /**
- * 水中游的（不一定是真正的“鱼”）游戏角色
+ * 水中游的游戏角色
  * @author milai
  * @date 2020.04.03
  */
-public interface Fish extends Movable {
-
-	/**
-	 * 属性 [X 方向加速度] 的 key
-	 */
-	String P_RATED_ACC_X = "ratedAccX";
-
-	/**
-	 * 属性 [Y 方向加速度] 的 key
-	 */
-	String P_RATED_ACC_Y = "ratedAccY";
-
-	/**
-	 * 属性 [阻力加速度大小]
-	 */
-	String P_STOP_ACC = "stopAcc";
-
-	/**
-	 * 获取 X 方向额定加速度大小
-	 * @return
-	 */
-	double getRatedAccX();
-
-	/**
-	 * 获取 Y 方向额定加速度大小
-	 * @return
-	 */
-	double getRatedAccY();
+public interface Fish extends MovableHolder, ExplosibleHolder, ColliderHolder, RigidbodyHolder {
 }

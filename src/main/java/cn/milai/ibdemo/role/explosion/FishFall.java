@@ -33,7 +33,7 @@ public class FishFall extends AbstractExplosion {
 	}
 
 	@Override
-	protected double doubleProp(String key) {
+	public double doubleProp(String key) {
 		if (key.equals(IBObject.P_WIDTH) || key.equals(IBObject.P_HEIGHT)) {
 			return 0;
 		}

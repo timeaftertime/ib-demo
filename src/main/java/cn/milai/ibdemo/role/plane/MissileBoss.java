@@ -4,12 +4,13 @@ import cn.milai.common.base.Randoms;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.bullet.shooter.DoubleRedShooter;
 import cn.milai.ibdemo.role.bullet.shooter.MissileShooter;
 import cn.milai.ibdemo.role.explosion.BaseExplosion;
-import cn.milai.ib.role.PlayerRole;
 
 /**
  * 导弹 BOSS
@@ -40,14 +41,14 @@ public class MissileBoss extends EnemyPlane {
 	}
 
 	@Override
-	protected void beforeMove() {
-		status.beforeMove();
+	protected void beforeRefreshSpeeds(Movable m) {
+		status.beforeRefreshSpeeds(m);
 		mainShooter.attack();
 	}
 
 	@Override
-	protected void afterMove() {
-		status.afterMove();
+	protected void afterMove(Movable m) {
+		status.afterMove(m);
 	}
 
 	@Override
@@ -64,9 +65,9 @@ public class MissileBoss extends EnemyPlane {
 	}
 
 	private interface Status {
-		void beforeMove();
+		default void beforeRefreshSpeeds(Movable m) {}
 
-		void afterMove();
+		default void afterMove(Movable m) {}
 	}
 
 	private class Comming implements Status {
@@ -74,20 +75,17 @@ public class MissileBoss extends EnemyPlane {
 		private final double COMMING_MAX_Y = doubleProp(P_COMMING_MAX_Y);
 
 		public Comming() {
-			setSpeedX(0);
-			setSpeedY(getRatedSpeedY());
+			movable().setSpeedX(0);
+			movable().setSpeedY(movable().getRatedSpeedY());
 		}
 
 		@Override
-		public void beforeMove() {
+		public void beforeRefreshSpeeds(Movable m) {
 			if (getY() + getH() >= COMMING_MAX_Y) {
 				status = new Pareparing();
 				return;
 			}
 		}
-
-		@Override
-		public void afterMove() {}
 
 	}
 
@@ -106,27 +104,28 @@ public class MissileBoss extends EnemyPlane {
 		private final long CREATE_FRAME = getContainer().getFrame();
 
 		public Pareparing() {
-			setSpeedX((Randoms.nextLess(0.5) ? 1 : (-1)) * getRatedSpeedX());
-			setSpeedY(-getRatedSpeedY());
+			Movable m = movable();
+			m.setSpeedX((Randoms.nextLess(0.5) ? 1 : (-1)) * m.getRatedSpeedX());
+			m.setSpeedY(-m.getRatedSpeedY());
 		}
 
 		@Override
-		public void beforeMove() {
+		public void beforeRefreshSpeeds(Movable m) {
 			if (getX() + getW() >= getContainer().getW()) {
-				setSpeedX(-Math.abs(getSpeedX()));
+				m.setSpeedX(-Math.abs(m.getSpeedX()));
 			} else if (getIntX() <= 0) {
-				setSpeedX(Math.abs(getSpeedX()));
+				m.setSpeedX(Math.abs(m.getSpeedX()));
 			}
 			if (Randoms.nextLess(TURN_Y_CHANCE)) {
-				setSpeedY(getSpeedY() * -1);
+				m.setSpeedY(m.getSpeedY() * -1);
 			}
-			if (getAttackTarget().centerY() < centerY() && getSpeedY() > 0 && Randoms.nextLess(TURN_Y_CHANCE)) {
-				setSpeedY(getSpeedY() * -1);
+			if (getAttackTarget().centerY() < centerY() && m.getSpeedY() > 0 && Randoms.nextLess(TURN_Y_CHANCE)) {
+				m.setSpeedY(m.getSpeedY() * -1);
 			}
 		}
 
 		@Override
-		public void afterMove() {
+		public void afterMove(Movable m) {
 			ensureIn(0, getContainer().getW(), PREPARE_MIN_Y, PREPARE_MAX_Y);
 			if (getContainer().getFrame() >= CREATE_FRAME + PREPARE_INTERVAL) {
 				status = new Pursuing();
@@ -140,25 +139,25 @@ public class MissileBoss extends EnemyPlane {
 		private final double PURSUING_SPEED_X = doubleProp(P_PURSUING_SPEED_X);
 
 		public Pursuing() {
-			setSpeedX(PURSUING_SPEED_X);
-			setSpeedY(0);
+			movable().setSpeedX(PURSUING_SPEED_X);
+			movable().setSpeedY(0);
 		}
 
 		@Override
-		public void beforeMove() {
+		public void beforeRefreshSpeeds(Movable m) {
 			if (getAttackTarget() == null) {
 				return;
 			}
 			if (centerX() > getAttackTarget().centerX()) {
-				setSpeedX(-Math.abs(getSpeedX()));
+				m.setSpeedX(-Math.abs(m.getSpeedX()));
 			}
 			if (centerX() < getAttackTarget().centerX()) {
-				setSpeedX(Math.abs(getSpeedX()));
+				m.setSpeedX(Math.abs(m.getSpeedX()));
 			}
 		}
 
 		@Override
-		public void afterMove() {
+		public void afterMove(Movable m) {
 			PlayerRole target = getAttackTarget();
 			if (target == null || (centerX() > target.getX() && centerX() < target.getX() + target.getW())) {
 				sideShooter.attack();

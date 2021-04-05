@@ -6,13 +6,14 @@ import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.control.cmd.CmdType;
 import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.role.Role;
-import cn.milai.ib.role.explosion.Explosion;
-import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
-import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
 import cn.milai.ib.role.PlayerRole;
+import cn.milai.ib.role.Role;
+import cn.milai.ib.role.explosion.Explosion;
+import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 
 /**
  * 玩家飞机
@@ -37,6 +38,9 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 		INIT_STATUS = new Status();
 	}
 
+	@Override
+	protected int getDamage() { return 1; }
+
 	/**
 	 * 设置使用的子弹发射器
 	 * @param shooter
@@ -44,20 +48,20 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 	public void setShooter(BulletShooter shooter) { this.shooter = shooter; }
 
 	@Override
-	public void beforeMove() {
-		setSpeedX(0);
-		setSpeedY(0);
+	protected void beforeRefreshSpeeds(Movable m) {
+		m.setSpeedX(0);
+		m.setSpeedY(0);
 		if (isUp()) {
-			setSpeedY(-getRatedSpeedY());
+			m.setSpeedY(-m.getRatedSpeedY());
 		}
 		if (isDown()) {
-			setSpeedY(getRatedSpeedY());
+			m.setSpeedY(m.getRatedSpeedY());
 		}
 		if (isLeft()) {
-			setSpeedX(-getRatedSpeedX());
+			m.setSpeedX(-m.getRatedSpeedX());
 		}
 		if (isRight()) {
-			setSpeedX(getRatedSpeedX());
+			m.setSpeedX(m.getRatedSpeedX());
 		}
 		if (isA()) {
 			shooter.attack();
@@ -65,12 +69,9 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 	}
 
 	@Override
-	protected void afterMove() {
+	protected void afterMove(Movable m) {
 		ensureInContainer();
 	}
-
-	@Override
-	public int getDamage() { return 1; }
 
 	@Override
 	public synchronized void loseLife(Role character, int life) throws IllegalArgumentException {
@@ -78,7 +79,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 		rollBackStatus();
 		// 如果没有死亡，显示受伤效果
 		if (isAlive()) {
-			for (Explosion explosion : getExplosionCreator().createExplosions(this)) {
+			for (Explosion explosion : explosible().createExplosions()) {
 				getContainer().addObject(explosion);
 			}
 		}
@@ -113,8 +114,8 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 	private void resetStatus(Status status) {
 		setW(status.width);
 		setH(status.height);
-		setRatedSpeedX(status.ratedSpeedX);
-		setRatedSpeedY(status.ratedSpeedY);
+		movable().setRatedSpeedX(status.ratedSpeedX);
+		movable().setRatedSpeedY(status.ratedSpeedY);
 		setShooter(status.shooter);
 		setImage(status.img);
 	}
@@ -132,13 +133,12 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 		private Image img;
 
 		Status() {
-			PlayerPlane plane = PlayerPlane.this;
-			this.width = plane.getIntW();
-			this.height = plane.getIntH();
-			this.ratedSpeedX = plane.getRatedSpeedX();
-			this.ratedSpeedY = plane.getRatedSpeedY();
-			this.shooter = plane.shooter;
-			this.img = plane.getImage();
+			this.width = getIntW();
+			this.height = getIntH();
+			this.ratedSpeedX = movable().getRatedSpeedX();
+			this.ratedSpeedY = movable().getRatedSpeedY();
+			this.shooter = PlayerPlane.this.shooter;
+			this.img = getImage();
 		}
 
 		@Override

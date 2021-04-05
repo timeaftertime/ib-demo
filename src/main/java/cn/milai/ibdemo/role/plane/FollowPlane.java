@@ -2,6 +2,7 @@ package cn.milai.ibdemo.role.plane;
 
 import cn.milai.common.base.Randoms;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.bullet.shooter.RedShooter;
 
@@ -23,56 +24,54 @@ public class FollowPlane extends EnemyPlane {
 
 	public FollowPlane(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
-		setSpeedX(getRatedSpeedX());
-		setSpeedY(getRatedSpeedY());
+		Movable m = movable();
+		m.setSpeedX(m.getRatedSpeedX());
+		m.setSpeedY(m.getRatedSpeedY());
 		followChance = doubleProp(FOLLOW_CHANCE);
 		shootChance = doubleProp(SHOOT_CHANCE);
 	}
 
 	@Override
-	protected String getStatus() { return STATUS[Randoms.nextInt(STATUS.length)]; }
-
-	@Override
-	protected void beforeMove() {}
-
-	@Override
-	protected void afterMove() {
-		redirectIfNeed();
+	protected void afterMove(Movable m) {
+		redirectIfNeed(m);
 		removeIfOutOfOwner();
 		if (getAttackTarget() == null || !getAttackTarget().isAlive()) {
 			return;
 		}
-		randomRedirect();
+		randomRedirect(m);
 		if (nearTarget()) {
 			randomShoot();
 		}
 	}
 
-	private void randomRedirect() {
-		if (getX() < getAttackTarget().getX() && getSpeedX() < 0) {
+	private void randomRedirect(Movable m) {
+		if (getX() < getAttackTarget().getX() && m.getSpeedX() < 0) {
 			if (Randoms.nextLess(followChance)) {
-				setSpeedX(-getSpeedX());
+				m.setSpeedX(-m.getSpeedX());
 			}
-		} else if (getX() > getAttackTarget().getX() && getSpeedX() > 0) {
+		} else if (getX() > getAttackTarget().getX() && m.getSpeedX() > 0) {
 			if (Randoms.nextLess(followChance)) {
-				setSpeedX(-getSpeedX());
+				m.setSpeedX(-m.getSpeedX());
 			}
 		}
 	}
 
-	private void redirectIfNeed() {
+	private void redirectIfNeed(Movable m) {
 		if (getIntX() <= 0) {
-			setSpeedX(Math.abs(getSpeedX()));
+			m.setSpeedX(Math.abs(m.getSpeedX()));
 		} else if (getIntX() + getIntW() > getContainer().getW()) {
-			setSpeedX(-Math.abs(getSpeedX()));
+			m.setSpeedX(-Math.abs(m.getSpeedX()));
 		}
 	}
 
 	private void removeIfOutOfOwner() {
 		if (getIntY() > getContainer().getH()) {
-			getContainer().removeObject(this);
+			getContainer().removeObject(FollowPlane.this);
 		}
 	}
+
+	@Override
+	protected String getStatus() { return STATUS[Randoms.nextInt(STATUS.length)]; }
 
 	private boolean nearTarget() {
 		double targetX = getAttackTarget().centerX();

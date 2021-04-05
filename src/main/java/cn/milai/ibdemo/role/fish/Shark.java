@@ -3,7 +3,10 @@ package cn.milai.ibdemo.role.fish;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.CanCrash;
+import cn.milai.ib.role.property.Collider;
+import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.Rigidbody;
+import cn.milai.ib.role.property.base.BaseCollider;
 
 /**
  * 鲨鱼
@@ -28,30 +31,41 @@ public class Shark extends EnemyFish implements BotRole {
 	public static final String P_CHANGE_ACC_INTERVAL = "changeACCInterval";
 
 	private Status status;
-	private int changeACCInterval;
+	private int changeForceInterval;
 	private int waitFrame;
 	private int minWaitFrame;
-	private long lastSetACCFrame;
+	private long lastSetForceFrame;
 
 	public Shark(LifecycleContainer container) {
 		super(0, 0, container);
 		setX(getContainer().getW());
 		setY(getContainer().getH());
-		changeACCInterval = intProp(P_CHANGE_ACC_INTERVAL);
-		lastSetACCFrame = -changeACCInterval;
+		changeForceInterval = intProp(P_CHANGE_ACC_INTERVAL);
+		lastSetForceFrame = -changeForceInterval;
 		waitFrame = intProp(P_WAIT_FRAME);
 		minWaitFrame = intProp(P_MIN_WAIT_FRAME);
-		status = new Wait();
+		setCollider(new BaseCollider(this) {
+			@Override
+			public void onCrash(Collider crashed) {
+				// TODO 鲨鱼上面部分空白不进入判定，临时方案
+				Role role = crashed.getRole();
+				if (role.getY() + role.getH() < top()) {
+					return;
+				}
+				role.loseLife(Shark.this, 1);
+			}
+		});
+		status = new Wait(movable());
 	}
 
 	@Override
-	public void setACCY(double accY) {
-		long nowFrame = getContainer().getFrame();
-		if (lastSetACCFrame + changeACCInterval > nowFrame) {
+	public synchronized void loseLife(Role attacker, int life) throws IllegalArgumentException {
+		// TODO 鲨鱼上面部分空白不进入判定，临时方案
+		if (attacker.centerY() < top()) {
 			return;
 		}
-		lastSetACCFrame = nowFrame;
-		super.setACCY(accY);
+		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * intProp(P_WAIT_FRAME)));
+		status.loseLife(attacker, life);
 	}
 
 	// TODO 鲨鱼上面部分空白不进入判定，临时方案
@@ -60,51 +74,46 @@ public class Shark extends EnemyFish implements BotRole {
 	}
 
 	@Override
-	public void onCrash(CanCrash crashed) {
-		// TODO 鲨鱼上面部分空白不进入判定，临时方案
-		if (crashed.getY() + crashed.getH() < top()) {
-			return;
-		}
-		crashed.loseLife(this, 1);
+	protected void beforeRefreshSpeeds(Movable m) {
+		status.beforeRefreshSpeeds(rigidbody());
 	}
 
 	@Override
-	protected void afterMove() {
-		status.afterMove();
+	protected void afterRefreshSpeeds(Movable m) {
+		long nowFrame = getContainer().getFrame();
+		if (lastSetForceFrame + changeForceInterval > nowFrame) {
+			return;
+		}
+		lastSetForceFrame = nowFrame;
 	}
 
 	@Override
-	public synchronized void loseLife(Role character, int life) throws IllegalArgumentException {
-		// TODO 鲨鱼上面部分空白不进入判定，临时方案
-		if (character.centerY() < top()) {
-			return;
-		}
-		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * intProp(P_WAIT_FRAME)));
-		status.loseLife(character, life);
+	protected void afterMove(Movable m) {
+		status.afterMove(m);
 	}
 
 	private interface Status {
-		void afterMove();
+		default void beforeRefreshSpeeds(Rigidbody r) {};
 
-		void loseLife(Role character, int life);
+		default void afterMove(Movable m) {}
+
+		default void loseLife(Role attacker, int life) {}
 	}
 
 	private class Wait implements Status {
 
 		private int waitCnt = 0;
 
-		Wait() {
-			setSpeedX(0);
-			setSpeedY(0);
-			setACCX(0);
-			setACCY(0);
+		private Wait(Movable m) {
+			m.setSpeedX(0);
+			m.setSpeedY(0);
 		}
 
 		@Override
-		public void afterMove() {
+		public void afterMove(Movable m) {
 			waitCnt++;
 			if (waitCnt >= waitFrame) {
-				status = new Attack();
+				status = new Attack(m);
 			}
 		}
 
@@ -117,37 +126,33 @@ public class Shark extends EnemyFish implements BotRole {
 
 	private class Attack implements Status {
 
-		Attack() {
-			setSpeedX(0);
-			setSpeedY(0);
-			setACCX(0);
-			setACCY(0);
-			lastSetACCFrame = getContainer().getFrame() - changeACCInterval;
+		private Attack(Movable m) {
+			m.setSpeedX(0);
+			m.setSpeedY(0);
+			lastSetForceFrame = getContainer().getFrame() - changeForceInterval;
 			setY(getAttackTarget().centerY() - getH() * 0.7);
-			if (getDirection() > 0) {
-				setACCX(getRatedAccX());
+
+		}
+
+		@Override
+		public void beforeRefreshSpeeds(Rigidbody r) {
+			Movable m = movable();
+			r.addForceX((getDirection() > 0 ? 1 : -1) * r.confForceX());
+			double targetY = getAttackTarget().centerY();
+			if (targetY < top()) {
+				r.addForceY(-r.confForceY());
+			} else if (targetY > getY() + getH()) {
+				r.addForceY(r.confForceY());
 			} else {
-				setACCX(-getRatedAccX());
+				r.addForceY((m.getSpeedY() > 0 ? -1 : 1) * Math.min(r.confForceY(), m.getSpeedY() * r.mass()));
 			}
 		}
 
 		@Override
-		public void afterMove() {
-			double targetY = getAttackTarget().centerY();
-			if (targetY < top()) {
-				setACCY(-getRatedAccY());
-			} else if (targetY > getY() + getH()) {
-				setACCY(getRatedAccY());
-			} else {
-				if (getSpeedY() != 0) {
-					double accY = Math.min(Math.abs(getSpeedY()), getRatedAccY());
-					accY *= getSpeedY() > 0 ? -1 : 1;
-					setACCY(accY);
-				}
-			}
+		public void afterMove(Movable m) {
 			if (outOfContainer()) {
 				setDirection(-getDirection());
-				status = new Wait();
+				status = new Wait(m);
 			}
 		}
 

@@ -3,7 +3,7 @@ package cn.milai.ibdemo.role;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.CanCrash;
+import cn.milai.ib.role.property.Collider;
 import cn.milai.ib.role.weapon.bullet.AbstractBullet;
 import cn.milai.ib.role.weapon.bullet.Bullet;
 
@@ -36,7 +36,7 @@ public class UltraLight extends AbstractBullet implements LifecycleListener {
 	}
 
 	@Override
-	protected int intProp(String key) {
+	public int intProp(String key) {
 		if (key.equals(Bullet.P_POWER)) {
 			return 100;
 		}
@@ -44,7 +44,7 @@ public class UltraLight extends AbstractBullet implements LifecycleListener {
 	}
 
 	@Override
-	protected double doubleProp(String key) {
+	public double doubleProp(String key) {
 		return 0;
 	}
 
@@ -62,8 +62,8 @@ public class UltraLight extends AbstractBullet implements LifecycleListener {
 	}
 
 	@Override
-	public void onCrash(CanCrash crashed) {
-		crashed.loseLife(this, getDamage());
+	protected boolean canCrashWith(Collider crashed) {
+		return true;
 	}
 
 }

@@ -189,12 +189,12 @@ public class DeepSeaCity extends AbstractDrama {
 		memberSay("what_should_we_do");
 		ultraSay("let_us_find_the_leader_first");
 	}
-	
+
 	private void toBeContinued(DramaContainer container) {
 		container.reset();
 		container.resizeWithUI(initW(), initH());
 		Control c = new LinesFullScreenPass(
-			10L, Integer.MAX_VALUE, 0L, Arrays.asList("未完待续…", "To Be Continued..."), 10,
+			10L, Integer.MAX_VALUE, 1L, Arrays.asList("未完待续…", "To Be Continued..."), 10,
 			container
 		);
 		container.addObject(c);
