@@ -26,7 +26,7 @@ public abstract class EnemyPlane extends AbstractPlane implements BotRole, Score
 		setDirection(Math.PI);
 		enemy = new BaseBot();
 		selectAttackTarget();
-		setScore(new BaseScore(this, intProp(Score.P_SCORE)));
+		setScore(new BaseScore(this, intConf(Score.P_SCORE)));
 	}
 
 	@Override

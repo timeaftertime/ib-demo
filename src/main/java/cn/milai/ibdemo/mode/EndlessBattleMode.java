@@ -214,7 +214,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 				playerBulletNum = MAX_PLAYER_BULLET_NUM;
 			player.setShooter(
 				new BlueShooter(
-					IBConf.intProp(player.getClass(), PlayerPlane.P_SHOOT_INTERVAL), maxBulletNum, player
+					IBConf.intConf(player.getClass(), PlayerPlane.P_SHOOT_INTERVAL), maxBulletNum, player
 				)
 			);
 

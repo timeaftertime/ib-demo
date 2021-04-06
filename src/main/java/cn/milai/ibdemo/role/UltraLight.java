@@ -36,7 +36,7 @@ public class UltraLight extends AbstractBullet implements LifecycleListener {
 	}
 
 	@Override
-	public int intProp(String key) {
+	public int intConf(String key) {
 		if (key.equals(Bullet.P_POWER)) {
 			return 100;
 		}
@@ -44,7 +44,7 @@ public class UltraLight extends AbstractBullet implements LifecycleListener {
 	}
 
 	@Override
-	public double doubleProp(String key) {
+	public double doubleConf(String key) {
 		return 0;
 	}
 

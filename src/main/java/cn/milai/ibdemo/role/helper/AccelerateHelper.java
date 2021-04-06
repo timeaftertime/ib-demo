@@ -22,8 +22,8 @@ public class AccelerateHelper extends AbstractHelper {
 
 	public AccelerateHelper(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
-		maxRatedSpeedX = doubleProp(P_MAX_RATED_SPEED_X);
-		maxRatedSpeedY = doubleProp(P_MAX_RATED_SPEED_Y);
+		maxRatedSpeedX = doubleConf(P_MAX_RATED_SPEED_X);
+		maxRatedSpeedY = doubleConf(P_MAX_RATED_SPEED_Y);
 	}
 
 	@Override

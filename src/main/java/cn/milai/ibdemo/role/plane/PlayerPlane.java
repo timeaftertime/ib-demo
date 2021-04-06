@@ -33,7 +33,7 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 	public PlayerPlane(double x, double y, LifecycleContainer container) {
 		super(x, y, container);
 		player = new BasePlayer();
-		shooter = new BlueShooter(intProp(P_SHOOT_INTERVAL), intProp(P_MAX_BULLET_NUM), this);
+		shooter = new BlueShooter(intConf(P_SHOOT_INTERVAL), intConf(P_MAX_BULLET_NUM), this);
 		// 在构造方法最后以确保所有变量已经初始化
 		INIT_STATUS = new Status();
 	}

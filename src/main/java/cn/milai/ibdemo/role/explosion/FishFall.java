@@ -24,7 +24,7 @@ public class FishFall extends AbstractExplosion {
 
 	public FishFall(Role character) {
 		super(0, 0, character.getContainer());
-		speed = doubleProp(P_SPEED);
+		speed = doubleConf(P_SPEED);
 		img = ImageUtil.verticalFlip(character.getNowImage());
 		setX(character.getIntX());
 		setY(character.getIntY() + character.getIntH());
@@ -33,11 +33,11 @@ public class FishFall extends AbstractExplosion {
 	}
 
 	@Override
-	public double doubleProp(String key) {
+	public double doubleConf(String key) {
 		if (key.equals(IBObject.P_WIDTH) || key.equals(IBObject.P_HEIGHT)) {
 			return 0;
 		}
-		return super.doubleProp(key);
+		return super.doubleConf(key);
 	}
 
 	@Override

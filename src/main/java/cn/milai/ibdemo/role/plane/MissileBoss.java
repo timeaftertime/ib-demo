@@ -72,7 +72,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Comming implements Status {
 
-		private final double COMMING_MAX_Y = doubleProp(P_COMMING_MAX_Y);
+		private final double COMMING_MAX_Y = doubleConf(P_COMMING_MAX_Y);
 
 		public Comming() {
 			movable().setSpeedX(0);
@@ -91,15 +91,15 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pareparing implements Status {
 
-		private final double PREPARE_MIN_Y = doubleProp("prepareMinY");
-		private final double PREPARE_MAX_Y = doubleProp("prepareMaxY");
+		private final double PREPARE_MIN_Y = doubleConf("prepareMinY");
+		private final double PREPARE_MAX_Y = doubleConf("prepareMaxY");
 
-		private final double TURN_Y_CHANCE = doubleProp("turnYChance");
+		private final double TURN_Y_CHANCE = doubleConf("turnYChance");
 
 		/**
 		 * 从 Prepareing 转换为 Pursuing 状态的间隔帧数
 		 */
-		private final long PREPARE_INTERVAL = longProp("prepareInterval");
+		private final long PREPARE_INTERVAL = longConf("prepareInterval");
 
 		private final long CREATE_FRAME = getContainer().getFrame();
 
@@ -136,7 +136,7 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pursuing implements Status {
 
-		private final double PURSUING_SPEED_X = doubleProp(P_PURSUING_SPEED_X);
+		private final double PURSUING_SPEED_X = doubleConf(P_PURSUING_SPEED_X);
 
 		public Pursuing() {
 			movable().setSpeedX(PURSUING_SPEED_X);

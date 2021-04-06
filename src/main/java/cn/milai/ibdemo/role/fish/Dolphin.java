@@ -32,7 +32,7 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 		super(x, y, container);
 		setDirection(Math.PI / 2);
 		player = new BasePlayer();
-		shooter = new BlueShooter(intProp(P_SHOOT_INTERVAL), intProp(P_MAX_BULLET_NUM), this);
+		shooter = new BlueShooter(intConf(P_SHOOT_INTERVAL), intConf(P_MAX_BULLET_NUM), this);
 		damagedCnt = 0;
 	}
 

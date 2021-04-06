@@ -40,10 +40,10 @@ public class Shark extends EnemyFish implements BotRole {
 		super(0, 0, container);
 		setX(getContainer().getW());
 		setY(getContainer().getH());
-		changeForceInterval = intProp(P_CHANGE_ACC_INTERVAL);
+		changeForceInterval = intConf(P_CHANGE_ACC_INTERVAL);
 		lastSetForceFrame = -changeForceInterval;
-		waitFrame = intProp(P_WAIT_FRAME);
-		minWaitFrame = intProp(P_MIN_WAIT_FRAME);
+		waitFrame = intConf(P_WAIT_FRAME);
+		minWaitFrame = intConf(P_MIN_WAIT_FRAME);
 		setCollider(new BaseCollider(this) {
 			@Override
 			public void onCrash(Collider crashed) {
@@ -64,7 +64,7 @@ public class Shark extends EnemyFish implements BotRole {
 		if (attacker.centerY() < top()) {
 			return;
 		}
-		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * intProp(P_WAIT_FRAME)));
+		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * intConf(P_WAIT_FRAME)));
 		status.loseLife(attacker, life);
 	}
 

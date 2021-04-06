@@ -27,8 +27,8 @@ public class FollowPlane extends EnemyPlane {
 		Movable m = movable();
 		m.setSpeedX(m.getRatedSpeedX());
 		m.setSpeedY(m.getRatedSpeedY());
-		followChance = doubleProp(FOLLOW_CHANCE);
-		shootChance = doubleProp(SHOOT_CHANCE);
+		followChance = doubleConf(FOLLOW_CHANCE);
+		shootChance = doubleConf(SHOOT_CHANCE);
 	}
 
 	@Override
