@@ -59,6 +59,7 @@ public class DeepSeaBattle extends Battle {
 		while (shark.isAlive()) {
 			Waits.wait(container(), 10L);
 		}
+		Waits.wait(container(), 30L);
 		container().removeObject(sharkBlood);
 		return dolphin.isAlive();
 	}

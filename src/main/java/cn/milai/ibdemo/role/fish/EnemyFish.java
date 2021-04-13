@@ -30,9 +30,9 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 	@Override
 	protected void afterRefreshSpeeds(Movable m) {
 		Rigidbody r = rigidbody();
-		if (r.getACCX() < 0) {
+		if (r.accX() < 0) {
 			setDirection(-Math.PI / 4);
-		} else if (r.getACCX() > 0) {
+		} else if (r.accX() > 0) {
 			setDirection(Math.PI / 4);
 		}
 	}

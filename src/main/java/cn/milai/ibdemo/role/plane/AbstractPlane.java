@@ -18,7 +18,7 @@ public abstract class AbstractPlane extends MovableRole implements Plane {
 		setExplosible(new BaseExplosible(this));
 		setCollider(new BaseCollider(this) {
 			@Override
-			public void onCrash(Collider crashed) {
+			public void onCollided(Collider crashed) {
 				crashed.getRole().loseLife(AbstractPlane.this, damage().getValue());
 			}
 		});

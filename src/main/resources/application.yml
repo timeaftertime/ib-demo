@@ -18,8 +18,7 @@ ib:
   container:
     plugin:      metrics:
         interval: 0        categories:
+          physics: true
           aliveCheck: true
-          crashCheck: true
-          movable: true
           control: true
           metrics: true          ui: true

@@ -1,5 +1,8 @@
 package cn.milai.ibdemo.role.fish;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.Role;
@@ -21,7 +24,7 @@ public class Shark extends EnemyFish implements BotRole {
 	public static final String P_WAIT_FRAME = "waitFrame";
 
 	/**
-	 * 属性 [Wait 状态试吃帧数最小值] 的 key
+	 * 属性 [Wait 状态试帧数最小值] 的 key
 	 */
 	public static final String P_MIN_WAIT_FRAME = "minWaitFrame";
 
@@ -35,6 +38,7 @@ public class Shark extends EnemyFish implements BotRole {
 	private int waitFrame;
 	private int minWaitFrame;
 	private long lastSetForceFrame;
+	private Set<Role> attacked = new HashSet<>();
 
 	public Shark(LifecycleContainer container) {
 		super(0, 0, container);
@@ -46,13 +50,27 @@ public class Shark extends EnemyFish implements BotRole {
 		minWaitFrame = intConf(P_MIN_WAIT_FRAME);
 		setCollider(new BaseCollider(this) {
 			@Override
-			public void onCrash(Collider crashed) {
+			public void onCollided(Collider crashed) {
 				// TODO 鲨鱼上面部分空白不进入判定，临时方案
-				Role role = crashed.getRole();
-				if (role.getY() + role.getH() < top()) {
+				Role r1 = getRole();
+				Role r2 = crashed.getRole();
+				if (r2.getY() + r2.getH() < top()) {
 					return;
 				}
-				role.loseLife(Shark.this, 1);
+				if (attacked.contains(r2)) {
+					return;
+				}
+				attacked.add(r2);
+				r2.loseLife(Shark.this, 1);
+				Rigidbody b2 = r2.getProperty(Rigidbody.class);
+				if (b2 != null) {
+					Movable m1 = movable();
+					b2.addExtraForceX(m1.getSpeedX() / b2.mass());
+					if ((m1.getSpeedY() < 0 && r2.centerY() < r1.centerY())
+						|| (m1.getSpeedY() > 0 && r2.centerY() > r1.centerY())) {
+						b2.addExtraForceY(m1.getSpeedY() / b2.mass());
+					}
+				}
 			}
 		});
 		status = new Wait(movable());
@@ -90,6 +108,7 @@ public class Shark extends EnemyFish implements BotRole {
 	@Override
 	protected void afterMove(Movable m) {
 		status.afterMove(m);
+		attacked.clear();
 	}
 
 	private interface Status {
