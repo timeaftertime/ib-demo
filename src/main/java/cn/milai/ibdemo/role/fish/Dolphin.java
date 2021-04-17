@@ -42,6 +42,12 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 		if (r == null) {
 			return;
 		}
+		if (damagedCnt > 0) {
+			damagedCnt--;
+			if (damagedCnt <= 0) {
+				setStatus(null);
+			}
+		}
 		if (isUp()) {
 			setStatus(STATUS_MOVE);
 			r.addForceY(-r.confForceY());
@@ -58,7 +64,7 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 			setStatus(STATUS_MOVE);
 			r.addForceX(r.confForceX());
 		}
-		if (r.getForceX() == 0 && r.getForceY() == 0) {
+		if (damagedCnt <= 0 && r.getForceX() == 0 && r.getForceY() == 0) {
 			setStatus(null);
 		}
 		if (player.isA()) {
@@ -77,12 +83,6 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 	@Override
 	protected void afterMove(Movable m) {
 		ensureInContainer();
-		if (damagedCnt > 0) {
-			damagedCnt--;
-			if (damagedCnt <= 0) {
-				setStatus(null);
-			}
-		}
 	}
 
 	@Override
