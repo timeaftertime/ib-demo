@@ -1,24 +1,0 @@
-spring:
-  application:
-    name: ib-demo
-  profiles:    active:    - dev
-    
-nexus:  mode: client
-  
-ib:
-  core:    speed: 1.0
-    image-update-frame: 3
-  repo:    remote-url: http://localhost:80
-  mode:
-    story:
-      stages:
-#      - cn.milai.ibdemo.drama.Hello
-      - cn.milai.ibdemo.drama.UnknownVisitor
-      - cn.milai.ibdemo.drama.DeepSeaCity
-  container:
-    plugin:      metrics:
-        interval: 0        categories:
-          physics: true
-          aliveCheck: true
-          control: true
-          metrics: true          ui: true

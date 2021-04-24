@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ib-demo
+  profiles:    active:    - dev
+
+ib:
+  core:    speed: 1.0
+    image-update-frame: 3
+  repo:    remote-url: http://localhost:80
+  mode:
+    story:
+      enable: true
+      stages:
+      - cn.milai.ibdemo.dramafile.Hello
+  container:
+    plugin:      metrics:
+        interval: 0        categories:
+          physics: true
+          aliveCheck: true
+          control: true
+          metrics: true          ui: true
