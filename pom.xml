@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.milai.ibdemo</groupId>
 	<artifactId>ib-demo-parent</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<description>使用 Infinity Battle 的示例项目</description>
 	<packaging>pom</packaging>
 
@@ -11,7 +11,7 @@
 		<ib.version>1.0.4-SNAPSHOT</ib.version>
 		<ib.dramafile.version>1.0.4-SNAPSHOT</ib.dramafile.version>
 		<ib.client.version>0.0.1-SNAPSHOT</ib.client.version>
-		<ib.demo.version>0.0.4</ib.demo.version>
+		<ib.demo.version>0.0.5-SNAPSHOT</ib.demo.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
