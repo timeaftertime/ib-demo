@@ -120,7 +120,7 @@ public class UniverseBattle extends Battle {
 		// 阶梯 Welcome
 		int midX = container().getW() / 2;
 		int interval = 20;
-		addLadderWelcome(7, midX, interval, 20L);
+		addLadderWelcome(6, midX, interval, 20L);
 		// Welcome Follow 混合
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j <= 3; j++) {

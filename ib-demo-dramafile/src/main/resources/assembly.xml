@@ -12,9 +12,11 @@
 		<fileSet>
 			<directory>${project.build.directory}/classes</directory>
 			<includes>
+				<include>drama/*</include>
 				<include>*.yml</include>
 				<include>startup.*</include>
 				<include>logback-spring.xml</include>
+				<include>drama</include>
 			</includes>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>

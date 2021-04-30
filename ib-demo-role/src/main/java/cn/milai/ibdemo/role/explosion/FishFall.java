@@ -3,9 +3,9 @@ package cn.milai.ibdemo.role.explosion;
 import java.awt.image.BufferedImage;
 
 import cn.milai.ib.IBObject;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.AbstractExplosion;
-import cn.milai.ib.util.ImageUtil;
 
 /**
  * 上下翻转角色图片并慢慢下降的爆炸类型
@@ -25,7 +25,7 @@ public class FishFall extends AbstractExplosion {
 	public FishFall(Role character) {
 		super(0, 0, character.getContainer());
 		speed = doubleConf(P_SPEED);
-		img = ImageUtil.verticalFlip(character.getNowImage());
+		img = Images.verticalFlip(character.getNowImage());
 		setX(character.getIntX());
 		setY(character.getIntY() + character.getIntH());
 		setW(character.getIntW());

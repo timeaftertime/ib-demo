@@ -17,9 +17,9 @@ import cn.milai.ib.control.GameOverLabel;
 import cn.milai.ib.control.button.RestartButton;
 import cn.milai.ib.control.text.DramaDialog;
 import cn.milai.ib.control.text.TextLines;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.mode.drama.AbstractDrama;
 import cn.milai.ib.role.PlayerRole;
-import cn.milai.ib.util.ImageUtil;
 import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.role.UltraFly;
 import cn.milai.ibdemo.role.bullet.Missile;
@@ -110,7 +110,7 @@ public class UnknownVisitor extends AbstractDrama {
 	}
 
 	private void tip(DramaContainer container) {
-		container.setBackgroud(new BaseImage(ImageUtil.newImage(Color.BLACK, 1, 1)));
+		container.setBackgroud(new BaseImage(Images.newImage(Color.BLACK, 1, 1)));
 		info("controlTip");
 	}
 

@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.graphics.Images;
 import cn.milai.ib.role.MovableRole;
 import cn.milai.ib.role.property.base.BaseCollider;
 import cn.milai.ib.role.property.base.BaseRigidbody;
-import cn.milai.ib.util.ImageUtil;
 import cn.milai.ibdemo.role.explosion.FishFallExplosible;
 
 /**
@@ -31,7 +31,7 @@ public abstract class AbstractFish extends MovableRole implements Fish {
 	public BufferedImage getNowImage() {
 		BufferedImage nowImage = super.getNowImage();
 		if (getDirection() < 0) {
-			return flipped.computeIfAbsent(nowImage, ImageUtil::horizontalFlip);
+			return flipped.computeIfAbsent(nowImage, Images::horizontalFlip);
 		}
 		return nowImage;
 	}
