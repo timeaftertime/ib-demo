@@ -18,4 +18,5 @@ ib:
           physics: true
           aliveCheck: true
           control: true
-          metrics: true          ui: true
+          metrics: true
+          printer: true          ui: true

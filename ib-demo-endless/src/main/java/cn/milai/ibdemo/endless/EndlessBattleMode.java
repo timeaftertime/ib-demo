@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import cn.milai.common.base.Randoms;
 import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.ContainerClosedException;
-import cn.milai.ib.container.listener.Listeners;
+import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.MediaPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
@@ -104,7 +104,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 	public void init() {
 		form = new BattleFormContainer();
 		form.resizeWithUI(WIDTH, HEIGHT);
-		form.addObjectListener(Listeners.roleListener((c, r) -> {
+		form.addObjectListener(ContainerListeners.roleListener((c, r) -> {
 			if (r instanceof Explosion) {
 				form.playAudio(AudioLoader.load(BOMB_CODE, DRAMA_CODE, AUDIO_BOMB_FILE));
 			}

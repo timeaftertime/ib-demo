@@ -123,7 +123,7 @@ public class UnknownVisitor extends AbstractDrama {
 			Counter counter = new BlockDownCounter(1);
 			container.addLifecycleListener(new LifecycleListener() {
 				@Override
-				public void onContainerClosed(LifecycleContainer container) {
+				public void onClosed(LifecycleContainer container) {
 					counter.count();
 				}
 			});
