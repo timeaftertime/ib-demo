@@ -9,10 +9,10 @@ import cn.milai.ib.ViewObject;
 import cn.milai.ib.container.DramaContainer;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
+import cn.milai.ib.container.plugin.control.CommandShield;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.ui.BaseImage;
 import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.control.CommandShield;
 import cn.milai.ib.control.GameOverLabel;
 import cn.milai.ib.control.button.RestartButton;
 import cn.milai.ib.control.text.DramaDialog;
@@ -21,6 +21,7 @@ import cn.milai.ib.graphics.Images;
 import cn.milai.ib.mode.drama.AbstractDrama;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.util.Waits;
+import cn.milai.ibdemo.control.KeyDramaDialog;
 import cn.milai.ibdemo.role.UltraFly;
 import cn.milai.ibdemo.role.bullet.Missile;
 import cn.milai.ibdemo.role.plane.PlayerPlane;
@@ -234,7 +235,7 @@ public class UnknownVisitor extends AbstractDrama {
 	}
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
-		DramaDialog dialog = new DramaDialog(
+		DramaDialog dialog = new KeyDramaDialog(
 			(int) (0.5 * container.getW()),
 			(int) (0.75 * container.getH()),
 			container,

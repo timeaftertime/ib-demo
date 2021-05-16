@@ -2,6 +2,7 @@ package cn.milai.ibdemo.story;
 
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.plugin.control.PauseSwitcher;
 import cn.milai.ib.drama.Drama;
 import cn.milai.ib.ex.IBException;
 import cn.milai.ib.util.Waits;
@@ -51,6 +52,7 @@ public abstract class Battle {
 	public final boolean run() {
 		this.battleThread = Thread.currentThread();
 		try {
+			container().addObject(new PauseSwitcher(container()));
 			return doRun();
 		} catch (BattleStoppedException e) {
 			return false;

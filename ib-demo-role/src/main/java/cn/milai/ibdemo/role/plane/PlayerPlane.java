@@ -3,23 +3,21 @@ package cn.milai.ibdemo.role.plane;
 import java.util.Stack;
 
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.container.plugin.control.cmd.CmdType;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
-import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.Explosion;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ibdemo.role.DemoPlayerRole;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 
 /**
  * 玩家飞机
  * @author milai
  */
-public class PlayerPlane extends AbstractPlane implements PlayerRole {
+public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 
 	public static final String P_SHOOT_INTERVAL = "shootInterval";
 	public static final String P_MAX_BULLET_NUM = "maxBulletNum";
@@ -212,10 +210,5 @@ public class PlayerPlane extends AbstractPlane implements PlayerRole {
 
 	@Override
 	public boolean isA() { return player.isA(); }
-
-	@Override
-	public boolean accept(Cmd c) {
-		return c.getType() != CmdType.CLICKED;
-	}
 
 }

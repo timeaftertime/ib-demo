@@ -1,15 +1,13 @@
 package cn.milai.ibdemo.role.fish;
 
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.container.plugin.control.cmd.CmdType;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
-import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rigidbody;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ibdemo.role.DemoPlayerRole;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 
 /**
@@ -17,7 +15,7 @@ import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
  * @author milai
  * @date 2020.03.28
  */
-public class Dolphin extends AbstractFish implements PlayerRole {
+public class Dolphin extends AbstractFish implements DemoPlayerRole {
 
 	private static final String STATUS_MOVE = "move";
 	private static final String STATUS_DAMAGED = "damaged";
@@ -162,11 +160,6 @@ public class Dolphin extends AbstractFish implements PlayerRole {
 	@Override
 	public void pushStatus(boolean createNew) {
 		throw new UnsupportedOperationException("暂不支持保存状态");
-	}
-
-	@Override
-	public boolean accept(Cmd c) {
-		return c.getType() != CmdType.CLICKED;
 	}
 
 }

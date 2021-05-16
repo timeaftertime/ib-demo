@@ -1,0 +1,26 @@
+package cn.milai.ibdemo.container.plugin.form;
+
+import org.springframework.stereotype.Component;
+
+import cn.milai.ib.container.plugin.ui.form.MouseLocationMapping;
+import cn.milai.ib.container.plugin.ui.form.MouseMapping;
+import cn.milai.ibdemo.container.plugin.control.CmdType;
+
+/**
+ * {@link MouseMapping} 示例实现
+ * @author milai
+ * @date 2021.05.15
+ */
+@Component
+public class DemoMouseMapping extends MouseLocationMapping {
+
+	@Override
+	protected int clickedCmdType() {
+		return CmdType.CLICK.getValue();
+	}
+
+	@Override
+	protected int movedCmdTYpe() {
+		return CmdType.OVER.getValue();
+	}
+}

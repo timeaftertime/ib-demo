@@ -49,6 +49,11 @@
 			</dependency>
 			<dependency>
 				<groupId>cn.milai.ibdemo</groupId>
+				<artifactId>ib-demo-common</artifactId>
+				<version>${ib.demo.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.milai.ibdemo</groupId>
 				<artifactId>ib-demo-role</artifactId>
 				<version>${ib.demo.version}</version>
 			</dependency>
@@ -104,5 +109,6 @@
 		<module>ib-demo-dramafile</module>
 		<module>ib-demo-network</module>
 		<module>ib-demo-role</module>
+		<module>ib-demo-common</module>
 	</modules>
 </project>

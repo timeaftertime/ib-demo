@@ -6,15 +6,12 @@
 		<artifactId>ib-demo-parent</artifactId>
 		<version>0.0.5-SNAPSHOT</version>
 	</parent>
-	<artifactId>ib-demo-role</artifactId>
+	<artifactId>ib-demo-common</artifactId>
+
 	<dependencies>
 		<dependency>
 			<groupId>cn.milai.ib</groupId>
-			<artifactId>ib-role</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cn.milai.ibdemo</groupId>
-			<artifactId>ib-demo-common</artifactId>
+			<artifactId>ib-container</artifactId>
 		</dependency>
 	</dependencies>
 </project>

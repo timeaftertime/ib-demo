@@ -21,6 +21,7 @@ cn.milai.ibdemo.dramafile.Hello("测试用的剧本") {
 			4.~~~~
 	    ");
 	    
+	    sleep(30);
 	    add WelcomePlane(10.0, 0.0);
 	    add WelcomePlane(222.0, 0.0);
 	    add WelcomePlane(277.0, -138.0);

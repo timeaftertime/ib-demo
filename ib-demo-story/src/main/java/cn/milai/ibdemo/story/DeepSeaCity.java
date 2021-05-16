@@ -19,6 +19,7 @@ import cn.milai.ib.control.text.Selections;
 import cn.milai.ib.mode.drama.AbstractDrama;
 import cn.milai.ib.role.explosion.Explosion;
 import cn.milai.ib.util.Waits;
+import cn.milai.ibdemo.control.KeyDramaDialog;
 import cn.milai.ibdemo.role.EscapeCraft;
 import cn.milai.ibdemo.role.ShiningStar;
 import cn.milai.ibdemo.role.UltraSide;
@@ -337,7 +338,7 @@ public class DeepSeaCity extends AbstractDrama {
 	}
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
-		DramaDialog dialog = new DramaDialog(
+		DramaDialog dialog = new KeyDramaDialog(
 			(int) (0.5 * container.getW()),
 			(int) (0.75 * container.getH()),
 			container,
