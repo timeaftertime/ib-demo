@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import cn.milai.ib.container.plugin.ui.form.MouseLocationMapping;
 import cn.milai.ib.container.plugin.ui.form.MouseMapping;
-import cn.milai.ibdemo.container.plugin.control.CmdType;
+import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
 /**
  * {@link MouseMapping} 示例实现
@@ -16,11 +16,11 @@ public class DemoMouseMapping extends MouseLocationMapping {
 
 	@Override
 	protected int clickedCmdType() {
-		return CmdType.CLICK.getValue();
+		return CmdCode.CLICK.getValue();
 	}
 
 	@Override
 	protected int movedCmdTYpe() {
-		return CmdType.OVER.getValue();
+		return CmdCode.OVER.getValue();
 	}
 }

@@ -2,7 +2,7 @@ package cn.milai.ibdemo.role;
 
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.role.PlayerRole;
-import cn.milai.ibdemo.container.plugin.control.CmdType;
+import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
 /**
  * {@link PlayerRole} 示例实现
@@ -13,7 +13,7 @@ public interface DemoPlayerRole extends PlayerRole {
 
 	@Override
 	default boolean exec(Cmd cmd) {
-		switch (CmdType.of(cmd.getType())) {
+		switch (CmdCode.of(cmd.getType())) {
 			case UP : {
 				setUp();
 				return false;

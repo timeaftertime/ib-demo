@@ -11,7 +11,7 @@ import cn.milai.ib.container.plugin.control.cmd.PointCmd;
 public class OverCmd extends PointCmd {
 
 	public OverCmd(double x, double y) {
-		super(CmdType.OVER.getValue(), x, y);
+		super(CmdCode.OVER.getValue(), x, y);
 	}
 
 }

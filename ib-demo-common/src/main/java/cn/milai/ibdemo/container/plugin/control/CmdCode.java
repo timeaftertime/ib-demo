@@ -7,11 +7,11 @@ import cn.milai.ib.container.plugin.control.cmd.Cmd;
  * @author milai
  * @date 2021.05.12
  */
-public enum CmdType {
+public enum CmdCode {
 
 	NOOP(Cmd.NOOP),
 	PAUSE(Cmd.PAUSE),
-	OVER(Cmd.OVER),
+	OVER(Cmd.MOVE),
 	CLICK(Cmd.CLICK),
 
 	// 设置 上 指令
@@ -49,20 +49,20 @@ public enum CmdType {
 
 	private int value;
 
-	CmdType(int value) {
+	CmdCode(int value) {
 		this.value = value;
 	}
 
 	public int getValue() { return value; }
 
 	/**
-	 * 获取 {@code value} 对应的 {@link CmdType} ，若不存在，抛出异常
+	 * 获取 {@code value} 对应的 {@link CmdCode} ，若不存在，抛出异常
 	 * @param value
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	public static CmdType of(int value) {
-		CmdType find = find(value);
+	public static CmdCode of(int value) {
+		CmdCode find = find(value);
 		if (find == null) {
 			throw new IllegalArgumentException("未知 value:" + value);
 		}
@@ -70,12 +70,12 @@ public enum CmdType {
 	}
 
 	/**
-	 * 获取 {@code value} 对应的 {@link CmdType} ，若不存在，返回 {@code null}
+	 * 获取 {@code value} 对应的 {@link CmdCode} ，若不存在，返回 {@code null}
 	 * @param value
 	 * @return
 	 */
-	public static CmdType find(int value) {
-		for (CmdType type : values()) {
+	public static CmdCode find(int value) {
+		for (CmdCode type : values()) {
 			if (type.getValue() == value) {
 				return type;
 			}

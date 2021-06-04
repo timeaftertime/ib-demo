@@ -8,7 +8,7 @@ import cn.milai.ib.container.plugin.control.cmd.BaseCmd;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.container.plugin.ui.form.KeyCodeMapping;
 import cn.milai.ib.container.plugin.ui.form.KeyMapping;
-import cn.milai.ibdemo.container.plugin.control.CmdType;
+import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
 /**
  * {@link KeyMapping} 实现
@@ -18,23 +18,23 @@ import cn.milai.ibdemo.container.plugin.control.CmdType;
 @Component
 public class DemoKeyMapping extends KeyCodeMapping {
 
-	private static final Cmd UP_CMD = baseCmd(CmdType.UP);
-	private static final Cmd U_UP_CMD = baseCmd(CmdType.U_UP);
-	private static final Cmd DOWN_CMD = baseCmd(CmdType.DOWN);
-	private static final Cmd U_DOWN_CMD = baseCmd(CmdType.U_DOWN);
-	private static final Cmd LEFT_CMD = baseCmd(CmdType.LEFT);
-	private static final Cmd U_LEFT_CMD = baseCmd(CmdType.U_LEFT);
-	private static final Cmd RIGHT_CMD = baseCmd(CmdType.RIGHT);
-	private static final Cmd U_RIGHT_CMD = baseCmd(CmdType.U_RIGHT);
-	private static final Cmd A_CMD = baseCmd(CmdType.A);
-	private static final Cmd U_A_CMD = baseCmd(CmdType.U_A);
+	private static final Cmd UP_CMD = baseCmd(CmdCode.UP);
+	private static final Cmd U_UP_CMD = baseCmd(CmdCode.U_UP);
+	private static final Cmd DOWN_CMD = baseCmd(CmdCode.DOWN);
+	private static final Cmd U_DOWN_CMD = baseCmd(CmdCode.U_DOWN);
+	private static final Cmd LEFT_CMD = baseCmd(CmdCode.LEFT);
+	private static final Cmd U_LEFT_CMD = baseCmd(CmdCode.U_LEFT);
+	private static final Cmd RIGHT_CMD = baseCmd(CmdCode.RIGHT);
+	private static final Cmd U_RIGHT_CMD = baseCmd(CmdCode.U_RIGHT);
+	private static final Cmd A_CMD = baseCmd(CmdCode.A);
+	private static final Cmd U_A_CMD = baseCmd(CmdCode.U_A);
 	//	private static final Cmd B_CMD = baseCmd(CmdType.B);
 	//	private static final Cmd U_B_CMD = baseCmd(CmdType.U_B);
 	//	private static final Cmd C_CMD = baseCmd(CmdType.C);
 	//	private static final Cmd U_C_CMD = baseCmd(CmdType.U_C);
 	//	private static final Cmd D_CMD = baseCmd(CmdType.D);
 	//	private static final Cmd U_D_CMD = baseCmd(CmdType.U_D);
-	private static final Cmd PAUSE_CMD = baseCmd(CmdType.PAUSE);
+	private static final Cmd PAUSE_CMD = baseCmd(CmdCode.PAUSE);
 
 	public DemoKeyMapping() {
 		onPressed(KeyEvent.VK_W, () -> UP_CMD)
@@ -51,7 +51,7 @@ public class DemoKeyMapping extends KeyCodeMapping {
 			.onReleased(KeyEvent.VK_P, () -> PAUSE_CMD);
 	}
 
-	private static Cmd baseCmd(CmdType type) {
+	private static Cmd baseCmd(CmdCode type) {
 		return new BaseCmd(type.getValue());
 	}
 

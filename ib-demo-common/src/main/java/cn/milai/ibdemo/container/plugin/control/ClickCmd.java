@@ -3,7 +3,7 @@ package cn.milai.ibdemo.container.plugin.control;
 import cn.milai.ib.container.plugin.control.cmd.PointCmd;
 
 /**
- * {@link CmdType#CLICK} 类型指令
+ * {@link CmdCode#CLICK} 类型指令
  * @author milai
  * @date 2021.02.10
  */
@@ -16,7 +16,7 @@ public class ClickCmd extends PointCmd {
 	 * @param y 点击的 y 坐标
 	 */
 	public ClickCmd(int fromId, double x, double y) {
-		super(CmdType.CLICK.getValue(), x, y);
+		super(CmdCode.CLICK.getValue(), x, y);
 	}
 
 }

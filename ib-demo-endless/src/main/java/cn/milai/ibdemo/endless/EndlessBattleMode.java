@@ -152,17 +152,17 @@ public class EndlessBattleMode extends AbstractGameMode {
 		container = IBCore.getBean(DramaContainer.class);
 		if (!container().isRunning()) {
 			container().start();
+			container().addObjectListener(
+				ContainerListeners.roleListener(
+					EndlessBattleMode.this::onRoleAdded,
+					EndlessBattleMode.this::onRolesRemoved
+				)
+			);
 		} else {
 			container().reset();
 		}
 
 		container().resizeWithUI(WIDTH, HEIGHT);
-		container().addObjectListener(
-			ContainerListeners.roleListener(
-				EndlessBattleMode.this::onRoleAdded,
-				EndlessBattleMode.this::onRolesRemoved
-			)
-		);
 	}
 
 	@Override

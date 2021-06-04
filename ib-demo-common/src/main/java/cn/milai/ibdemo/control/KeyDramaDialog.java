@@ -5,7 +5,7 @@ import java.util.Map;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
 import cn.milai.ib.control.text.DramaDialog;
-import cn.milai.ibdemo.container.plugin.control.CmdType;
+import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
 /**
  * 通过按键翻页的 {@link DramaDialog}
@@ -20,7 +20,7 @@ public class KeyDramaDialog extends DramaDialog {
 
 	@Override
 	protected boolean isPageDownCmd(Cmd cmd) {
-		return cmd.getType() == CmdType.U_A.getValue();
+		return cmd.getType() == CmdCode.U_A.getValue();
 	}
 
 }
