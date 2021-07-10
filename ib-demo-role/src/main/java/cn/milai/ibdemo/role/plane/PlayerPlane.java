@@ -2,13 +2,13 @@ package cn.milai.ibdemo.role.plane;
 
 import java.util.Stack;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.Explosion;
+import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.base.BaseHealth;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.DemoPlayerRole;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
@@ -19,25 +19,22 @@ import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
  */
 public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 
-	public static final String P_SHOOT_INTERVAL = "shootInterval";
-	public static final String P_MAX_BULLET_NUM = "maxBulletNum";
-
 	private Player player;
 	private BulletShooter shooter;
 
-	private final Status INIT_STATUS;
+	private Status initStatus;
 	private Stack<Status> statusStack = new Stack<>();
 
-	public PlayerPlane(double x, double y, LifecycleContainer container) {
-		super(x, y, container);
+	public PlayerPlane() {
 		player = new BasePlayer();
-		shooter = new BlueShooter(intConf(P_SHOOT_INTERVAL), intConf(P_MAX_BULLET_NUM), this);
-		// 在构造方法最后以确保所有变量已经初始化
-		INIT_STATUS = new Status();
+		shooter = new BlueShooter(3, 3, this);
+		setMovable(new PlayerPlaneMovable());
 	}
 
 	@Override
-	protected int getDamage() { return 1; }
+	protected void initItem() {
+		initStatus = new Status();
+	}
 
 	/**
 	 * 设置使用的子弹发射器
@@ -45,7 +42,6 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	 */
 	public void setShooter(BulletShooter shooter) { this.shooter = shooter; }
 
-	@Override
 	protected void beforeRefreshSpeeds(Movable m) {
 		m.setSpeedX(0);
 		m.setSpeedY(0);
@@ -66,21 +62,25 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 		}
 	}
 
-	@Override
 	protected void afterMove(Movable m) {
-		ensureInContainer();
+		ensureIn(0, container().getW(), 0, container().getH());
 	}
 
 	@Override
-	public synchronized void loseLife(Role character, int life) throws IllegalArgumentException {
-		super.loseLife(character, life);
-		rollBackStatus();
-		// 如果没有死亡，显示受伤效果
-		if (isAlive()) {
-			for (Explosion explosion : explosible().createExplosions()) {
-				getContainer().addObject(explosion);
+	protected Health createHealth() {
+		return new BaseHealth() {
+			@Override
+			public synchronized void changeHP(Role character, int life) {
+				super.changeHP(character, life);
+				rollBackStatus();
+				// 如果没有死亡，显示受伤效果
+				if (life < 0 && isAlive()) {
+					for (Explosion explosion : getExplosible().createExplosions()) {
+						container().addObject(explosion);
+					}
+				}
 			}
-		}
+		};
 	}
 
 	/**
@@ -98,12 +98,12 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	}
 
 	private Status currentStatus() {
-		return statusStack.isEmpty() ? INIT_STATUS : statusStack.peek();
+		return statusStack.isEmpty() ? initStatus : statusStack.peek();
 	}
 
 	public synchronized void rollBackStatus() {
 		if (statusStack.isEmpty()) {
-			resetStatus(INIT_STATUS);
+			resetStatus(initStatus);
 			return;
 		}
 		resetStatus(statusStack.pop());
@@ -112,10 +112,10 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	private void resetStatus(Status status) {
 		setW(status.width);
 		setH(status.height);
-		movable().setRatedSpeedX(status.ratedSpeedX);
-		movable().setRatedSpeedY(status.ratedSpeedY);
+		getMovable().setRatedSpeedX(status.ratedSpeedX);
+		getMovable().setRatedSpeedY(status.ratedSpeedY);
 		setShooter(status.shooter);
-		setImage(status.img);
+		setStatus(status.status);
 	}
 
 	/**
@@ -128,15 +128,15 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 		private double ratedSpeedX;
 		private double ratedSpeedY;
 		private BulletShooter shooter;
-		private Image img;
+		private String status;
 
 		Status() {
 			this.width = getIntW();
 			this.height = getIntH();
-			this.ratedSpeedX = movable().getRatedSpeedX();
-			this.ratedSpeedY = movable().getRatedSpeedY();
+			this.ratedSpeedX = getMovable().getRatedSpeedX();
+			this.ratedSpeedY = getMovable().getRatedSpeedY();
 			this.shooter = PlayerPlane.this.shooter;
-			this.img = getImage();
+			this.status = getStatus();
 		}
 
 		@Override

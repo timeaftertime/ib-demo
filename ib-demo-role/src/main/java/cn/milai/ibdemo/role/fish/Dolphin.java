@@ -1,11 +1,14 @@
 package cn.milai.ibdemo.role.fish;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.config.Configurable;
+import cn.milai.ib.item.Item;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
 import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rigidbody;
+import cn.milai.ib.role.property.base.BaseHealth;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.DemoPlayerRole;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
@@ -17,53 +20,55 @@ import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
  */
 public class Dolphin extends AbstractFish implements DemoPlayerRole {
 
-	private static final String STATUS_MOVE = "move";
-	private static final String STATUS_DAMAGED = "damaged";
-	public static final String P_SHOOT_INTERVAL = "shootInterval";
-	public static final String P_MAX_BULLET_NUM = "maxBulletNum";
+	public static final String STATUS_MOVE = "move";
+	public static final String STATUS_DAMAGED = "damaged";
 
-	private Player player;
+	private int shootInterval = 5;
+	private int maxBulletNum = 5;
+
+	private Player player = new BasePlayer();
 	private BulletShooter shooter;
 	private int damagedCnt;
 
-	public Dolphin(double x, double y, LifecycleContainer container) {
-		super(x, y, container);
+	public Dolphin() {
+		setMovable(new DolphinMovable());
 		setDirection(Math.PI / 2);
-		player = new BasePlayer();
-		shooter = new BlueShooter(intConf(P_SHOOT_INTERVAL), intConf(P_MAX_BULLET_NUM), this);
-		damagedCnt = 0;
 	}
 
 	@Override
+	protected void initItem() {
+		shooter = new BlueShooter(shootInterval, maxBulletNum, this);
+	}
+
 	protected void beforeRefreshSpeeds(Movable m) {
-		Rigidbody r = rigidbody();
+		Rigidbody r = getRigidbody();
 		if (r == null) {
 			return;
 		}
 		if (damagedCnt > 0) {
 			damagedCnt--;
 			if (damagedCnt <= 0) {
-				setStatus(null);
+				setStatus(Item.STATUS_DEFAULT);
 			}
 		}
 		if (isUp()) {
 			setStatus(STATUS_MOVE);
-			r.addForceY(-r.confForceY());
+			r.addForceY(-getForceY());
 		}
 		if (isDown()) {
 			setStatus(STATUS_MOVE);
-			r.addForceY(r.confForceY());
+			r.addForceY(getForceY());
 		}
 		if (isLeft()) {
 			setStatus(STATUS_MOVE);
-			r.addForceX(-r.confForceX());
+			r.addForceX(-getForceX());
 		}
 		if (isRight()) {
 			setStatus(STATUS_MOVE);
-			r.addForceX(r.confForceX());
+			r.addForceX(getForceX());
 		}
 		if (damagedCnt <= 0 && r.getForceX() == 0 && r.getForceY() == 0) {
-			setStatus(null);
+			setStatus(Item.STATUS_DEFAULT);
 		}
 		if (player.isA()) {
 			shooter.attack();
@@ -71,23 +76,27 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	}
 
 	@Override
-	protected void setStatus(String status) {
+	public void setStatus(String status) {
 		if (STATUS_MOVE.equals(status) && STATUS_DAMAGED.equals(getStatus())) {
 			return;
 		}
 		super.setStatus(status);
 	}
 
-	@Override
 	protected void afterMove(Movable m) {
-		ensureInContainer();
+		ensureIn(0, container().getW(), 0, container().getH());
 	}
 
 	@Override
-	public synchronized void loseLife(Role character, int life) throws IllegalArgumentException {
-		damagedCnt = 8;
-		setStatus(STATUS_DAMAGED);
-		super.loseLife(character, life);
+	protected Health createHealth() {
+		return new BaseHealth() {
+			@Override
+			public synchronized void changeHP(Role character, int life) throws IllegalArgumentException {
+				damagedCnt = 8;
+				setStatus(STATUS_DAMAGED);
+				super.changeHP(character, life);
+			}
+		};
 	}
 
 	@Override
@@ -160,6 +169,26 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	@Override
 	public void pushStatus(boolean createNew) {
 		throw new UnsupportedOperationException("暂不支持保存状态");
+	}
+
+	public int getShootInterval() { return shootInterval; }
+
+	@Configurable
+	public void setShootInterval(int shootInterval) {
+		if (shootInterval < 0) {
+			throw new IllegalArgumentException("发射间隔必须大于等于 0");
+		}
+		this.shootInterval = shootInterval;
+	}
+
+	public int getMaxBulletNum() { return maxBulletNum; }
+
+	@Configurable
+	public void setMaxBulletNum(int maxBulletNum) {
+		if (maxBulletNum < 0) {
+			throw new IllegalArgumentException("最大 bullet 数量必须大于等于 0");
+		}
+		this.maxBulletNum = maxBulletNum;
 	}
 
 }

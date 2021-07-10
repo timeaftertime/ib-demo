@@ -1,12 +1,13 @@
 package cn.milai.ibdemo.role.plane;
 
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.config.Configurable;
+import cn.milai.ib.config.ItemConfigApplier;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.Role;
+import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.base.BaseHealth;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.bullet.shooter.DoubleRedShooter;
 import cn.milai.ibdemo.role.bullet.shooter.MissileShooter;
@@ -16,52 +17,54 @@ import cn.milai.ibdemo.role.explosion.BaseExplosion;
  * 导弹 BOSS
  * @author milai
  */
-public class MissileBoss extends EnemyPlane {
+public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 
-	private static final String P_COMMING_MAX_Y = "commingMaxY";
-	private static final String P_PURSUING_SPEED_X = "pursuingSpeedX";
+	private double commingMaxY;
+	private double prepareMinY;
+	private double prepareMaxY;
+	private double turnYChance;
+	private long prepareInterval;
+	private double pursuingSpeedX;
 
 	private BulletShooter mainShooter;
 	private BulletShooter sideShooter;
 
-	/**
-	 * 进入“危险”状态的最大生命值
-	 */
-	private final int DANGER_LIFE = getLife() / 4;
-
 	private Status status;
 
-	private final Image DANGER_IMG = ImageLoader.load(MissileBoss.class, "danger");
+	String STATUS_DANGER = "danger";
 
-	public MissileBoss(double x, double y, LifecycleContainer container) {
-		super(x, y, container);
+	public MissileBoss() {
+		setMovable(new MissileBossMovable());
 		mainShooter = new DoubleRedShooter(this);
 		sideShooter = new MissileShooter(this);
-		status = new Comming();
 	}
 
-	@Override
+	protected void initEnemyPlane() {
+		status = new Comming();
+	};
+
+	protected Health createHealth() {
+		return new BaseHealth() {
+			@Override
+			public synchronized void changeHP(Role character, int life) throws IllegalArgumentException {
+				super.changeHP(character, life);
+				if (isAlive()) {
+					container().addObject(applyCenter(new BaseExplosion(), character.centerX(), character.centerY()));
+				}
+				if (!getStatus().equals(STATUS_DANGER) && getHP() <= initHP() / 4) {
+					setStatus(STATUS_DANGER);
+				}
+			}
+		};
+	};
+
 	protected void beforeRefreshSpeeds(Movable m) {
 		status.beforeRefreshSpeeds(m);
 		mainShooter.attack();
 	}
 
-	@Override
 	protected void afterMove(Movable m) {
 		status.afterMove(m);
-	}
-
-	@Override
-	public synchronized void loseLife(Role character, int life) throws IllegalArgumentException {
-		super.loseLife(character, life);
-		if (isAlive()) {
-			getContainer().addObject(
-				new BaseExplosion(character.centerX(), character.centerY(), getContainer())
-			);
-		}
-		if (getImage() != DANGER_IMG && getLife() <= DANGER_LIFE) {
-			setImage(DANGER_IMG);
-		}
 	}
 
 	private interface Status {
@@ -72,16 +75,14 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Comming implements Status {
 
-		private final double COMMING_MAX_Y = doubleConf(P_COMMING_MAX_Y);
-
 		public Comming() {
-			movable().setSpeedX(0);
-			movable().setSpeedY(movable().getRatedSpeedY());
+			getMovable().setSpeedX(0);
+			getMovable().setSpeedY(getMovable().getRatedSpeedY());
 		}
 
 		@Override
 		public void beforeRefreshSpeeds(Movable m) {
-			if (getY() + getH() >= COMMING_MAX_Y) {
+			if (getY() + getH() >= commingMaxY) {
 				status = new Pareparing();
 				return;
 			}
@@ -91,43 +92,33 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pareparing implements Status {
 
-		private final double PREPARE_MIN_Y = doubleConf("prepareMinY");
-		private final double PREPARE_MAX_Y = doubleConf("prepareMaxY");
-
-		private final double TURN_Y_CHANCE = doubleConf("turnYChance");
-
-		/**
-		 * 从 Prepareing 转换为 Pursuing 状态的间隔帧数
-		 */
-		private final long PREPARE_INTERVAL = longConf("prepareInterval");
-
-		private final long CREATE_FRAME = getContainer().getFrame();
+		private final long CREATE_FRAME = container().getFrame();
 
 		public Pareparing() {
-			Movable m = movable();
+			Movable m = getMovable();
 			m.setSpeedX((Randoms.nextLess(0.5) ? 1 : (-1)) * m.getRatedSpeedX());
 			m.setSpeedY(-m.getRatedSpeedY());
 		}
 
 		@Override
 		public void beforeRefreshSpeeds(Movable m) {
-			if (getX() + getW() >= getContainer().getW()) {
+			if (getX() + getW() >= container().getW()) {
 				m.setSpeedX(-Math.abs(m.getSpeedX()));
 			} else if (getIntX() <= 0) {
 				m.setSpeedX(Math.abs(m.getSpeedX()));
 			}
-			if (Randoms.nextLess(TURN_Y_CHANCE)) {
+			if (Randoms.nextLess(turnYChance)) {
 				m.setSpeedY(m.getSpeedY() * -1);
 			}
-			if (getAttackTarget().centerY() < centerY() && m.getSpeedY() > 0 && Randoms.nextLess(TURN_Y_CHANCE)) {
+			if (getAttackTarget().centerY() < centerY() && m.getSpeedY() > 0 && Randoms.nextLess(turnYChance)) {
 				m.setSpeedY(m.getSpeedY() * -1);
 			}
 		}
 
 		@Override
 		public void afterMove(Movable m) {
-			ensureIn(0, getContainer().getW(), PREPARE_MIN_Y, PREPARE_MAX_Y);
-			if (getContainer().getFrame() >= CREATE_FRAME + PREPARE_INTERVAL) {
+			ensureIn(0, container().getW(), prepareMinY, prepareMaxY);
+			if (container().getFrame() >= CREATE_FRAME + prepareInterval) {
 				status = new Pursuing();
 			}
 		}
@@ -136,11 +127,9 @@ public class MissileBoss extends EnemyPlane {
 
 	private class Pursuing implements Status {
 
-		private final double PURSUING_SPEED_X = doubleConf(P_PURSUING_SPEED_X);
-
 		public Pursuing() {
-			movable().setSpeedX(PURSUING_SPEED_X);
-			movable().setSpeedY(0);
+			getMovable().setSpeedX(pursuingSpeedX);
+			getMovable().setSpeedY(0);
 		}
 
 		@Override
@@ -166,4 +155,35 @@ public class MissileBoss extends EnemyPlane {
 		}
 
 	}
+
+	public double getCommingMaxY() { return commingMaxY; }
+
+	@Configurable
+	public void setCommingMaxY(double commingMaxY) { this.commingMaxY = commingMaxY; }
+
+	public double getPrepareMinY() { return prepareMinY; }
+
+	@Configurable
+	public void setPrepareMinY(double prepareMinY) { this.prepareMinY = prepareMinY; }
+
+	public double getPrepareMaxY() { return prepareMaxY; }
+
+	@Configurable
+	public void setPrepareMaxY(double prepareMaxY) { this.prepareMaxY = prepareMaxY; }
+
+	public double getTurnYChance() { return turnYChance; }
+
+	@Configurable
+	public void setTurnYChance(double turnYChance) { this.turnYChance = turnYChance; }
+
+	public long getPrepareInterval() { return prepareInterval; }
+
+	@Configurable
+	public void setPrepareInterval(long prepareInterval) { this.prepareInterval = prepareInterval; }
+
+	public double getPursuingSpeedX() { return pursuingSpeedX; }
+
+	@Configurable
+	public void setPursuingSpeedX(double pursuingSpeedX) { this.pursuingSpeedX = pursuingSpeedX; }
+
 }

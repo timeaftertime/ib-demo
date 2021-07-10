@@ -13,13 +13,11 @@ import cn.milai.ibdemo.role.bullet.RedBullet;
  */
 public class DoubleRedShooter extends AbstractBulletShooter {
 
-	private Role owner;
 	private static final long INIT_SHOOT_INTERVAL = 20L;
 	private static final long MIN_SHOOT_INTERVAL = 6;
 
 	public DoubleRedShooter(Role owner) {
 		super(owner);
-		this.owner = owner;
 	}
 
 	@Override
@@ -27,7 +25,7 @@ public class DoubleRedShooter extends AbstractBulletShooter {
 		setShootInterval(
 			Long.max(
 				MIN_SHOOT_INTERVAL,
-				(long) (1.0 * owner.getLife() / owner.getInitLife() * INIT_SHOOT_INTERVAL)
+				(long) (1.0 * owner.getHealth().getHP() / owner.getHealth().initHP() * INIT_SHOOT_INTERVAL)
 			)
 		);
 		return super.canShoot();
@@ -42,8 +40,8 @@ public class DoubleRedShooter extends AbstractBulletShooter {
 			(long) (owner.centerX() + owner.getW() / 4), (long) owner.centerY()
 		).rotate(owner.centerX(), owner.centerY(), owner.getDirection());
 		return new Bullet[] {
-			new RedBullet(p1.getX(), p1.getY(), owner),
-			new RedBullet(p2.getX(), p2.getY(), owner)
+			applyCenter(new RedBullet(owner), p1.getX(), p1.getY()),
+			applyCenter(new RedBullet(owner), p2.getX(), p2.getY()),
 		};
 	}
 

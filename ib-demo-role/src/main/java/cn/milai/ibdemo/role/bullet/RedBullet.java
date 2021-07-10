@@ -9,8 +9,8 @@ import cn.milai.ib.role.weapon.bullet.AbstractBullet;
  */
 public class RedBullet extends AbstractBullet {
 
-	public RedBullet(double x, double y, Role owner) {
-		super(x, y, owner);
+	public RedBullet(Role owner) {
+		super(owner);
 	}
 
 }

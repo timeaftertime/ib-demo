@@ -18,7 +18,7 @@ public class MissileShooter extends AbstractBulletShooter {
 
 	@Override
 	public Bullet[] createBullets0() {
-		return new Bullet[] { new Missile(owner.centerX(), owner.centerY(), owner) };
+		return new Bullet[] { applyCenter(new Missile(owner), owner.centerX(), owner.centerY()) };
 	}
 
 }

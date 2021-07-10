@@ -3,7 +3,6 @@ package cn.milai.ibdemo.role.fish;
 import java.util.List;
 
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.role.BaseBot;
 import cn.milai.ib.role.Bot;
 import cn.milai.ib.role.BotRole;
@@ -18,18 +17,24 @@ import cn.milai.ib.role.property.Rigidbody;
  */
 public abstract class EnemyFish extends AbstractFish implements BotRole {
 
-	private Bot enemy;
+	private Bot enemy = new BaseBot();
 
-	public EnemyFish(double x, double y, LifecycleContainer container) {
-		super(x, y, container);
-		enemy = new BaseBot();
-		selectAttackTarget();
+	public EnemyFish() {
 		setDirection(-Math.PI / 4);
 	}
 
 	@Override
+	protected final void initItem() {
+		selectAttackTarget();
+		initEnemyFish();
+	}
+
+	protected void initEnemyFish() {
+
+	}
+
 	protected void afterRefreshSpeeds(Movable m) {
-		Rigidbody r = rigidbody();
+		Rigidbody r = getRigidbody();
 		if (r.accX() < 0) {
 			setDirection(-Math.PI / 4);
 		} else if (r.accX() > 0) {
@@ -39,7 +44,7 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 
 	@Override
 	public void selectAttackTarget() {
-		List<PlayerRole> targets = getContainer().getAll(PlayerRole.class);
+		List<PlayerRole> targets = container().getAll(PlayerRole.class);
 		if (targets.size() <= 0) {
 			return;
 		}

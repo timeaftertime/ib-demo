@@ -1,6 +1,5 @@
 package cn.milai.ibdemo.role.explosion;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.role.explosion.AbstractExplosion;
 
 /**
@@ -9,9 +8,5 @@ import cn.milai.ib.role.explosion.AbstractExplosion;
  * @author milai
  */
 public class BaseExplosion extends AbstractExplosion {
-
-	public BaseExplosion(double x, double y, LifecycleContainer container) {
-		super(x, y, container);
-	}
 
 }

@@ -1,7 +1,7 @@
 package cn.milai.ibdemo.role.plane;
 
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.bullet.shooter.RedShooter;
@@ -14,28 +14,27 @@ public class FollowPlane extends EnemyPlane {
 
 	private static final String[] STATUS = { "red", "blue" };
 
-	private static final String FOLLOW_CHANCE = "followChance";
-	private static final String SHOOT_CHANCE = "shootChance";
-
 	private double followChance;
 	private double shootChance;
 
 	private BulletShooter shooter = new RedShooter(this);
 
-	public FollowPlane(double x, double y, LifecycleContainer container) {
-		super(x, y, container);
-		Movable m = movable();
-		m.setSpeedX(m.getRatedSpeedX());
-		m.setSpeedY(m.getRatedSpeedY());
-		followChance = doubleConf(FOLLOW_CHANCE);
-		shootChance = doubleConf(SHOOT_CHANCE);
+	public FollowPlane() {
+		setStatus(STATUS[Randoms.nextInt(STATUS.length)]);
+		setMovable(new FollowPlaneMovable());
 	}
 
 	@Override
+	protected void initEnemyPlane() {
+		Movable m = getMovable();
+		m.setSpeedX(m.getRatedSpeedX());
+		m.setSpeedY(m.getRatedSpeedY());
+	}
+
 	protected void afterMove(Movable m) {
 		redirectIfNeed(m);
 		removeIfOutOfOwner();
-		if (getAttackTarget() == null || !getAttackTarget().isAlive()) {
+		if (getAttackTarget() == null || !getAttackTarget().getHealth().isAlive()) {
 			return;
 		}
 		randomRedirect(m);
@@ -59,19 +58,16 @@ public class FollowPlane extends EnemyPlane {
 	private void redirectIfNeed(Movable m) {
 		if (getIntX() <= 0) {
 			m.setSpeedX(Math.abs(m.getSpeedX()));
-		} else if (getIntX() + getIntW() > getContainer().getW()) {
+		} else if (getIntX() + getIntW() > container().getW()) {
 			m.setSpeedX(-Math.abs(m.getSpeedX()));
 		}
 	}
 
 	private void removeIfOutOfOwner() {
-		if (getIntY() > getContainer().getH()) {
-			getContainer().removeObject(FollowPlane.this);
+		if (getIntY() > container().getH()) {
+			container().removeObject(FollowPlane.this);
 		}
 	}
-
-	@Override
-	protected String getStatus() { return STATUS[Randoms.nextInt(STATUS.length)]; }
 
 	private boolean nearTarget() {
 		double targetX = getAttackTarget().centerX();
@@ -84,5 +80,11 @@ public class FollowPlane extends EnemyPlane {
 			shooter.attack();
 		}
 	}
+
+	@Configurable
+	public void setFollowChance(double followChance) { this.followChance = followChance; }
+
+	@Configurable
+	public void setShootChance(double shootChance) { this.shootChance = shootChance; }
 
 }

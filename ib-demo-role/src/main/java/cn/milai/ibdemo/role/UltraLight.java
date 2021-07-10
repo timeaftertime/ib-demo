@@ -2,11 +2,13 @@ package cn.milai.ibdemo.role;
 
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
+import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.property.base.BaseHealth;
 import cn.milai.ib.role.weapon.bullet.AbstractBullet;
 
 /**
- * 光线特效窗口组件
+ * 光线
  * @author milai
  * @date 2020.03.25
  */
@@ -18,13 +20,18 @@ public class UltraLight extends AbstractBullet {
 	private double height = 0;
 
 	public UltraLight(Role owner, long durationFrame) {
-		super(0, 0, owner);
+		super(owner);
 		setDirection(Math.PI / 2);
 		this.durationFrame = durationFrame;
 		deltaRadian = getDirection() / durationFrame;
-		// 计算实际坐标、宽度和高度
-		int w = getContainer().getW();
-		int h = getContainer().getH();
+		setMovable(new UltraLightMovable());
+		getDamage().setValue(100);
+	}
+
+	@Override
+	protected void initItem() {
+		int w = container().getW();
+		int h = container().getH();
 		width = w / 8 + 1;
 		height = Math.sqrt(h * h + w * w);
 		setW(width);
@@ -33,26 +40,17 @@ public class UltraLight extends AbstractBullet {
 	}
 
 	@Override
-	public int intConf(String key) {
-		if (key.equals(P_POWER)) {
-			return 100;
-		}
-		return 0;
+	protected Health createHealth() {
+		return new BaseHealth() {
+			@Override
+			public boolean isAlive() { return true; }
+		};
 	}
 
-	@Override
-	public double doubleConf(String key) {
-		return 0;
-	}
-
-	@Override
-	public boolean isAlive() { return true; }
-
-	@Override
 	protected void afterMove(Movable m) {
 		durationFrame--;
 		if (durationFrame < 0) {
-			getContainer().removeObject(this);
+			container().removeObject(this);
 		}
 		setDirection(getDirection() - deltaRadian);
 	}

@@ -1,12 +1,14 @@
 package cn.milai.ibdemo.role.fish;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.property.Collider;
+import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rigidbody;
 import cn.milai.ib.role.property.base.BaseCollider;
+import cn.milai.ib.role.property.base.BaseHealth;
 
 /**
  * 鲨鱼
@@ -15,23 +17,6 @@ import cn.milai.ib.role.property.base.BaseCollider;
  */
 public class Shark extends EnemyFish implements BotRole {
 
-	/**
-	 * 属性 [Wait 状态持续帧数] 的 key
-	 */
-	public static final String P_WAIT_FRAME = "waitFrame";
-
-	/**
-	 * 属性 [Wait 状态试帧数最小值] 的 key
-	 */
-	public static final String P_MIN_WAIT_FRAME = "minWaitFrame";
-
-	/**
-	 * 属性 [修改 ACCY 的最小间隔帧数] 的 key
-	 */
-	public static final String P_CHANGE_ACC_INTERVAL = "changeACCInterval";
-
-	public static final String P_ATTACK_INTERVAL = "attackInterval";
-
 	private Status status;
 	private int changeForceInterval;
 	private int waitFrame;
@@ -39,51 +24,60 @@ public class Shark extends EnemyFish implements BotRole {
 	private long lastSetForceFrame;
 	private long attackInterval;
 	private long lastAttackFrame;
+	private int initWaitFrame;
 
-	public Shark(LifecycleContainer container) {
-		super(0, 0, container);
-		setX(getContainer().getW());
-		setY(getContainer().getH());
-		changeForceInterval = intConf(P_CHANGE_ACC_INTERVAL);
-		lastSetForceFrame = -changeForceInterval;
-		waitFrame = intConf(P_WAIT_FRAME);
-		minWaitFrame = intConf(P_MIN_WAIT_FRAME);
-		attackInterval = intConf(P_ATTACK_INTERVAL);
-		lastAttackFrame = -attackInterval;
-		setCollider(new BaseCollider(this) {
+	public Shark() {
+		setMovable(new SharkMovable());
+		setCollider(new BaseCollider() {
 			@Override
 			public void onCollided(Collider crashed) {
-				Role r = crashed.getRole();
+				Role r = crashed.owner();
 				if (notCollied(r)) {
 					return;
 				}
-				r.loseLife(Shark.this, 1);
-				lastAttackFrame = getContainer().getFrame();
+				r.getHealth().changeHP(Shark.this, 1);
+				lastAttackFrame = container().getFrame();
 				Rigidbody b2 = r.getProperty(Rigidbody.class);
 				if (b2 != null) {
-					b2.addExtraForceX(movable().getSpeedX() / b2.mass());
+					b2.addExtraForceX(getMovable().getSpeedX() / b2.getMass());
 				}
 			}
 
 			@Override
 			public void onTouching(Collider c) {
-				if (notCollied(c.getRole()) || lastAttackFrame + attackInterval > getContainer().getFrame()) {
+				if (notCollied(c.owner()) || lastAttackFrame + attackInterval > container().getFrame()) {
 					return;
 				}
-				c.getRole().loseLife(Shark.this, 1);
-				lastAttackFrame = getContainer().getFrame();
+				c.owner().getHealth().changeHP(Shark.this, 1);
+				lastAttackFrame = container().getFrame();
 			}
 		});
-		status = new Wait(movable());
 	}
 
 	@Override
-	public synchronized void loseLife(Role attacker, int life) throws IllegalArgumentException {
-		if (notCollied(attacker)) {
-			return;
-		}
-		waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getLife() / getInitLife() * intConf(P_WAIT_FRAME)));
-		status.loseLife(attacker, life);
+	protected void initEnemyFish() {
+		setX(container().getW());
+		setY(container().getH());
+		initWaitFrame = waitFrame;
+		lastSetForceFrame = -changeForceInterval;
+		lastAttackFrame = -attackInterval;
+		status = new Wait(getMovable());
+	}
+
+	@Override
+	protected Health createHealth() {
+		return new BaseHealth() {
+			@Override
+			public synchronized void changeHP(Role attacker, int life) throws IllegalArgumentException {
+				if (notCollied(attacker)) {
+					return;
+				}
+				waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getHP() / initHP() * initWaitFrame));
+				if (status.loseLife(attacker, life)) {
+					super.changeHP(attacker, life);
+				}
+			}
+		};
 	}
 
 	// TODO 鲨鱼上面部分空白不进入判定，临时方案
@@ -95,21 +89,19 @@ public class Shark extends EnemyFish implements BotRole {
 		return r.getY() + r.getH() < top();
 	}
 
-	@Override
 	protected void beforeRefreshSpeeds(Movable m) {
-		status.beforeRefreshSpeeds(rigidbody());
+		status.beforeRefreshSpeeds(getRigidbody());
 	}
 
 	@Override
 	protected void afterRefreshSpeeds(Movable m) {
-		long nowFrame = getContainer().getFrame();
+		long nowFrame = container().getFrame();
 		if (lastSetForceFrame + changeForceInterval > nowFrame) {
 			return;
 		}
 		lastSetForceFrame = nowFrame;
 	}
 
-	@Override
 	protected void afterMove(Movable m) {
 		status.afterMove(m);
 	}
@@ -119,7 +111,9 @@ public class Shark extends EnemyFish implements BotRole {
 
 		default void afterMove(Movable m) {}
 
-		default void loseLife(Role attacker, int life) {}
+		default boolean loseLife(Role attacker, int life) {
+			return true;
+		}
 	}
 
 	private class Wait implements Status {
@@ -140,8 +134,8 @@ public class Shark extends EnemyFish implements BotRole {
 		}
 
 		@Override
-		public void loseLife(Role character, int life) {
-			// Wait 状态不受伤害
+		public boolean loseLife(Role character, int life) {
+			return false;
 		}
 
 	}
@@ -151,22 +145,22 @@ public class Shark extends EnemyFish implements BotRole {
 		private Attack(Movable m) {
 			m.setSpeedX(0);
 			m.setSpeedY(0);
-			lastSetForceFrame = getContainer().getFrame() - changeForceInterval;
+			lastSetForceFrame = container().getFrame() - changeForceInterval;
 			setY(getAttackTarget().centerY() - getH() * 0.7);
 
 		}
 
 		@Override
 		public void beforeRefreshSpeeds(Rigidbody r) {
-			Movable m = movable();
-			r.addForceX((getDirection() > 0 ? 1 : -1) * r.confForceX());
+			Movable m = getMovable();
+			r.addForceX((getDirection() > 0 ? 1 : -1) * getForceX());
 			double targetY = getAttackTarget().centerY();
 			if (targetY < top()) {
-				r.addForceY(-r.confForceY());
+				r.addForceY(-getForceY());
 			} else if (targetY > getY() + getH()) {
-				r.addForceY(r.confForceY());
+				r.addForceY(getForceY());
 			} else {
-				r.addForceY((m.getSpeedY() > 0 ? -1 : 1) * Math.min(r.confForceY(), m.getSpeedY() * r.mass()));
+				r.addForceY((m.getSpeedY() > 0 ? -1 : 1) * Math.min(getForceY(), m.getSpeedY() * r.getMass()));
 			}
 		}
 
@@ -182,13 +176,29 @@ public class Shark extends EnemyFish implements BotRole {
 			if (getDirection() < 0) {
 				return getX() + getW() < 0;
 			}
-			return getX() >= getContainer().getW();
+			return getX() >= container().getW();
 		}
 
-		@Override
-		public void loseLife(Role character, int life) {
-			Shark.super.loseLife(character, life);
-		}
 	}
+
+	public int getChangeForceInterval() { return changeForceInterval; }
+
+	@Configurable
+	public void setChangeForceInterval(int changeForceInterval) { this.changeForceInterval = changeForceInterval; }
+
+	public int getWaitFrame() { return waitFrame; }
+
+	@Configurable
+	public void setWaitFrame(int waitFrame) { this.waitFrame = waitFrame; }
+
+	public int getMinWaitFrame() { return minWaitFrame; }
+
+	@Configurable
+	public void setMinWaitFrame(int minWaitFrame) { this.minWaitFrame = minWaitFrame; }
+
+	public long getAttackInterval() { return attackInterval; }
+
+	@Configurable
+	public void setAttackInterval(long attackInterval) { this.attackInterval = attackInterval; }
 
 }

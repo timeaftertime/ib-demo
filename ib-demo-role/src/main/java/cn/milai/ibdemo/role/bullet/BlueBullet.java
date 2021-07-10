@@ -10,8 +10,8 @@ import cn.milai.ib.role.weapon.bullet.AbstractBullet;
  */
 public class BlueBullet extends AbstractBullet {
 
-	public BlueBullet(double x, double y, Role owner) {
-		super(x, y, owner);
+	public BlueBullet(Role owner) {
+		super(owner);
 	}
 
 }

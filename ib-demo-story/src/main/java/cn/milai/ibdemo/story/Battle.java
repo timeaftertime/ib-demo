@@ -2,10 +2,9 @@ package cn.milai.ibdemo.story;
 
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.plugin.control.PauseSwitcher;
-import cn.milai.ib.drama.Drama;
 import cn.milai.ib.ex.IBException;
-import cn.milai.ib.util.Waits;
 
 /**
  * 剧情战斗流程
@@ -14,11 +13,11 @@ import cn.milai.ib.util.Waits;
  */
 public abstract class Battle {
 
-	protected Drama drama;
+	protected DemoDrama drama;
 	private DramaContainer container;
 	private Thread battleThread;
 
-	public Battle(Drama drama, DramaContainer container) {
+	public Battle(DemoDrama drama, DramaContainer container) {
 		this.drama = drama;
 		this.container = container;
 	}
@@ -52,7 +51,7 @@ public abstract class Battle {
 	public final boolean run() {
 		this.battleThread = Thread.currentThread();
 		try {
-			container().addObject(new PauseSwitcher(container()));
+			container().addObject(new PauseSwitcher());
 			return doRun();
 		} catch (BattleStoppedException e) {
 			return false;

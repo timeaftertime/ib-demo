@@ -1,0 +1,167 @@
+ibconfig:
+    global:
+        cn.milai.ibdemo:
+            role:
+                ShiningStar:
+                    w: 28
+                    h: 28
+                UltraFly:
+                    w: 56
+                    h: 125
+                UltraSide:
+                    w: 49
+                    h: 182
+                EscapeCraft:
+                    w: 56
+                    h: 125
+                helper:
+                    AccelerateHelper:
+                        w: 25
+                        h: 37
+                        maxRatedSpeedX: 21
+                        maxRatedSpeedY: 21
+                        movable:
+                            ratedSpeedX: 0
+                            ratedSpeedY: 10
+                        health:
+                            hp: 1
+                    OneLifeHelper:
+                        w: 25
+                        h: 25
+                        movable:
+                            ratedSpeedX: 0
+                            ratedSpeedY: 10
+                        health:
+                            hp: 1
+                bullet:
+                    BlueBullet:
+                        w: 7
+                        h: 21
+                        movable:
+                            ratedSpeedX: 24
+                            ratedSpeedY: 24
+                        health:
+                            hp: 1
+                        damage:
+                            value: 1
+                    Missile:
+                        w: 9
+                        h: 67
+                        movable:
+                            ratedSpeedX: 35
+                            ratedSpeedY: 35
+                        health:
+                            hp: 120
+                        damage:
+                            value: 3
+                    RedBullet:
+                        w: 7
+                        h: 21
+                        movable:
+                            ratedSpeedX: 23
+                            ratedSpeedY: 23
+                        health:
+                            hp: 1
+                        damage:
+                            value: 1
+                fish:
+                    Dolphin:
+                        w: 65
+                        h: 49
+                        health:
+                            hp: 50
+                        rigidbody:
+                            mass: 1.0
+                            resistance: 1.5
+                        movable:
+                            ratedSpeedX: 16
+                            ratedSpeedY: 16
+                        forceX: 4
+                        forceY: 4
+                        shootInterval: 5
+                        maxBulletNum: 5
+                    Shark:
+                        w: 457
+                        h: 142
+                        health:
+                            hp: 100
+                        rigidbody:
+                            mass: 10.0
+                            resistance: 0.5
+                        movable:
+                            ratedSpeedX: 49
+                            ratedSpeedY: 18
+                        forceX: 70
+                        forceY: 28
+                        waitFrame: 100
+                        minWaitFrame: 10
+                        changeACCInterval: 20
+                        attackInterval: 2
+                plane:
+                    FollowPlane:
+                        w: 33
+                        h: 33
+                        movable:
+                            ratedSpeedX: 8
+                            ratedSpeedY: 4
+                        health:
+                            hp: 1
+                        score:
+                            value: 1
+                        damage:
+                            value: 1
+                        followChance: 0.1
+                        shootChance: 0.2
+                    MissileBoss:
+                        w: 84
+                        h: 84
+                        movable:
+                            ratedSpeedX: 7
+                            ratedSpeedY: 7
+                        health:
+                            hp: 1
+                        score:
+                            value: 100
+                        damage:
+                            value: 1
+                        prepareInterval: 100
+                        turnYChance: 0.05
+                        commingMaxY: 480
+                        prepareMinY: 12
+                        prepareMaxY: 480
+                        pursuingSpeedX: 14
+                    PlayerPlane:
+                        w: 25
+                        h: 37
+                        health:
+                            hp: 3
+                        movable:
+                            ratedSpeedX: 10
+                            ratedSpeedY: 10
+                        damage:
+                            value: 1
+                        shootInterval: 3
+                        maxBulletNum: 3
+                    WelcomePlane:
+                        w: 50
+                        h: 33
+                        movable:
+                            ratedSpeedX: 0
+                            ratedSpeedY: 3
+                        health:
+                            hp: 1
+                        score:
+                            value: 1
+                        damage:
+                            value: 1
+                explosion:
+                    BaseExplosion:
+                        w: 33
+                        h: 33
+                        health:
+                            hp: 1
+                            lastFrame: 10
+                    FishFall:
+                        speed: 10
+                        health:
+                            lastFrame: 40

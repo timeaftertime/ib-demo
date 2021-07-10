@@ -2,15 +2,17 @@ package cn.milai.ibdemo.endless;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cn.milai.common.base.Randoms;
 import cn.milai.ib.IBCore;
-import cn.milai.ib.conf.IBConf;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
 import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.control.PauseSwitcher;
 import cn.milai.ib.container.plugin.media.Audio;
@@ -18,7 +20,6 @@ import cn.milai.ib.container.plugin.media.MediaPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.container.plugin.ui.form.FormUIPlugin;
 import cn.milai.ib.control.GameOverLabel;
-import cn.milai.ib.control.button.RestartButton;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.ImageLoader;
 import cn.milai.ib.mode.AbstractGameMode;
@@ -26,11 +27,11 @@ import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.Explosion;
 import cn.milai.ib.role.property.Score;
 import cn.milai.ib.role.weapon.bullet.Bullet;
-import cn.milai.ib.util.Waits;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 import cn.milai.ibdemo.role.plane.FollowPlane;
 import cn.milai.ibdemo.role.plane.PlayerPlane;
 import cn.milai.ibdemo.role.plane.WelcomePlane;
+import cn.milai.ibdemo.util.DemoFactory;
 
 /**
  * 无尽模式
@@ -39,6 +40,8 @@ import cn.milai.ibdemo.role.plane.WelcomePlane;
 @Order(100)
 @Component
 public class EndlessBattleMode extends AbstractGameMode {
+
+	private static final Logger LOG = LoggerFactory.getLogger(EndlessBattleMode.class);
 
 	private static final String AUDIO_BG_FILE = "/audio/bg.mp3";
 
@@ -106,6 +109,10 @@ public class EndlessBattleMode extends AbstractGameMode {
 		return "无尽模式";
 	}
 
+	private WelcomePlane newWelcomePlane(double x, double y) {
+		return DemoFactory.newWelcomePlane(x, y);
+	}
+
 	private DramaContainer container() {
 		if (container == null) {
 			throw new RestartInterrupt();
@@ -123,7 +130,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 
 	private void onRolesRemoved(Container c, List<Role> rs) {
 		for (Role r : rs) {
-			if (r.isAlive()) {
+			if (r.getHealth().isAlive()) {
 				continue;
 			}
 			if (r == player) {
@@ -132,7 +139,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 			}
 			if (r.hasProperty(Score.class)) {
 				Score s = r.getProperty(Score.class);
-				Role lastAttacker = r.getLastAttacker();
+				Role lastAttacker = r.getHealth().lastAttacker();
 				if (lastAttacker instanceof Bullet) {
 					if (((Bullet) lastAttacker).getOwner() == player) {
 						addPlayerScore(s.getValue());
@@ -176,12 +183,12 @@ public class EndlessBattleMode extends AbstractGameMode {
 
 		private void initGame() {
 			container().setBackgroud(BGI);
-			player = new PlayerPlane(container().getW() / 2, container().getH() * 0.93, container());
+			player = DemoFactory.newPlayerPlane(container().getW() / 2, container().getH() * 0.93);
 			formTitle = container().fire(FormUIPlugin.class, f -> f.getTitle(), "");
 			refreshFormTitle();
 			playerScore = 0;
 			container().addObject(player);
-			container().addObject(new PauseSwitcher(container()));
+			container().addObject(new PauseSwitcher());
 
 			BGM = AudioLoader.load(Audio.BGM_CODE, DRAMA_CODE, AUDIO_BG_FILE);
 			container().fire(MediaPlugin.class, m -> m.playAudio(BGM));
@@ -192,7 +199,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 			try {
 				restartableRun();
 			} catch (ContainerClosedException e) {
-				// 容器关闭，退出游戏
+				LOG.debug("容器已关闭: {}", e);
 			}
 		}
 
@@ -229,8 +236,8 @@ public class EndlessBattleMode extends AbstractGameMode {
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
 			for (int i = 0; i < row; i++) {
-				container().addObject(new WelcomePlane(container().getW() / 2 - disFromCenter, 0, container()));
-				container().addObject(new WelcomePlane(container().getW() / 2 + disFromCenter, 0, container()));
+				container().addObject(newWelcomePlane(container().getW() / 2 - disFromCenter, 0));
+				container().addObject(newWelcomePlane(container().getW() / 2 + disFromCenter, 0));
 				Waits.wait(container(), ADD_VERTICAL_WELCOME_PLANE_FRAMES);
 			}
 		}
@@ -238,11 +245,11 @@ public class EndlessBattleMode extends AbstractGameMode {
 		private void addLadderWelcomePlayer(int row, int disOfX) {
 			if (row < 1)
 				throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
-			container().addObject(new WelcomePlane(container().getW() / 2, 0, container()));
+			container().addObject(newWelcomePlane(container().getW() / 2, 0));
 			Waits.wait(container(), ADD_LADDER_WELCOME_PLANE_FRAMES);
 			for (int i = 2; i <= row; i++) {
-				container().addObject(new WelcomePlane(container().getW() / 2 - i * disOfX, 0, container()));
-				container().addObject(new WelcomePlane(container().getW() / 2 + i * disOfX, 0, container()));
+				container().addObject(newWelcomePlane(container().getW() / 2 - i * disOfX, 0));
+				container().addObject(newWelcomePlane(container().getW() / 2 + i * disOfX, 0));
 				Waits.wait(container(), ADD_LADDER_WELCOME_PLANE_FRAMES);
 			}
 		}
@@ -261,11 +268,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 			int playerBulletNum = maxBulletNum + 1;
 			if (playerBulletNum > MAX_PLAYER_BULLET_NUM)
 				playerBulletNum = MAX_PLAYER_BULLET_NUM;
-			player.setShooter(
-				new BlueShooter(
-					IBConf.intConf(player.getClass(), PlayerPlane.P_SHOOT_INTERVAL), maxBulletNum, player
-				)
-			);
+			player.setShooter(new BlueShooter(3, playerBulletNum, player));
 
 			addNormalEnemyInterval = addNormalEnemyInterval * 2 / 3;
 			if (addNormalEnemyInterval < MIN_ADD_ENEMEY_FRAMES)
@@ -276,7 +279,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 
 		private void randomAddEnemy() {
 			if (Randoms.nextLess(ADD_ENEMY_CHANCE)) {
-				container().addObject(new FollowPlane(Randoms.nextInt(container().getW()), 0, container()));
+				container().addObject(DemoFactory.newFollowPlane(Randoms.nextInt(container().getW()), 0));
 				Waits.wait(container(), addNormalEnemyInterval);
 			}
 		}
@@ -285,7 +288,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 	private void refreshFormTitle() {
 		container().fire(
 			FormUIPlugin.class, f -> f.setTitle(
-				formTitle + "         得分：" + playerScore + "      生命：" + player.getLife()
+				formTitle + "         得分：" + playerScore + "      生命：" + player.getHealth().getHP()
 			)
 		);
 	}
@@ -305,14 +308,17 @@ public class EndlessBattleMode extends AbstractGameMode {
 	}
 
 	private void showGameOverLabel() {
-		GameOverLabel gameOverLabel = new GameOverLabel(GAME_OVER_LABEL_POS_X, GAME_OVER_LABEL_POS_Y, container());
+		GameOverLabel gameOverLabel = DemoFactory.newGameOverLabel(GAME_OVER_LABEL_POS_X, GAME_OVER_LABEL_POS_Y);
 		container().addObject(gameOverLabel);
 	}
 
 	private void showRestartButton() {
-		container().addObject(new RestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, container(), () -> {
-			container().setPined(true);
-			EndlessBattleMode.this.container = null;
+		container().addObject(DemoFactory.newRestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, new Runnable() {
+			@Override
+			public void run() {
+				container().setPined(true);
+				EndlessBattleMode.this.container = null;
+			}
 		}));
 	}
 

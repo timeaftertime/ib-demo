@@ -1,7 +1,6 @@
 package cn.milai.ibdemo.role.helper;
 
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.config.Configurable;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.helper.AbstractHelper;
 import cn.milai.ib.role.property.Movable;
@@ -17,14 +16,18 @@ public class AccelerateHelper extends AbstractHelper {
 	public static final String P_MAX_RATED_SPEED_X = "maxRatedSpeedX";
 	public static final String P_MAX_RATED_SPEED_Y = "maxRatedSpeedY";
 
-	private double maxRatedSpeedX = 21;
-	private double maxRatedSpeedY = 21;
+	private double maxRatedSpeedX;
+	private double maxRatedSpeedY;
 
-	public AccelerateHelper(double x, double y, LifecycleContainer container) {
-		super(x, y, container);
-		maxRatedSpeedX = doubleConf(P_MAX_RATED_SPEED_X);
-		maxRatedSpeedY = doubleConf(P_MAX_RATED_SPEED_Y);
-	}
+	public double getMaxRatedSpeedX() { return maxRatedSpeedX; }
+
+	@Configurable
+	public void setMaxRatedSpeedX(double maxRatedSpeedX) { this.maxRatedSpeedX = maxRatedSpeedX; }
+
+	public double getMaxRatedSpeedY() { return maxRatedSpeedY; }
+
+	@Configurable
+	public void setMaxRatedSpeedY(double maxRatedSpeedY) { this.maxRatedSpeedY = maxRatedSpeedY; }
 
 	@Override
 	public void makeFunction(PlayerRole player) {
@@ -35,7 +38,7 @@ public class AccelerateHelper extends AbstractHelper {
 		Movable movable = player.getProperty(Movable.class);
 		movable.setRatedSpeedX(Math.min(maxRatedSpeedX, movable.getRatedSpeedX() + 2));
 		movable.setRatedSpeedY(Math.min(maxRatedSpeedY, movable.getRatedSpeedY() + 2));
-		player.setImage(ImageLoader.load(player.getClass(), ACC_STATUS));
+		player.setStatus(ACC_STATUS);
 	}
 
 }
