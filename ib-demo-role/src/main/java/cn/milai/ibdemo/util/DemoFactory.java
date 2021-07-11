@@ -1,9 +1,9 @@
 package cn.milai.ibdemo.util;
 
 import java.util.List;
-import java.util.Map;
 
 import cn.milai.ib.config.IBConfig;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.control.BloodStrip;
 import cn.milai.ib.control.GameOverLabel;
 import cn.milai.ib.control.LifeCounter;
@@ -73,8 +73,8 @@ public class DemoFactory {
 		return Bounds.centerXY(s, x, y);
 	}
 
-	public static DramaDialog newDramaDialog(Map<String, Object> params, double x, double y) {
-		KeyDramaDialog dialog = new KeyDramaDialog(params);
+	public static DramaDialog newDramaDialog(double x, double y, Image speaker, String speakerName, String text) {
+		KeyDramaDialog dialog = new KeyDramaDialog(speaker, speakerName, text);
 		dialog.setW(DIALOG_W);
 		dialog.setH(DIALOG_H);
 		return Bounds.centerXY(dialog, x, y);

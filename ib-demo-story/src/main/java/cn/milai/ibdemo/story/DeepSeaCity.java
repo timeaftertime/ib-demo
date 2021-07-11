@@ -321,12 +321,7 @@ public class DeepSeaCity extends DemoDrama {
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = newDramaDialog(
-			DramaDialog.asParams(
-				str(stringCode),
-				speakerImg == null ? null : image(speakerImg),
-				speakerName == null ? "" : str(speakerName)
-			),
-			0.5 * container.getW(), 0.75 * container.getH()
+			0.5 * container.getW(), 0.75 * container.getH(), speakerImg, speakerName, stringCode
 		);
 		container.addObject(dialog);
 		Waits.waitRemove(dialog, 5);

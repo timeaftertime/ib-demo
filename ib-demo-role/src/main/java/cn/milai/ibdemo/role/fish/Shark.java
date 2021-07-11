@@ -35,7 +35,7 @@ public class Shark extends EnemyFish implements BotRole {
 				if (notCollied(r)) {
 					return;
 				}
-				r.getHealth().changeHP(Shark.this, 1);
+				r.getHealth().changeHP(Shark.this, -1);
 				lastAttackFrame = container().getFrame();
 				Rigidbody b2 = r.getProperty(Rigidbody.class);
 				if (b2 != null) {
@@ -48,7 +48,7 @@ public class Shark extends EnemyFish implements BotRole {
 				if (notCollied(c.owner()) || lastAttackFrame + attackInterval > container().getFrame()) {
 					return;
 				}
-				c.owner().getHealth().changeHP(Shark.this, 1);
+				c.owner().getHealth().changeHP(Shark.this, -1);
 				lastAttackFrame = container().getFrame();
 			}
 		});

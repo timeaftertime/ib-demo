@@ -1,7 +1,6 @@
 package cn.milai.ibdemo.story;
 
 import java.util.List;
-import java.util.Map;
 
 import cn.milai.ib.control.BloodStrip;
 import cn.milai.ib.control.GameOverLabel;
@@ -43,8 +42,13 @@ public abstract class DemoDrama extends AbstractDrama {
 		return DemoFactory.newSelections(x, y, quetion, selections);
 	}
 
-	protected DramaDialog newDramaDialog(Map<String, Object> params, double x, double y) {
-		return DemoFactory.newDramaDialog(params, x, y);
+	protected DramaDialog newDramaDialog(double x, double y, String speakerImg, String speakerName, String stringCode) {
+		return DemoFactory.newDramaDialog(
+			x, y,
+			speakerImg == null ? null : image(speakerImg),
+			speakerName == null ? "" : str(speakerName),
+			str(stringCode)
+		);
 	}
 
 	protected LinesFullScreenPass newLinesFullScreenPass(long in, long keep, long out, List<String> lines,

@@ -1,11 +1,10 @@
 package cn.milai.ibdemo.control;
 
-import java.util.Map;
-
 import org.springframework.core.annotation.Order;
 
 import cn.milai.ib.config.ConfigAware;
 import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.container.plugin.ui.Image;
 import cn.milai.ib.control.text.DramaDialog;
 import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
@@ -17,8 +16,8 @@ import cn.milai.ibdemo.container.plugin.control.CmdCode;
 @Order(-100)
 public class KeyDramaDialog extends DramaDialog implements ConfigAware {
 
-	public KeyDramaDialog(Map<String, Object> params) {
-		super(params);
+	public KeyDramaDialog(Image speaker, String speakerName, String text) {
+		super(speaker, speakerName, text);
 	}
 
 	@Override

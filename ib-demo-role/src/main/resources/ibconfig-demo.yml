@@ -119,7 +119,7 @@ ibconfig:
                             ratedSpeedX: 7
                             ratedSpeedY: 7
                         health:
-                            hp: 1
+                            hp: 120
                         score:
                             value: 100
                         damage:
