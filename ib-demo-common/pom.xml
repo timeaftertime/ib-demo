@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>cn.milai.ibdemo</groupId>
 		<artifactId>ib-demo-parent</artifactId>
-		<version>0.0.5-SNAPSHOT</version>
+		<version>0.0.5</version>
 	</parent>
 	<artifactId>ib-demo-common</artifactId>
 
