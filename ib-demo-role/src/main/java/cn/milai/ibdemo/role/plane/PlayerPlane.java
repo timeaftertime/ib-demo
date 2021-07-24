@@ -32,6 +32,11 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	}
 
 	@Override
+	public Player player() {
+		return player;
+	}
+
+	@Override
 	protected void initItem() {
 		initStatus = new Status();
 	}
@@ -72,11 +77,13 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 			@Override
 			public synchronized void changeHP(Role character, int life) {
 				super.changeHP(character, life);
-				rollBackStatus();
-				// 如果没有死亡，显示受伤效果
-				if (life < 0 && isAlive()) {
-					for (Explosion explosion : getExplosible().createExplosions()) {
-						container().addObject(explosion);
+				if (life < 0) {
+					rollBackStatus();
+					// 如果没有死亡，显示受伤效果
+					if (isAlive()) {
+						for (Explosion explosion : getExplosible().createExplosions()) {
+							container().addObject(explosion);
+						}
 					}
 				}
 			}
@@ -87,6 +94,7 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	 * 如果状态栈位空，保存当前状态到状态栈中，否则根据 mustCreateNew 决定是否复制当前状态并压入栈
 	 * @param mustCreateNew
 	 */
+	@Override
 	public synchronized void pushStatus(boolean mustCreateNew) {
 		if (mustCreateNew || statusStack.isEmpty()) {
 			try {
@@ -145,70 +153,5 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 			return super.clone();
 		}
 	}
-
-	@Override
-	public void setUp() {
-		player.setUp();
-	}
-
-	@Override
-	public void clearUp() {
-		player.clearUp();
-	}
-
-	@Override
-	public boolean isUp() { return player.isUp(); }
-
-	@Override
-	public void setDown() {
-		player.setDown();
-	}
-
-	@Override
-	public void clearDown() {
-		player.clearDown();
-	}
-
-	@Override
-	public boolean isDown() { return player.isDown(); }
-
-	@Override
-	public void setLeft() {
-		player.setLeft();
-	}
-
-	@Override
-	public void clearLeft() {
-		player.clearLeft();
-	}
-
-	@Override
-	public boolean isLeft() { return player.isLeft(); }
-
-	@Override
-	public void setRight() {
-		player.setRight();
-	}
-
-	@Override
-	public void clearRight() {
-		player.clearRight();
-	}
-
-	@Override
-	public boolean isRight() { return player.isRight(); }
-
-	@Override
-	public void setA() {
-		player.setA();
-	}
-
-	@Override
-	public void clearA() {
-		player.clearA();
-	}
-
-	@Override
-	public boolean isA() { return player.isA(); }
 
 }

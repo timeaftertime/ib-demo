@@ -100,75 +100,18 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	}
 
 	@Override
-	public void setUp() {
-		player.setUp();
+	public Player player() {
+		return player;
 	}
 
 	@Override
-	public void clearUp() {
-		player.clearUp();
-	}
-
-	@Override
-	public void setDown() {
-		player.setDown();
-	}
-
-	@Override
-	public void clearDown() {
-		player.clearDown();
-	}
-
-	@Override
-	public void setLeft() {
+	public void onSetLeft() {
 		setDirection(-Math.PI / 2);
-		player.setLeft();
 	}
 
 	@Override
-	public void clearLeft() {
-		player.clearLeft();
-	}
-
-	@Override
-	public void setRight() {
+	public void onSetRight() {
 		setDirection(Math.PI / 2);
-		player.setRight();
-	}
-
-	@Override
-	public void clearRight() {
-		player.clearRight();
-	}
-
-	@Override
-	public void setA() {
-		player.setA();
-	}
-
-	@Override
-	public void clearA() {
-		player.clearA();
-	}
-
-	@Override
-	public boolean isUp() { return player.isUp(); }
-
-	@Override
-	public boolean isDown() { return player.isDown(); }
-
-	@Override
-	public boolean isLeft() { return player.isLeft(); }
-
-	@Override
-	public boolean isRight() { return player.isRight(); }
-
-	@Override
-	public boolean isA() { return player.isA(); }
-
-	@Override
-	public void pushStatus(boolean createNew) {
-		throw new UnsupportedOperationException("暂不支持保存状态");
 	}
 
 	public int getShootInterval() { return shootInterval; }

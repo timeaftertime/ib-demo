@@ -1,14 +1,9 @@
 package cn.milai.ibdemo.role.fish;
 
-import java.awt.image.BufferedImage;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import cn.milai.ib.config.Configurable;
-import cn.milai.ib.graphics.Images;
-import cn.milai.ib.item.BasePainter;
 import cn.milai.ib.item.property.Painter;
 import cn.milai.ib.role.BaseRole;
+import cn.milai.ib.role.property.ReversiblePainter;
 import cn.milai.ib.role.property.base.BaseCollider;
 import cn.milai.ib.role.property.base.BaseRigidbody;
 import cn.milai.ibdemo.role.explosion.FishFallExplosible;
@@ -23,8 +18,6 @@ public abstract class AbstractFish extends BaseRole implements Fish {
 	private int forceX;
 	private int forceY;
 
-	private Map<BufferedImage, BufferedImage> flipped = new ConcurrentHashMap<>();
-
 	public AbstractFish() {
 		setRigidbody(new BaseRigidbody());
 		setExplosible(new FishFallExplosible());
@@ -33,16 +26,7 @@ public abstract class AbstractFish extends BaseRole implements Fish {
 
 	@Override
 	protected Painter createPainter() {
-		return new BasePainter() {
-			@Override
-			public BufferedImage getNowImage() {
-				BufferedImage nowImage = super.getNowImage();
-				if (getDirection() < 0) {
-					return flipped.computeIfAbsent(nowImage, Images::horizontalFlip);
-				}
-				return nowImage;
-			}
-		};
+		return new ReversiblePainter(true, false);
 	}
 
 	public int getForceX() { return forceX; }
