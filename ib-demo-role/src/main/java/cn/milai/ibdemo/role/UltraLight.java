@@ -47,7 +47,8 @@ public class UltraLight extends AbstractBullet {
 		};
 	}
 
-	protected void afterMove(Movable m) {
+	@Override
+	public void afterMove(Movable m) {
 		durationFrame--;
 		if (durationFrame < 0) {
 			container().removeObject(this);
@@ -56,8 +57,6 @@ public class UltraLight extends AbstractBullet {
 	}
 
 	@Override
-	protected boolean canCrashWith(Collider crashed) {
-		return true;
-	}
+	protected boolean canCrashWith(Collider crashed) { return true; }
 
 }

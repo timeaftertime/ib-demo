@@ -9,6 +9,7 @@ import cn.milai.ib.role.property.Health;
 import cn.milai.ib.role.property.Movable;
 import cn.milai.ib.role.property.Rigidbody;
 import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.role.property.base.BaseMovable;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.DemoPlayerRole;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
@@ -31,16 +32,15 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	private int damagedCnt;
 
 	public Dolphin() {
-		setMovable(new DolphinMovable());
+		setMovable(new BaseMovable());
 		setDirection(Math.PI / 2);
 	}
 
 	@Override
-	protected void initItem() {
-		shooter = new BlueShooter(shootInterval, maxBulletNum, this);
-	}
+	protected void initItem() { shooter = new BlueShooter(shootInterval, maxBulletNum, this); }
 
-	protected void beforeRefreshSpeeds(Movable m) {
+	@Override
+	public void beforeRefreshSpeeds(Movable m) {
 		Rigidbody r = getRigidbody();
 		if (r == null) {
 			return;
@@ -83,9 +83,8 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 		super.setStatus(status);
 	}
 
-	protected void afterMove(Movable m) {
-		ensureIn(0, container().getW(), 0, container().getH());
-	}
+	@Override
+	public void afterMove(Movable m) { ensureIn(0, container().getW(), 0, container().getH()); }
 
 	@Override
 	protected Health createHealth() {
@@ -100,19 +99,13 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	}
 
 	@Override
-	public Player player() {
-		return player;
-	}
+	public Player player() { return player; }
 
 	@Override
-	public void onSetLeft() {
-		setDirection(-Math.PI / 2);
-	}
+	public void onSetLeft() { setDirection(-Math.PI / 2); }
 
 	@Override
-	public void onSetRight() {
-		setDirection(Math.PI / 2);
-	}
+	public void onSetRight() { setDirection(Math.PI / 2); }
 
 	public int getShootInterval() { return shootInterval; }
 

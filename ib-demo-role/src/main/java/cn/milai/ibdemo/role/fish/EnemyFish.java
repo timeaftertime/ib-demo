@@ -19,9 +19,7 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 
 	private Bot enemy = new BaseBot();
 
-	public EnemyFish() {
-		setDirection(-Math.PI / 4);
-	}
+	public EnemyFish() { setDirection(-Math.PI / 4); }
 
 	@Override
 	protected final void initItem() {
@@ -33,7 +31,8 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 
 	}
 
-	protected void afterRefreshSpeeds(Movable m) {
+	@Override
+	public void afterRefreshSpeeds(Movable m) {
 		Rigidbody r = getRigidbody();
 		if (r.accX() < 0) {
 			setDirection(-Math.PI / 4);
@@ -52,9 +51,7 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 	}
 
 	@Override
-	public void setAttackTarget(PlayerRole target) {
-		enemy.setAttackTarget(target);
-	}
+	public void setAttackTarget(PlayerRole target) { enemy.setAttackTarget(target); }
 
 	@Override
 	public PlayerRole getAttackTarget() { return enemy.getAttackTarget(); }

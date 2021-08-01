@@ -19,10 +19,7 @@ public class FollowPlane extends EnemyPlane {
 
 	private BulletShooter shooter = new RedShooter(this);
 
-	public FollowPlane() {
-		setStatus(STATUS[Randoms.nextInt(STATUS.length)]);
-		setMovable(new FollowPlaneMovable());
-	}
+	public FollowPlane() { setStatus(STATUS[Randoms.nextInt(STATUS.length)]); }
 
 	@Override
 	protected void initEnemyPlane() {
@@ -31,7 +28,8 @@ public class FollowPlane extends EnemyPlane {
 		m.setSpeedY(m.getRatedSpeedY());
 	}
 
-	protected void afterMove(Movable m) {
+	@Override
+	public void afterMove(Movable m) {
 		redirectIfNeed(m);
 		removeIfOutOfOwner();
 		if (getAttackTarget() == null || !getAttackTarget().getHealth().isAlive()) {

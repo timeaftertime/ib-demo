@@ -5,6 +5,7 @@ import cn.milai.ib.item.property.Painter;
 import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.property.ReversiblePainter;
 import cn.milai.ib.role.property.base.BaseCollider;
+import cn.milai.ib.role.property.base.BaseMovable;
 import cn.milai.ib.role.property.base.BaseRigidbody;
 import cn.milai.ibdemo.role.explosion.FishFallExplosible;
 
@@ -22,12 +23,11 @@ public abstract class AbstractFish extends BaseRole implements Fish {
 		setRigidbody(new BaseRigidbody());
 		setExplosible(new FishFallExplosible());
 		setCollider(new BaseCollider());
+		setMovable(new BaseMovable());
 	}
 
 	@Override
-	protected Painter createPainter() {
-		return new ReversiblePainter(true, false);
-	}
+	protected Painter createPainter() { return new ReversiblePainter(true, false); }
 
 	public int getForceX() { return forceX; }
 

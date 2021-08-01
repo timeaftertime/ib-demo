@@ -28,18 +28,13 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	public PlayerPlane() {
 		player = new BasePlayer();
 		shooter = new BlueShooter(3, 3, this);
-		setMovable(new PlayerPlaneMovable());
 	}
 
 	@Override
-	public Player player() {
-		return player;
-	}
+	public Player player() { return player; }
 
 	@Override
-	protected void initItem() {
-		initStatus = new Status();
-	}
+	protected void initItem() { initStatus = new Status(); }
 
 	/**
 	 * 设置使用的子弹发射器
@@ -47,7 +42,8 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	 */
 	public void setShooter(BulletShooter shooter) { this.shooter = shooter; }
 
-	protected void beforeRefreshSpeeds(Movable m) {
+	@Override
+	public void beforeRefreshSpeeds(Movable m) {
 		m.setSpeedX(0);
 		m.setSpeedY(0);
 		if (isUp()) {
@@ -67,9 +63,8 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 		}
 	}
 
-	protected void afterMove(Movable m) {
-		ensureIn(0, container().getW(), 0, container().getH());
-	}
+	@Override
+	public void afterMove(Movable m) { ensureIn(0, container().getW(), 0, container().getH()); }
 
 	@Override
 	protected Health createHealth() {
@@ -105,9 +100,7 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 		}
 	}
 
-	private Status currentStatus() {
-		return statusStack.isEmpty() ? initStatus : statusStack.peek();
-	}
+	private Status currentStatus() { return statusStack.isEmpty() ? initStatus : statusStack.peek(); }
 
 	public synchronized void rollBackStatus() {
 		if (statusStack.isEmpty()) {

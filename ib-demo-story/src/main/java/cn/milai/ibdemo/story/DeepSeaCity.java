@@ -193,9 +193,7 @@ public class DeepSeaCity extends DemoDrama {
 			Counter counter = new BlockDownCounter(1);
 			container.addLifecycleListener(new LifecycleListener() {
 				@Override
-				public void onClosed(LifecycleContainer container) {
-					counter.count();
-				}
+				public void onClosed(LifecycleContainer container) { counter.count(); }
 			});
 			container.addObject(newGameOverLabel(centerX(), GAME_OVER_LABEL_Y));
 			container.addObject(newRestartButton(centerX(), RESTART_BUTTON_Y, counter::count));
@@ -276,21 +274,13 @@ public class DeepSeaCity extends DemoDrama {
 		memberSay("slient");
 	}
 
-	private void officerSay(String stringCode) {
-		showDialog("/img/officer.png", "officerName", stringCode);
-	}
+	private void officerSay(String stringCode) { showDialog("/img/officer.png", "officerName", stringCode); }
 
-	private void memberSay(String stringCode) {
-		showDialog("/img/member.png", "memberName", stringCode);
-	}
+	private void memberSay(String stringCode) { showDialog("/img/member.png", "memberName", stringCode); }
 
-	private void ultraSay(String stringCode) {
-		showDialog("/img/ultra.png", "ultraName", stringCode);
-	}
+	private void ultraSay(String stringCode) { showDialog("/img/ultra.png", "ultraName", stringCode); }
 
-	private void info(String stringCode) {
-		showDialog(null, null, stringCode);
-	}
+	private void info(String stringCode) { showDialog(null, null, stringCode); }
 
 	/**
 	 * 使指定视图游戏对象从当前位置开始移动一周
@@ -327,22 +317,14 @@ public class DeepSeaCity extends DemoDrama {
 		Waits.waitRemove(dialog, 5);
 	}
 
-	private int centerX() {
-		return container.getW() / 2;
-	}
+	private int centerX() { return container.getW() / 2; }
 
-	private int centerY() {
-		return container.getH() / 2;
-	}
+	private int centerY() { return container.getH() / 2; }
 
 	@Override
-	protected int initW() {
-		return 554;
-	}
+	protected int initW() { return 554; }
 
 	@Override
-	protected int initH() {
-		return 689;
-	}
+	protected int initH() { return 689; }
 
 }

@@ -27,7 +27,6 @@ public class Shark extends EnemyFish implements BotRole {
 	private int initWaitFrame;
 
 	public Shark() {
-		setMovable(new SharkMovable());
 		setCollider(new BaseCollider() {
 			@Override
 			public void onCollided(Collider crashed) {
@@ -81,20 +80,15 @@ public class Shark extends EnemyFish implements BotRole {
 	}
 
 	// TODO 鲨鱼上面部分空白不进入判定，临时方案
-	private double top() {
-		return getY() + getH() * 0.4;
-	}
+	private double top() { return getY() + getH() * 0.4; }
 
-	private boolean notCollied(Role r) {
-		return r.getY() + r.getH() < top();
-	}
-
-	protected void beforeRefreshSpeeds(Movable m) {
-		status.beforeRefreshSpeeds(getRigidbody());
-	}
+	private boolean notCollied(Role r) { return r.getY() + r.getH() < top(); }
 
 	@Override
-	protected void afterRefreshSpeeds(Movable m) {
+	public void beforeRefreshSpeeds(Movable m) { status.beforeRefreshSpeeds(getRigidbody()); }
+
+	@Override
+	public void afterRefreshSpeeds(Movable m) {
 		long nowFrame = container().getFrame();
 		if (lastSetForceFrame + changeForceInterval > nowFrame) {
 			return;
@@ -102,18 +96,15 @@ public class Shark extends EnemyFish implements BotRole {
 		lastSetForceFrame = nowFrame;
 	}
 
-	protected void afterMove(Movable m) {
-		status.afterMove(m);
-	}
+	@Override
+	public void afterMove(Movable m) { status.afterMove(m); }
 
 	private interface Status {
 		default void beforeRefreshSpeeds(Rigidbody r) {};
 
 		default void afterMove(Movable m) {}
 
-		default boolean loseLife(Role attacker, int life) {
-			return true;
-		}
+		default boolean loseLife(Role attacker, int life) { return true; }
 	}
 
 	private class Wait implements Status {
@@ -134,9 +125,7 @@ public class Shark extends EnemyFish implements BotRole {
 		}
 
 		@Override
-		public boolean loseLife(Role character, int life) {
-			return false;
-		}
+		public boolean loseLife(Role character, int life) { return false; }
 
 	}
 

@@ -116,9 +116,7 @@ public class UnknownVisitor extends DemoDrama {
 			Counter counter = new BlockDownCounter(1);
 			container.addLifecycleListener(new LifecycleListener() {
 				@Override
-				public void onClosed(LifecycleContainer container) {
-					counter.count();
-				}
+				public void onClosed(LifecycleContainer container) { counter.count(); }
 			});
 			container.addObject(newGameOverLabel(container.getW() / 2, GAME_OVER_LABEL_Y));
 			container.addObject(
@@ -200,29 +198,17 @@ public class UnknownVisitor extends DemoDrama {
 		}
 	}
 
-	private void leaderSay(String stringCode) {
-		showDialog("/img/leader.png", "leaderName", stringCode);
-	}
+	private void leaderSay(String stringCode) { showDialog("/img/leader.png", "leaderName", stringCode); }
 
-	private void reporterSay(String stringCode) {
-		showDialog("/img/reporter.png", "reporterName", stringCode);
-	}
+	private void reporterSay(String stringCode) { showDialog("/img/reporter.png", "reporterName", stringCode); }
 
-	private void memberSay(String stringCode) {
-		showDialog("/img/member.png", "memberName", stringCode);
-	}
+	private void memberSay(String stringCode) { showDialog("/img/member.png", "memberName", stringCode); }
 
-	private void info(String stringCode) {
-		showDialog(null, null, stringCode);
-	}
+	private void info(String stringCode) { showDialog(null, null, stringCode); }
 
-	private void visitorSay(String stringCode) {
-		showDialog("/img/visitor.png", "visitorName", stringCode);
-	}
+	private void visitorSay(String stringCode) { showDialog("/img/visitor.png", "visitorName", stringCode); }
 
-	private void ultraSay(String stringCode) {
-		showDialog("/img/ultra.png", "ultraName", stringCode);
-	}
+	private void ultraSay(String stringCode) { showDialog("/img/ultra.png", "ultraName", stringCode); }
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = newDramaDialog(
@@ -233,13 +219,9 @@ public class UnknownVisitor extends DemoDrama {
 	}
 
 	@Override
-	protected int initW() {
-		return 554;
-	}
+	protected int initW() { return 554; }
 
 	@Override
-	protected int initH() {
-		return 689;
-	}
+	protected int initH() { return 689; }
 
 }

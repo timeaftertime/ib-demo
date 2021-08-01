@@ -34,9 +34,7 @@ public class UniverseBattle extends Battle {
 
 	private PlayerRole player;
 
-	public UniverseBattle(DemoDrama drama, DramaContainer container) {
-		super(drama, container);
-	}
+	public UniverseBattle(DemoDrama drama, DramaContainer container) { super(drama, container); }
 
 	@Override
 	public boolean doRun() {

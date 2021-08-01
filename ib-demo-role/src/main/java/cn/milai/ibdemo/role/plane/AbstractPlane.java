@@ -4,6 +4,7 @@ import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.property.Collider;
 import cn.milai.ib.role.property.base.BaseCollider;
 import cn.milai.ib.role.property.base.BaseDamage;
+import cn.milai.ib.role.property.base.BaseMovable;
 import cn.milai.ibdemo.role.explosion.BaseExplosible;
 
 /**
@@ -13,6 +14,7 @@ import cn.milai.ibdemo.role.explosion.BaseExplosible;
 public abstract class AbstractPlane extends BaseRole implements Plane {
 
 	public AbstractPlane() {
+		setMovable(new BaseMovable());
 		setExplosible(new BaseExplosible());
 		setDamage(new BaseDamage());
 		setCollider(new BaseCollider() {

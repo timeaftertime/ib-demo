@@ -1,8 +1,8 @@
 package cn.milai.ibdemo.role.fish;
 
+import cn.milai.ib.role.property.holder.AwareMovableHolder;
 import cn.milai.ib.role.property.holder.ColliderHolder;
 import cn.milai.ib.role.property.holder.ExplosibleHolder;
-import cn.milai.ib.role.property.holder.MovableHolder;
 import cn.milai.ib.role.property.holder.RigidbodyHolder;
 
 /**
@@ -10,5 +10,5 @@ import cn.milai.ib.role.property.holder.RigidbodyHolder;
  * @author milai
  * @date 2020.04.03
  */
-public interface Fish extends MovableHolder, ExplosibleHolder, ColliderHolder, RigidbodyHolder {
+public interface Fish extends AwareMovableHolder, ExplosibleHolder, ColliderHolder, RigidbodyHolder {
 }

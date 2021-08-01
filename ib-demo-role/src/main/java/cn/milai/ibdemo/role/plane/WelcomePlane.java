@@ -9,10 +9,6 @@ import cn.milai.ib.role.property.Movable;
  */
 public class WelcomePlane extends EnemyPlane {
 
-	public WelcomePlane() {
-		setMovable(new WelcomePlaneMovable());
-	}
-
 	@Override
 	protected void initEnemyPlane() {
 		Movable m = getMovable();
@@ -20,9 +16,8 @@ public class WelcomePlane extends EnemyPlane {
 		m.setSpeedY(m.getRatedSpeedY());
 	}
 
-	protected void afterMove(Movable m) {
-		removeIfOutOfOwner();
-	}
+	@Override
+	public void afterMove(Movable m) { removeIfOutOfOwner(); }
 
 	private void removeIfOutOfOwner() {
 		if (getIntY() > container().getH())

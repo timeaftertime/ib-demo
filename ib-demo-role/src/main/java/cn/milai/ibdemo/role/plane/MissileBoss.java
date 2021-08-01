@@ -34,14 +34,11 @@ public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 	String STATUS_DANGER = "danger";
 
 	public MissileBoss() {
-		setMovable(new MissileBossMovable());
 		mainShooter = new DoubleRedShooter(this);
 		sideShooter = new MissileShooter(this);
 	}
 
-	protected void initEnemyPlane() {
-		status = new Comming();
-	};
+	protected void initEnemyPlane() { status = new Comming(); };
 
 	protected Health createHealth() {
 		return new BaseHealth() {
@@ -58,14 +55,14 @@ public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 		};
 	};
 
-	protected void beforeRefreshSpeeds(Movable m) {
+	@Override
+	public void beforeRefreshSpeeds(Movable m) {
 		status.beforeRefreshSpeeds(m);
 		mainShooter.attack();
 	}
 
-	protected void afterMove(Movable m) {
-		status.afterMove(m);
-	}
+	@Override
+	public void afterMove(Movable m) { status.afterMove(m); }
 
 	private interface Status {
 		default void beforeRefreshSpeeds(Movable m) {}

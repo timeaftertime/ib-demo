@@ -42,9 +42,7 @@ public abstract class EnemyPlane extends AbstractPlane implements BotRole, Score
 	}
 
 	@Override
-	public void setAttackTarget(PlayerRole target) {
-		enemy.setAttackTarget(target);
-	}
+	public void setAttackTarget(PlayerRole target) { enemy.setAttackTarget(target); }
 
 	public PlayerRole getAttackTarget() { return enemy.getAttackTarget(); }
 
