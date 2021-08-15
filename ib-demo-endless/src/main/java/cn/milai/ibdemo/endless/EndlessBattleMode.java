@@ -316,8 +316,12 @@ public class EndlessBattleMode extends AbstractGameMode {
 		container().addObject(DemoFactory.newRestartButton(RESTART_BUTTON_POS_X, RESTART_BUTTON_POS_Y, new Runnable() {
 			@Override
 			public void run() {
-				container().setPined(true);
-				EndlessBattleMode.this.container = null;
+				try {
+					container().setPined(true);
+					EndlessBattleMode.this.container = null;
+				} catch (RestartInterrupt e) {
+					LOG.debug("已经重启: {}", e);
+				}
 			}
 		}));
 	}
