@@ -6,8 +6,8 @@ import cn.milai.ib.control.BloodStrip;
 import cn.milai.ib.control.GameOverLabel;
 import cn.milai.ib.control.LifeCounter;
 import cn.milai.ib.control.button.RestartButton;
+import cn.milai.ib.control.stage.Curtain;
 import cn.milai.ib.control.text.DramaDialog;
-import cn.milai.ib.control.text.LinesFullScreenPass;
 import cn.milai.ib.control.text.Selections;
 import cn.milai.ib.control.text.TextLines;
 import cn.milai.ib.mode.drama.AbstractDrama;
@@ -51,7 +51,7 @@ public abstract class DemoDrama extends AbstractDrama {
 		);
 	}
 
-	protected LinesFullScreenPass newLinesFullScreenPass(long in, long keep, long out, List<String> lines,
+	protected Curtain newLinesFullScreenPass(long in, long keep, long out, List<String> lines,
 		int interval) {
 		return DemoFactory.newLinesFullScreenPass(in, keep, out, lines, interval);
 	}
@@ -80,12 +80,12 @@ public abstract class DemoDrama extends AbstractDrama {
 		return DemoFactory.newWelcomePlane(x, y);
 	}
 
-	protected AccelerateHelper newAccelerateHelper(double x, double y) {
-		return DemoFactory.newAccelerateHelper(x, y);
+	protected AccelerateHelper newAccelerateHelper(double x, double y, double maxY) {
+		return DemoFactory.newAccelerateHelper(x, y, maxY);
 	}
 
-	protected OneLifeHelper newOneLifeHelper(double x, double y) {
-		return DemoFactory.newOneLifeHelper(x, y);
+	protected OneLifeHelper newOneLifeHelper(double x, double y, double maxY) {
+		return DemoFactory.newOneLifeHelper(x, y, maxY);
 	}
 
 	protected PlayerPlane newPlayerPlane(double x, double y) {

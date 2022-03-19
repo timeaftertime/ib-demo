@@ -19,6 +19,10 @@ public class AccelerateHelper extends AbstractHelper {
 	private double maxRatedSpeedX;
 	private double maxRatedSpeedY;
 
+	public AccelerateHelper(double maxY) {
+		super(maxY);
+	}
+
 	public double getMaxRatedSpeedX() { return maxRatedSpeedX; }
 
 	@Configurable

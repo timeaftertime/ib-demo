@@ -13,6 +13,10 @@ public class OneLifeHelper extends AbstractHelper {
 
 	private static final int GAIN_LIFE = 1;
 
+	public OneLifeHelper(double maxY) {
+		super(maxY);
+	}
+
 	@Override
 	public void makeFunction(PlayerRole player) {
 		if (player.getHealth().getHP() >= MAX_LIFE) {

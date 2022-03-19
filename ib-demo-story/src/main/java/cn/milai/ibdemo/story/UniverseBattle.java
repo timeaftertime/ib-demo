@@ -4,9 +4,9 @@ import java.util.List;
 
 import cn.milai.common.base.Randoms;
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.container.listener.ItemListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.control.BloodStrip;
 import cn.milai.ib.control.LifeCounter;
@@ -34,14 +34,16 @@ public class UniverseBattle extends Battle {
 
 	private PlayerRole player;
 
-	public UniverseBattle(DemoDrama drama, DramaContainer container) { super(drama, container); }
+	public UniverseBattle(DemoDrama drama, Stage container) {
+		super(drama, container);
+	}
 
 	@Override
 	public boolean doRun() {
 		addPlayer();
-		container().addObjectListener(new ObjectListener() {
+		container().addItemListener(new ItemListener() {
 			@Override
-			public void onObjectRemoved(Container container, List<Item> objs) {
+			public void onRemoved(Container container, List<Item> objs) {
 				for (Item obj : objs) {
 					if (player == obj) {
 						container().stopAudio(Audio.BGM_CODE);
@@ -51,7 +53,7 @@ public class UniverseBattle extends Battle {
 			}
 
 			@Override
-			public void onObjectAdded(Container container, Item obj) {
+			public void onAdded(Container container, Item obj) {
 				if (obj instanceof Explosion) {
 					try {
 						container().playAudio(drama.audio(BOMB_CODE, AUDIO_BOMB_FILE));
@@ -70,7 +72,9 @@ public class UniverseBattle extends Battle {
 		container().addObject(bossBloodStrip);
 		while (boss.getHealth().isAlive()) {
 			randomAddFollowPlane();
-			container().addObject(drama.newOneLifeHelper(Randoms.nextInt(container().getW()), 0));
+			container().addObject(
+				drama.newOneLifeHelper(Randoms.nextInt(container().getIntW()), 0, container().getH())
+			);
 			Waits.wait(container(), 100L);
 			randomAddFollowPlane();
 			Waits.wait(container(), 100L);
@@ -88,7 +92,7 @@ public class UniverseBattle extends Battle {
 	}
 
 	private void afterBoss() {
-		container().addObject(drama.newAccelerateHelper(container().getW() / 2, 0));
+		container().addObject(drama.newAccelerateHelper(container().getW() / 2, 0, container().getH()));
 		largeEnemyApear();
 		UltraLight light = drama.newUltraLight(player, 20L);
 		container().playAudio(drama.audio("ULTRAMAN", "/audio/ultraman.mp3"));
@@ -98,7 +102,7 @@ public class UniverseBattle extends Battle {
 
 	private void beforeBoss() {
 		// 阶梯 Welcome
-		int midX = container().getW() / 2;
+		double midX = container().getW() / 2;
 		int interval = 20;
 		addLadderWelcome(6, midX, interval, 20L);
 		// Welcome Follow 混合
@@ -131,7 +135,7 @@ public class UniverseBattle extends Battle {
 			}
 			Waits.wait(container(), 20L);
 		}
-		container().addObject(drama.newAccelerateHelper(midX, 0));
+		container().addObject(drama.newAccelerateHelper(midX, 0, container().getH()));
 		// 间距逐渐变小的 Welcome 列队
 		for (int i = 0; i < 6; i++) {
 			addWelcomes(container().getW() * 0.4, container().getW() * 0.6);
@@ -144,7 +148,7 @@ public class UniverseBattle extends Battle {
 	private void largeEnemyApear() {
 		for (int i = 0; i < 18; i++) {
 			for (int j = 0; j < 3; j++) {
-				addWelcomes(Randoms.nextInt(container().getW()));
+				addWelcomes(Randoms.nextInt(container().getIntW()));
 				Waits.wait(container(), 1L);
 			}
 			for (int j = 0; j < 3; j++) {
@@ -169,7 +173,7 @@ public class UniverseBattle extends Battle {
 	 * @param horInterval 水平间距
 	 * @param waitFrame 垂直等待帧数
 	 */
-	private void addLadderWelcome(int num, int midX, int horInterval, long waitFrame) {
+	private void addLadderWelcome(int num, double midX, int horInterval, long waitFrame) {
 		for (int i = 0; i < num; i++) {
 			container().addObject(drama.newWelcomePlane(midX - horInterval * i, 0));
 			if (i > 0) {
@@ -197,7 +201,7 @@ public class UniverseBattle extends Battle {
 	}
 
 	private void randomAddFollowPlane() {
-		container().addObject(drama.newFollowPlane(Randoms.nextInt(container().getW()), 0));
+		container().addObject(drama.newFollowPlane(Randoms.nextInt(container().getIntW()), 0));
 	}
 
 }

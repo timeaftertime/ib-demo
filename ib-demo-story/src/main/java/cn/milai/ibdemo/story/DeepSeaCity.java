@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import cn.milai.common.thread.counter.BlockDownCounter;
 import cn.milai.common.thread.counter.Counter;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
@@ -38,7 +38,7 @@ public class DeepSeaCity extends DemoDrama {
 	private final int SEA_SCENE_WIDTH = 1190;
 	private final int SEA_SCENE_HEIGHT = 603;
 
-	private DramaContainer container;
+	private Stage container;
 
 	private Image baseBGI = image("/img/tpc.png");
 	private Image deepSeaBGI = image("/img/deepSea.jpg");
@@ -51,33 +51,30 @@ public class DeepSeaCity extends DemoDrama {
 	public String getName() { return "深海城市"; }
 
 	@Override
-	public void doRun(DramaContainer container) {
+	public void doRun(Stage container) {
 		this.container = container;
 		inBase();
-		container.newSize(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
-		container.newUISize(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
+		container.resize(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
 		inSea();
 		while (!battle()) {
 		}
 		victory();
-		container.restoreSize();
-		container.restoreUISize();
 		toBeContinued(container);
 	}
 
 	private void victory() {
 		container.reset();
-		container.resizeWithUI(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
+		container.resize(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
 		container.setBackgroud(deepSeaBGI);
 		ViewRole dolphin = newViewRole(Dolphin.class, container.getW() / 8, container.getH() / 3);
-		ViewRole craft = newViewRole(EscapeCraft.class, centerX(), container.getH());
-		ViewRole ultra = newViewRole(UltraSide.class, centerX(), centerY());
+		ViewRole craft = newViewRole(EscapeCraft.class, container.centerX(), container.getH());
+		ViewRole ultra = newViewRole(UltraSide.class, container.centerX(), container.centerY());
 		ViewRole star = newViewRole(ShiningStar.class, ultra.centerX(), ultra.centerY());
 		container.addObject(dolphin);
 		container.addObject(craft);
 		int craftSpeed = 7;
 		int dolphinSpeed = 11;
-		while (craft.centerY() > centerY()) {
+		while (craft.centerY() > container.centerY()) {
 			craft.moveY(-craftSpeed);
 			Waits.wait(container, 1L);
 		}
@@ -91,7 +88,7 @@ public class DeepSeaCity extends DemoDrama {
 			Waits.wait(container, 1L);
 		}
 		Selections selections = newSelections(
-			centerX(), centerY(),
+			container.centerX(), container.centerY(),
 			str("do_you_want_to_attack"),
 			str("yes_attack"),
 			str("no_do_not_attack")
@@ -101,7 +98,7 @@ public class DeepSeaCity extends DemoDrama {
 		boolean attack = selections.getValue() == 0;
 		if (!attack) {
 			selections = newSelections(
-				centerX(), centerY(),
+				container.centerX(), container.centerY(),
 				str("do_you_forget_the_order"),
 				str("ok_let_us_attack"),
 				str("no_let_them_go")
@@ -121,7 +118,7 @@ public class DeepSeaCity extends DemoDrama {
 			container.addObject(missile);
 			Audio bomb = audio(BOMB_CODE, AUDIO_BOMB_FILE);
 			container.addObject(star);
-			while (missile.getIntX() + missile.getIntW() < centerX()) {
+			while (missile.getIntX() + missile.getIntW() < container.centerX()) {
 				craft.moveX(craftSpeed);
 				missile.moveX(14);
 				Waits.wait(container, 1L);
@@ -131,8 +128,8 @@ public class DeepSeaCity extends DemoDrama {
 			container.addObject(ultra);
 			BaseExplosion explosion = newBaseExplosion();
 			int size = 140;
-			explosion.setX(centerX() - size / 2);
-			explosion.setY(centerY() - size / 2);
+			explosion.setX(container.centerX() - size / 2);
+			explosion.setY(container.centerY() - size / 2);
 			explosion.setW(size);
 			explosion.setH(size);
 			container.playAudio(bomb);
@@ -174,9 +171,9 @@ public class DeepSeaCity extends DemoDrama {
 		ultraSay("let_us_find_the_leader_first");
 	}
 
-	private void toBeContinued(DramaContainer container) {
+	private void toBeContinued(Stage container) {
 		container.reset();
-		container.resizeWithUI(initW(), initH());
+		container.resize(initW(), initH());
 		Control c = newLinesFullScreenPass(
 			10L, Integer.MAX_VALUE, 1L, Arrays.asList("未完待续…", "To Be Continued..."), 10
 		);
@@ -186,17 +183,19 @@ public class DeepSeaCity extends DemoDrama {
 
 	private boolean battle() {
 		container.reset();
-		container.resizeWithUI(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
+		container.resize(SEA_SCENE_WIDTH, SEA_SCENE_HEIGHT);
 		container.setBackgroud(deepSeaBGI);
 		DeepSeaBattle deepSeaBattle = new DeepSeaBattle(this, container);
 		if (!deepSeaBattle.run()) {
 			Counter counter = new BlockDownCounter(1);
 			container.addLifecycleListener(new LifecycleListener() {
 				@Override
-				public void onClosed(LifecycleContainer container) { counter.count(); }
+				public void onClosed(LifecycleContainer container) {
+					counter.count();
+				}
 			});
-			container.addObject(newGameOverLabel(centerX(), GAME_OVER_LABEL_Y));
-			container.addObject(newRestartButton(centerX(), RESTART_BUTTON_Y, counter::count));
+			container.addObject(newGameOverLabel(container.centerX(), GAME_OVER_LABEL_Y));
+			container.addObject(newRestartButton(container.centerX(), RESTART_BUTTON_Y, counter::count));
 			counter.await();
 			return false;
 		}
@@ -206,7 +205,7 @@ public class DeepSeaCity extends DemoDrama {
 	private void inSea() {
 		container.setBackgroud(deepSeaBGI);
 		memberSay("think_around");
-		ViewRole dolphin = newViewRole(Dolphin.class, 0, centerY());
+		ViewRole dolphin = newViewRole(Dolphin.class, 0, container.centerY());
 		dolphin.setStatus(Dolphin.STATUS_MOVE);
 		container.addObject(dolphin);
 		for (int i = 0; i < 10; i++) {
@@ -230,8 +229,8 @@ public class DeepSeaCity extends DemoDrama {
 
 	private void inBase() {
 		container.setBackgroud(baseBGI);
-		int baseX = centerX();
-		int baseY = centerY();
+		double baseX = container.centerX();
+		double baseY = container.centerY();
 		ViewRole plane = newViewRole(PlayerPlane.class, baseX, 0);
 		container.addObject(plane);
 		int speed = 14;
@@ -251,8 +250,8 @@ public class DeepSeaCity extends DemoDrama {
 		plane.setY(baseY);
 		container.addObject(plane);
 		for (int i = 5; i >= 1; i -= 2) {
-			moveCircle(plane, container.getW() / 6 * 4, Math.PI / 6 / i);
-			moveCircle(plane, container.getW() / 6 * 2, -Math.PI / 6 / i);
+			moveCircle(plane, (int) container.getW() / 6 * 4, Math.PI / 6 / i);
+			moveCircle(plane, (int) container.getW() / 6 * 2, -Math.PI / 6 / i);
 		}
 		for (int i = 0; i < 20; i++) {
 			plane.moveY(-11);
@@ -274,13 +273,21 @@ public class DeepSeaCity extends DemoDrama {
 		memberSay("slient");
 	}
 
-	private void officerSay(String stringCode) { showDialog("/img/officer.png", "officerName", stringCode); }
+	private void officerSay(String stringCode) {
+		showDialog("/img/officer.png", "officerName", stringCode);
+	}
 
-	private void memberSay(String stringCode) { showDialog("/img/member.png", "memberName", stringCode); }
+	private void memberSay(String stringCode) {
+		showDialog("/img/member.png", "memberName", stringCode);
+	}
 
-	private void ultraSay(String stringCode) { showDialog("/img/ultra.png", "ultraName", stringCode); }
+	private void ultraSay(String stringCode) {
+		showDialog("/img/ultra.png", "ultraName", stringCode);
+	}
 
-	private void info(String stringCode) { showDialog(null, null, stringCode); }
+	private void info(String stringCode) {
+		showDialog(null, null, stringCode);
+	}
 
 	/**
 	 * 使指定视图游戏对象从当前位置开始移动一周
@@ -317,14 +324,14 @@ public class DeepSeaCity extends DemoDrama {
 		Waits.waitRemove(dialog, 5);
 	}
 
-	private int centerX() { return container.getW() / 2; }
-
-	private int centerY() { return container.getH() / 2; }
+	@Override
+	protected int initW() {
+		return 554;
+	}
 
 	@Override
-	protected int initW() { return 554; }
-
-	@Override
-	protected int initH() { return 689; }
+	protected int initH() {
+		return 689;
+	}
 
 }

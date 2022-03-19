@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import cn.milai.common.thread.counter.BlockDownCounter;
 import cn.milai.common.thread.counter.Counter;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.lifecycle.LifecycleContainer;
 import cn.milai.ib.container.listener.LifecycleListener;
@@ -33,7 +33,7 @@ public class UnknownVisitor extends DemoDrama {
 	private static final int RESTART_BUTTON_Y = 403;
 	private static final String WARNING_AUDIO = "WARNING";
 
-	private DramaContainer container;
+	private Stage container;
 
 	private Image baseBGI = image("/img/tpc.png");
 	private Image universeBGI = image("/img/backgroud.jpg");
@@ -43,7 +43,7 @@ public class UnknownVisitor extends DemoDrama {
 	public String getName() { return "未知来访者"; }
 
 	@Override
-	public void doRun(DramaContainer container) {
+	public void doRun(Stage container) {
 		this.container = container;
 		tip(container);
 		inBase();
@@ -57,7 +57,7 @@ public class UnknownVisitor extends DemoDrama {
 		container.setPined(true);
 		memberSay("what_happened");
 		PlayerRole player = container.getAll(PlayerRole.class).get(0);
-		int x = player.getIntX() > container.getW() / 2 ? container.getW() / 4 : container.getW() / 4 * 3;
+		double x = player.getX() > container.getW() / 2 ? container.getW() / 4 : container.getW() / 4 * 3;
 		ViewRole ultraFly = newViewRole(UltraFly.class, x, container.getH());
 		container.addObject(ultraFly);
 		while (ultraFly.getIntY() > player.getIntY()) {
@@ -78,7 +78,7 @@ public class UnknownVisitor extends DemoDrama {
 		memberSay("gig");
 		container.setPined(true);
 		container.reset();
-		container.resizeWithUI(initW(), initH());
+		container.resize(initW(), initH());
 		container.setBackgroud(starsBGI);
 		container.playAudio(audio(Audio.BGM_CODE, HEIR_OF_LIGHT));
 		showBGMInfo();
@@ -102,21 +102,23 @@ public class UnknownVisitor extends DemoDrama {
 		container.addObject(bgmInfo);
 	}
 
-	private void tip(DramaContainer container) {
+	private void tip(Stage container) {
 		container.setBackgroud(new BaseImage(Images.newImage(Color.BLACK, 1, 1)));
 		info("controlTip");
 	}
 
 	private boolean battle() {
 		container.reset();
-		container.resizeWithUI(initW(), initH());
+		container.resize(initW(), initH());
 		container.setBackgroud(universeBGI);
 		UniverseBattle universeBattle = new UniverseBattle(this, container);
 		if (!universeBattle.run()) {
 			Counter counter = new BlockDownCounter(1);
 			container.addLifecycleListener(new LifecycleListener() {
 				@Override
-				public void onClosed(LifecycleContainer container) { counter.count(); }
+				public void onClosed(LifecycleContainer container) {
+					counter.count();
+				}
 			});
 			container.addObject(newGameOverLabel(container.getW() / 2, GAME_OVER_LABEL_Y));
 			container.addObject(
@@ -159,6 +161,7 @@ public class UnknownVisitor extends DemoDrama {
 		leaderSay("permit_counterattack");
 		reporterSay("there_will_be_helper");
 		memberSay("gig");
+		container.removeObject(dodgePlane);
 	}
 
 	private void inBase() {
@@ -188,9 +191,7 @@ public class UnknownVisitor extends DemoDrama {
 
 	private void showPlaneTakeOff() {
 		info("take_off");
-		int x = container.getW() / 2;
-		int y = 350;
-		ViewRole plane = newViewRole(PlayerPlane.class, x, y);
+		ViewRole plane = newViewRole(PlayerPlane.class, container.getW() / 2, 350);
 		container.addObject(plane);
 		for (int speed = 0; plane.getIntY() + plane.getIntH() > 0; speed -= 1) {
 			plane.moveY(speed);
@@ -198,17 +199,29 @@ public class UnknownVisitor extends DemoDrama {
 		}
 	}
 
-	private void leaderSay(String stringCode) { showDialog("/img/leader.png", "leaderName", stringCode); }
+	private void leaderSay(String stringCode) {
+		showDialog("/img/leader.png", "leaderName", stringCode);
+	}
 
-	private void reporterSay(String stringCode) { showDialog("/img/reporter.png", "reporterName", stringCode); }
+	private void reporterSay(String stringCode) {
+		showDialog("/img/reporter.png", "reporterName", stringCode);
+	}
 
-	private void memberSay(String stringCode) { showDialog("/img/member.png", "memberName", stringCode); }
+	private void memberSay(String stringCode) {
+		showDialog("/img/member.png", "memberName", stringCode);
+	}
 
-	private void info(String stringCode) { showDialog(null, null, stringCode); }
+	private void info(String stringCode) {
+		showDialog(null, null, stringCode);
+	}
 
-	private void visitorSay(String stringCode) { showDialog("/img/visitor.png", "visitorName", stringCode); }
+	private void visitorSay(String stringCode) {
+		showDialog("/img/visitor.png", "visitorName", stringCode);
+	}
 
-	private void ultraSay(String stringCode) { showDialog("/img/ultra.png", "ultraName", stringCode); }
+	private void ultraSay(String stringCode) {
+		showDialog("/img/ultra.png", "ultraName", stringCode);
+	}
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = newDramaDialog(
@@ -219,9 +232,13 @@ public class UnknownVisitor extends DemoDrama {
 	}
 
 	@Override
-	protected int initW() { return 554; }
+	protected int initW() {
+		return 554;
+	}
 
 	@Override
-	protected int initH() { return 689; }
+	protected int initH() {
+		return 689;
+	}
 
 }

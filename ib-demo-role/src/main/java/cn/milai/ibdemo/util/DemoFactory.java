@@ -8,8 +8,8 @@ import cn.milai.ib.control.BloodStrip;
 import cn.milai.ib.control.GameOverLabel;
 import cn.milai.ib.control.LifeCounter;
 import cn.milai.ib.control.button.RestartButton;
+import cn.milai.ib.control.stage.Curtain;
 import cn.milai.ib.control.text.DramaDialog;
-import cn.milai.ib.control.text.LinesFullScreenPass;
 import cn.milai.ib.control.text.Selections;
 import cn.milai.ib.control.text.TextLines;
 import cn.milai.ib.geometry.Bounds;
@@ -80,9 +80,9 @@ public class DemoFactory {
 		return Bounds.centerXY(dialog, x, y);
 	}
 
-	public static LinesFullScreenPass newLinesFullScreenPass(long in, long keep, long out, List<String> lines,
+	public static Curtain newLinesFullScreenPass(long in, long keep, long out, List<String> lines,
 		int interval) {
-		return new LinesFullScreenPass(in, keep, out, lines, interval);
+		return new Curtain(in, keep, out, lines, interval);
 	}
 
 	public static GameOverLabel newGameOverLabel(double x, double y) {
@@ -93,7 +93,8 @@ public class DemoFactory {
 	}
 
 	public static RestartButton newRestartButton(double x, double y, Runnable r) {
-		RestartButton button = new RestartButton(r);
+		RestartButton button = new RestartButton();
+		button.onPressUp(e -> r.run());
 		button.setW(RESTART_BUTTON_W);
 		button.setH(RESTART_BUTTON_H);
 		return Bounds.centerXY(button, x, y);
@@ -121,12 +122,12 @@ public class DemoFactory {
 		return applyCenter(new WelcomePlane(), x, y);
 	}
 
-	public static AccelerateHelper newAccelerateHelper(double x, double y) {
-		return applyCenter(new AccelerateHelper(), x, y);
+	public static AccelerateHelper newAccelerateHelper(double x, double y, double maxY) {
+		return applyCenter(new AccelerateHelper(maxY), x, y);
 	}
 
-	public static OneLifeHelper newOneLifeHelper(double x, double y) {
-		return applyCenter(new OneLifeHelper(), x, y);
+	public static OneLifeHelper newOneLifeHelper(double x, double y, double maxY) {
+		return applyCenter(new OneLifeHelper(maxY), x, y);
 	}
 
 	public static PlayerPlane newPlayerPlane(double x, double y) {

@@ -3,9 +3,9 @@ package cn.milai.ibdemo.story;
 import java.util.List;
 
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.listener.ObjectListener;
+import cn.milai.ib.container.listener.ItemListener;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.control.BloodStrip;
 import cn.milai.ib.control.text.TextLines;
@@ -22,7 +22,7 @@ public class DeepSeaBattle extends Battle {
 
 	private static final String BATTLE_BGM = "/audio/newAwakening.mp3";
 
-	public DeepSeaBattle(DemoDrama drama, DramaContainer container) {
+	public DeepSeaBattle(DemoDrama drama, Stage container) {
 		super(drama, container);
 	}
 
@@ -34,9 +34,9 @@ public class DeepSeaBattle extends Battle {
 		BloodStrip dolphinBlood = drama.newBloodStrip(container().getW() / 4, container().getH() * 9 / 10, dolphin);
 		container().addObject(dolphin);
 		container().addObject(dolphinBlood);
-		container().addObjectListener(new ObjectListener() {
+		container().addItemListener(new ItemListener() {
 			@Override
-			public void onObjectRemoved(Container container, List<Item> objs) {
+			public void onRemoved(Container container, List<Item> objs) {
 				for (Item obj : objs) {
 					if (dolphin == obj) {
 						container().stopAudio(Audio.BGM_CODE);

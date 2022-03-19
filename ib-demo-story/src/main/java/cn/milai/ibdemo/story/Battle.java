@@ -1,7 +1,7 @@
 package cn.milai.ibdemo.story;
 
 import cn.milai.ib.container.Container;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.plugin.control.PauseSwitcher;
 import cn.milai.ib.ex.IBException;
@@ -14,10 +14,10 @@ import cn.milai.ib.ex.IBException;
 public abstract class Battle {
 
 	protected DemoDrama drama;
-	private DramaContainer container;
+	private Stage container;
 	private Thread battleThread;
 
-	public Battle(DemoDrama drama, DramaContainer container) {
+	public Battle(DemoDrama drama, Stage container) {
 		this.drama = drama;
 		this.container = container;
 	}
@@ -28,8 +28,8 @@ public abstract class Battle {
 	 * @return
 	 * @throws BattleStoppedException
 	 */
-	public DramaContainer container() throws BattleStoppedException {
-		DramaContainer c = this.container;
+	public Stage container() throws BattleStoppedException {
+		Stage c = this.container;
 		if (c == null || c.isClosed()) {
 			this.container = null;
 			throw new BattleStoppedException();

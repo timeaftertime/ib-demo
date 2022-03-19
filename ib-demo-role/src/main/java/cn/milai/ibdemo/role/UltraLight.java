@@ -30,9 +30,9 @@ public class UltraLight extends AbstractBullet {
 
 	@Override
 	protected void initItem() {
-		int w = container().getW();
-		int h = container().getH();
-		width = w / 8 + 1;
+		double w = container().getW();
+		double h = container().getH();
+		width = w / 6 + 1;
 		height = Math.sqrt(h * h + w * w);
 		setW(width);
 		setH(height * 2);
@@ -57,6 +57,8 @@ public class UltraLight extends AbstractBullet {
 	}
 
 	@Override
-	protected boolean canCrashWith(Collider crashed) { return true; }
+	protected boolean canCrashWith(Collider crashed) {
+		return true;
+	}
 
 }

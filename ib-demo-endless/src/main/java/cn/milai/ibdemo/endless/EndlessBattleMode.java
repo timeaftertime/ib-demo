@@ -8,17 +8,18 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.IBCore;
+import cn.milai.ib.IBBeans;
+import cn.milai.ib.container.CloseableContainer;
 import cn.milai.ib.container.Container;
 import cn.milai.ib.container.ContainerClosedException;
-import cn.milai.ib.container.DramaContainer;
+import cn.milai.ib.container.Stage;
 import cn.milai.ib.container.Waits;
 import cn.milai.ib.container.listener.ContainerListeners;
 import cn.milai.ib.container.plugin.control.PauseSwitcher;
 import cn.milai.ib.container.plugin.media.Audio;
 import cn.milai.ib.container.plugin.media.MediaPlugin;
 import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.container.plugin.ui.form.FormUIPlugin;
+import cn.milai.ib.container.plugin.ui.UIPlugin;
 import cn.milai.ib.control.GameOverLabel;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.ImageLoader;
@@ -42,6 +43,8 @@ import cn.milai.ibdemo.util.DemoFactory;
 public class EndlessBattleMode extends AbstractGameMode {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EndlessBattleMode.class);
+
+	private static final String TITLE_PREFIX = "敌星弹雨 - 无尽模式";
 
 	private static final String AUDIO_BG_FILE = "/audio/bg.mp3";
 
@@ -102,7 +105,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 	private String formTitle;
 	private int playerScore;
 
-	protected DramaContainer container;
+	protected Stage stage;
 
 	@Override
 	public String name() {
@@ -113,11 +116,11 @@ public class EndlessBattleMode extends AbstractGameMode {
 		return DemoFactory.newWelcomePlane(x, y);
 	}
 
-	private DramaContainer container() {
-		if (container == null) {
+	private Stage container() {
+		if (stage == null) {
 			throw new RestartInterrupt();
 		}
-		return container;
+		return stage;
 	}
 
 	private void onRoleAdded(Container c, Role r) {
@@ -156,10 +159,10 @@ public class EndlessBattleMode extends AbstractGameMode {
 	}
 
 	private void initContainer() {
-		container = IBCore.getBean(DramaContainer.class);
+		stage = IBBeans.getBean(Stage.class);
 		if (!container().isRunning()) {
 			container().start();
-			container().addObjectListener(
+			container().addItemListener(
 				ContainerListeners.roleListener(
 					EndlessBattleMode.this::onRoleAdded,
 					EndlessBattleMode.this::onRolesRemoved
@@ -169,7 +172,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 			container().reset();
 		}
 
-		container().resizeWithUI(WIDTH, HEIGHT);
+		container().resize(WIDTH, HEIGHT);
 	}
 
 	@Override
@@ -184,9 +187,9 @@ public class EndlessBattleMode extends AbstractGameMode {
 		private void initGame() {
 			container().setBackgroud(BGI);
 			player = DemoFactory.newPlayerPlane(container().getW() / 2, container().getH() * 0.93);
-			formTitle = container().fire(FormUIPlugin.class, f -> f.getTitle(), "");
-			refreshFormTitle();
+			formTitle = TITLE_PREFIX;
 			playerScore = 0;
+			refreshFormTitle();
 			container().addObject(player);
 			container().addObject(new PauseSwitcher());
 
@@ -279,7 +282,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 
 		private void randomAddEnemy() {
 			if (Randoms.nextLess(ADD_ENEMY_CHANCE)) {
-				container().addObject(DemoFactory.newFollowPlane(Randoms.nextInt(container().getW()), 0));
+				container().addObject(DemoFactory.newFollowPlane(Randoms.nextInt(container().getIntW()), 0));
 				Waits.wait(container(), addNormalEnemyInterval);
 			}
 		}
@@ -287,7 +290,7 @@ public class EndlessBattleMode extends AbstractGameMode {
 
 	private void refreshFormTitle() {
 		container().fire(
-			FormUIPlugin.class, f -> f.setTitle(
+			UIPlugin.class, f -> f.setTitle(
 				formTitle + "         得分：" + playerScore + "      生命：" + player.getHealth().getHP()
 			)
 		);
@@ -317,8 +320,9 @@ public class EndlessBattleMode extends AbstractGameMode {
 			@Override
 			public void run() {
 				try {
-					container().setPined(true);
-					EndlessBattleMode.this.container = null;
+					CloseableContainer c = container();
+					EndlessBattleMode.this.stage = null;
+					c.close();
 				} catch (RestartInterrupt e) {
 					LOG.debug("已经重启: {}", e);
 				}
