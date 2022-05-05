@@ -12,11 +12,3 @@ ib:
       enable: true
       stages:
       - cn.milai.ibdemo.dramafile.Hello
-  container:
-    plugin:      metrics:
-        interval: 0        categories:
-          physics: true
-          aliveCheck: true
-          control: true
-          metrics: true
-          printer: true          ui: true

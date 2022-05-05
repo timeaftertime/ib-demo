@@ -48,6 +48,7 @@ public class UnknownVisitor extends DemoDrama {
 		tip(container);
 		inBase();
 		inUniverse();
+		container.resize(initW(), initH());
 		while (!battle()) {
 		}
 		victory();
@@ -109,7 +110,6 @@ public class UnknownVisitor extends DemoDrama {
 
 	private boolean battle() {
 		container.reset();
-		container.resize(initW(), initH());
 		container.setBackgroud(universeBGI);
 		UniverseBattle universeBattle = new UniverseBattle(this, container);
 		if (!universeBattle.run()) {

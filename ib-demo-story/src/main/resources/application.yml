@@ -12,11 +12,4 @@ ib:
       enable: true
       stages:
       - cn.milai.ibdemo.story.UnknownVisitor
-      - cn.milai.ibdemo.story.DeepSeaCity  container:
-    plugin:      metrics:
-        interval: 0        categories:
-          physics: true
-          aliveCheck: true
-          control: true
-          metrics: true
-          printer: true          ui: true
+      - cn.milai.ibdemo.story.DeepSeaCity

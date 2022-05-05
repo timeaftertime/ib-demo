@@ -91,5 +91,17 @@
 			<groupId>cn.milai.ibdemo</groupId>
 			<artifactId>ib-demo-role</artifactId>
 		</dependency>
+		<!--  开启测试 metrics
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+		 -->
 	</dependencies>
 </project>
