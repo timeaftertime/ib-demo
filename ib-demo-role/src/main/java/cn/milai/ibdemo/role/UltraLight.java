@@ -1,11 +1,12 @@
 package cn.milai.ibdemo.role;
 
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Collider;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.role.nature.AlwaysAliveHealth;
+import cn.milai.ib.role.nature.Collider;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.Movable;
 import cn.milai.ib.role.weapon.bullet.AbstractBullet;
+import cn.milai.ib.stage.Stage;
 
 /**
  * 光线
@@ -24,14 +25,14 @@ public class UltraLight extends AbstractBullet {
 		setDirection(Math.PI / 2);
 		this.durationFrame = durationFrame;
 		deltaRadian = getDirection() / durationFrame;
-		setMovable(new UltraLightMovable());
+		setMovable(new UltraLightMovable(this));
 		getDamage().setValue(100);
 	}
 
 	@Override
-	protected void initItem() {
-		double w = container().getW();
-		double h = container().getH();
+	protected void onEnterStage(Stage stage) {
+		double w = stage().getW();
+		double h = stage().getH();
 		width = w / 6 + 1;
 		height = Math.sqrt(h * h + w * w);
 		setW(width);
@@ -41,17 +42,14 @@ public class UltraLight extends AbstractBullet {
 
 	@Override
 	protected Health createHealth() {
-		return new BaseHealth() {
-			@Override
-			public boolean isAlive() { return true; }
-		};
+		return new AlwaysAliveHealth(this);
 	}
 
 	@Override
 	public void afterMove(Movable m) {
 		durationFrame--;
 		if (durationFrame < 0) {
-			container().removeObject(this);
+			exit();
 		}
 		setDirection(getDirection() - deltaRadian);
 	}

@@ -1,14 +1,12 @@
 package cn.milai.ibdemo.endless;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cn.milai.ib.IBBeans;
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.container.lifecycle.ContainerEventLoopGroup;
+import cn.milai.ib.lifecycle.LifecycleLoopGroup;
 import cn.milai.ib.mode.AbstractGameMode;
+import cn.milai.ib.stage.Stage;
 
 /**
  * 无尽模式
@@ -18,12 +16,10 @@ import cn.milai.ib.mode.AbstractGameMode;
 @Component
 public class EndlessBattleMode extends AbstractGameMode {
 
-	private static final Logger LOG = LoggerFactory.getLogger(EndlessBattleMode.class);
-
 	private static final String THREAD_NAME = "EndlessBattle";
 
 	private Stage stage;
-	private ContainerEventLoopGroup eventLoopGroup;
+	private LifecycleLoopGroup eventLoopGroup;
 
 	private EndlessBattle endlessBattle;
 
@@ -42,11 +38,10 @@ public class EndlessBattleMode extends AbstractGameMode {
 	public void run() {
 		try {
 			setName(THREAD_NAME);
-			eventLoopGroup = new ContainerEventLoopGroup(1);
-			eventLoopGroup.next().register(stage).awaitUninterruptibly();
+			eventLoopGroup = new LifecycleLoopGroup(1);
+			eventLoopGroup.next().register(stage.lifecycle()).awaitUninterruptibly();
 			endlessBattle.run();
-		} catch (Exception e) {
-			LOG.debug("捕获异常并退出", e);
+		} finally {
 			eventLoopGroup.shutdownGracefully();
 		}
 	}

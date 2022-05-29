@@ -1,6 +1,6 @@
 package cn.milai.ibdemo.role;
 
-import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.plugin.control.cmd.Cmd;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ibdemo.container.plugin.control.CmdCode;
 

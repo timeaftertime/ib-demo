@@ -2,8 +2,8 @@ package cn.milai.ibdemo.container.plugin.form;
 
 import org.springframework.stereotype.Component;
 
-import cn.milai.ib.container.plugin.ui.screen.form.MouseLocationMapping;
-import cn.milai.ib.container.plugin.ui.screen.form.MouseMapping;
+import cn.milai.ib.plugin.ui.screen.form.MouseLocationMapping;
+import cn.milai.ib.plugin.ui.screen.form.MouseMapping;
 import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
 /**

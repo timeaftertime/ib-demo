@@ -4,19 +4,17 @@ import java.awt.Color;
 
 import cn.milai.common.thread.counter.BlockDownCounter;
 import cn.milai.common.thread.counter.Counter;
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.lifecycle.LifecycleContainer;
-import cn.milai.ib.container.listener.LifecycleListener;
-import cn.milai.ib.container.plugin.control.CommandShield;
-import cn.milai.ib.container.plugin.media.Audio;
-import cn.milai.ib.container.plugin.ui.BaseImage;
-import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.control.text.DramaDialog;
-import cn.milai.ib.control.text.TextLines;
+import cn.milai.ib.actor.prop.text.DramaDialog;
+import cn.milai.ib.actor.prop.text.TextLines;
 import cn.milai.ib.graphics.Images;
+import cn.milai.ib.plugin.audio.Audio;
+import cn.milai.ib.plugin.control.CommandShield;
+import cn.milai.ib.plugin.ui.BaseImage;
+import cn.milai.ib.plugin.ui.Image;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.ViewRole;
+import cn.milai.ib.stage.Stage;
+import cn.milai.ib.stage.Waits;
 import cn.milai.ibdemo.role.UltraFly;
 import cn.milai.ibdemo.role.bullet.Missile;
 import cn.milai.ibdemo.role.plane.PlayerPlane;
@@ -33,7 +31,7 @@ public class UnknownVisitor extends DemoDrama {
 	private static final int RESTART_BUTTON_Y = 403;
 	private static final String WARNING_AUDIO = "WARNING";
 
-	private Stage container;
+	private Stage stage;
 
 	private Image baseBGI = image("/img/tpc.png");
 	private Image universeBGI = image("/img/backgroud.jpg");
@@ -44,7 +42,7 @@ public class UnknownVisitor extends DemoDrama {
 
 	@Override
 	public void doRun(Stage container) {
-		this.container = container;
+		this.stage = container;
 		tip(container);
 		inBase();
 		inUniverse();
@@ -55,35 +53,36 @@ public class UnknownVisitor extends DemoDrama {
 	}
 
 	private void victory() {
-		container.setPined(true);
+		stage.setPined(true);
 		memberSay("what_happened");
-		PlayerRole player = container.getAll(PlayerRole.class).get(0);
-		double x = player.getX() > container.getW() / 2 ? container.getW() / 4 : container.getW() / 4 * 3;
-		ViewRole ultraFly = newViewRole(UltraFly.class, x, container.getH());
-		container.addObject(ultraFly);
+		PlayerRole player = (PlayerRole) stage.getAll(PlayerRole.class).toArray()[0];
+		double x = player.getX() > stage.getW() / 2 ? stage.getW() / 4 : stage.getW() / 4 * 3;
+		ViewRole ultraFly = newViewRole(UltraFly.class, x, stage.getH());
+		stage.addActor(ultraFly);
 		while (ultraFly.getIntY() > player.getIntY()) {
 			ultraFly.setY(ultraFly.getIntY() - 14);
-			Waits.wait(container, 1L);
+			Waits.wait(stage, 1L);
 		}
 		memberSay("it_is_ultra");
 		leaderSay("he_is_always_appear_at_critical_time");
 		ultraSay("nod");
 		CommandShield shield = new CommandShield();
-		container.addObject(shield);
+		stage.addActor(shield);
 		while (ultraFly.getIntY() + ultraFly.getIntH() > 0) {
 			ultraFly.setY(ultraFly.getIntY() - 21);
-			Waits.wait(container, 1L);
+			Waits.wait(stage, 1L);
 		}
-		container.removeObject(shield);
+		stage.removeActor(shield);
 		leaderSay("please_come_back");
 		memberSay("gig");
-		container.setPined(true);
-		container.reset();
-		container.resize(initW(), initH());
-		container.setBackgroud(starsBGI);
-		container.playAudio(audio(Audio.BGM_CODE, HEIR_OF_LIGHT));
+		stage.setPined(true);
+		stage.lifecycle().reset();
+		stage.clearActor();
+		stage.resize(initW(), initH());
+		stage.setBackgroud(starsBGI);
+		stage.playAudio(audio(Audio.BGM_CODE, HEIR_OF_LIGHT));
 		showBGMInfo();
-		Waits.wait(container, 30L);
+		Waits.wait(stage, 30L);
 		visitorSay("why_you_protect_human");
 		ultraSay("aggression_is_not_permit");
 		visitorSay("human_is_the_real_aggressor");
@@ -98,9 +97,9 @@ public class UnknownVisitor extends DemoDrama {
 
 	private void showBGMInfo() {
 		TextLines bgmInfo = newTextLines(7L, 28L, 7L, str("bgm_info2").split("\n"));
-		bgmInfo.setX(container.getW() - 1 - bgmInfo.getIntW());
-		bgmInfo.setY(container.getH() - container.getH());
-		container.addObject(bgmInfo);
+		bgmInfo.setX(stage.getW() - 1 - bgmInfo.getIntW());
+		bgmInfo.setY(stage.getH() - stage.getH());
+		stage.addActorSync(bgmInfo);
 	}
 
 	private void tip(Stage container) {
@@ -109,21 +108,16 @@ public class UnknownVisitor extends DemoDrama {
 	}
 
 	private boolean battle() {
-		container.reset();
-		container.setBackgroud(universeBGI);
-		UniverseBattle universeBattle = new UniverseBattle(this, container);
-		if (!universeBattle.run()) {
+		stage.lifecycle().reset();
+		stage.clearActor();
+		stage.setBackgroud(universeBGI);
+		UniverseBattle universeBattle = new UniverseBattle(this, stage);
+		if (!stage.lifecycle().isClosed() && !universeBattle.run()) {
 			Counter counter = new BlockDownCounter(1);
-			container.addLifecycleListener(new LifecycleListener() {
-				@Override
-				public void onClosed(LifecycleContainer container) {
-					counter.count();
-				}
-			});
-			container.addObject(newGameOverLabel(container.getW() / 2, GAME_OVER_LABEL_Y));
-			container.addObject(
-				newRestartButton(container.getW() / 2, RESTART_BUTTON_Y, () -> counter.count())
-			);
+			stage.onClosed().subscribeOne(e -> counter.count());
+			stage
+				.addActor(newGameOverLabel(stage.getW() / 2, GAME_OVER_LABEL_Y))
+				.addActor(newRestartButton(stage.getW() / 2, RESTART_BUTTON_Y, () -> counter.count()));
 			counter.await();
 			return false;
 		}
@@ -131,41 +125,41 @@ public class UnknownVisitor extends DemoDrama {
 	}
 
 	private void inUniverse() {
-		container.setBackgroud(universeBGI);
-		ViewRole dodgePlane = newViewRole(PlayerPlane.class, container.getW() / 2, container.getH() / 6 * 5);
-		container.addObject(dodgePlane);
+		stage.setBackgroud(universeBGI);
+		ViewRole dodgePlane = newViewRole(PlayerPlane.class, stage.getW() / 2, stage.getH() / 6 * 5);
+		stage.addActor(dodgePlane);
 		memberSay("what_do_you_want_to_do");
 		visitorSay("surrender_as_soon_as_possible");
 		leaderSay("why_do_you_want_to_aggress_the_earth");
 		visitorSay("the_earth_belongs_to_us");
-		ViewRole missile = newViewRole(Missile.class, container.getW() / 2, 0);
+		ViewRole missile = newViewRole(Missile.class, stage.getW() / 2, 0);
 		missile.rotate(Math.PI);
-		container.addObject(missile);
+		stage.addActor(missile);
 		int missileSpeedY = 35;
 		for (int i = 0; i < 5; i++) {
 			missile.moveY(missileSpeedY);
-			Waits.wait(container, 1L);
+			Waits.wait(stage, 1L);
 		}
 		memberSay("it_is_dangerous");
 		for (int i = 0; i < 5; i++) {
 			dodgePlane.moveX(11);
 			missile.moveY(missileSpeedY);
-			Waits.wait(container, 1L);
+			Waits.wait(stage, 1L);
 		}
-		while (missile.getIntY() + missile.getIntH() < container.getH()) {
+		while (missile.getIntY() + missile.getIntH() < stage.getH()) {
 			missile.moveY(missileSpeedY);
-			Waits.wait(container, 1L);
+			Waits.wait(stage, 1L);
 		}
-		container.removeObject(missile);
+		stage.removeActor(missile);
 		memberSay("apply_for_counterattack");
 		leaderSay("permit_counterattack");
 		reporterSay("there_will_be_helper");
 		memberSay("gig");
-		container.removeObject(dodgePlane);
+		stage.removeActor(dodgePlane);
 	}
 
 	private void inBase() {
-		container.setBackgroud(baseBGI);
+		stage.setBackgroud(baseBGI);
 
 		reporterSay("he_is_back");
 		leaderSay("you_have_been_working_very_hard");
@@ -174,9 +168,9 @@ public class UnknownVisitor extends DemoDrama {
 		memberSay("what_is_the_box");
 		leaderSay("heard_that_is_top_secret");
 
-		container.playAudio(audio(WARNING_AUDIO, "/audio/warning.mp3"));
+		stage.playAudio(audio(WARNING_AUDIO, "/audio/warning.mp3"));
 		info("alarm_sounded");
-		container.stopAudio(WARNING_AUDIO);
+		stage.stopAudio(WARNING_AUDIO);
 		leaderSay("reporter_what_happened");
 		reporterSay("the_unkown_visitor_appear");
 		leaderSay("please_go_and_investigate");
@@ -191,12 +185,13 @@ public class UnknownVisitor extends DemoDrama {
 
 	private void showPlaneTakeOff() {
 		info("take_off");
-		ViewRole plane = newViewRole(PlayerPlane.class, container.getW() / 2, 350);
-		container.addObject(plane);
+		ViewRole plane = newViewRole(PlayerPlane.class, stage.getW() / 2, 350);
+		stage.addActorSync(plane);
 		for (int speed = 0; plane.getIntY() + plane.getIntH() > 0; speed -= 1) {
 			plane.moveY(speed);
-			Waits.wait(container, 1L);
+			Waits.wait(stage, 1L);
 		}
+		stage.removeActor(plane);
 	}
 
 	private void leaderSay(String stringCode) {
@@ -225,10 +220,10 @@ public class UnknownVisitor extends DemoDrama {
 
 	private void showDialog(String speakerImg, String speakerName, String stringCode) {
 		DramaDialog dialog = newDramaDialog(
-			0.5 * container.getW(), 0.75 * container.getH(), speakerImg, speakerName, stringCode
+			0.5 * stage.getW(), 0.75 * stage.getH(), speakerImg, speakerName, stringCode
 		);
-		container.addObject(dialog);
-		Waits.waitRemove(dialog, 5);
+		stage.addActorSync(dialog);
+		Waits.waitRemove(dialog);
 	}
 
 	@Override

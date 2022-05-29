@@ -1,15 +1,11 @@
 package cn.milai.ibdemo.story;
 
-import java.util.List;
-
-import cn.milai.ib.container.Container;
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.listener.ItemListener;
-import cn.milai.ib.container.plugin.media.Audio;
-import cn.milai.ib.control.BloodStrip;
-import cn.milai.ib.control.text.TextLines;
-import cn.milai.ib.item.Item;
+import cn.milai.ib.actor.Actor;
+import cn.milai.ib.actor.prop.BloodStrip;
+import cn.milai.ib.actor.prop.text.TextLines;
+import cn.milai.ib.plugin.audio.Audio;
+import cn.milai.ib.stage.Stage;
+import cn.milai.ib.stage.Waits;
 import cn.milai.ibdemo.role.fish.Dolphin;
 import cn.milai.ibdemo.role.fish.Shark;
 
@@ -28,40 +24,37 @@ public class DeepSeaBattle extends Battle {
 
 	@Override
 	protected boolean doRun() {
-		container().playAudio(drama.audio(Audio.BGM_CODE, BATTLE_BGM));
+		stage().playAudio(drama.audio(Audio.BGM_CODE, BATTLE_BGM));
 		showBGMInfo();
-		Dolphin dolphin = drama.newDolphin(container().getW() / 5, container().getH() / 2);
-		BloodStrip dolphinBlood = drama.newBloodStrip(container().getW() / 4, container().getH() * 9 / 10, dolphin);
-		container().addObject(dolphin);
-		container().addObject(dolphinBlood);
-		container().addItemListener(new ItemListener() {
-			@Override
-			public void onRemoved(Container container, List<Item> objs) {
-				for (Item obj : objs) {
-					if (dolphin == obj) {
-						container().stopAudio(Audio.BGM_CODE);
-						stop();
-					}
+
+		Dolphin dolphin = drama.newDolphin(stage().getW() / 5, stage().getH() / 2);
+		BloodStrip dolphinBlood = drama.newBloodStrip(stage().getW() / 4, stage().getH() * 9 / 10, dolphin);
+		stage().onRemoveActor().subscribe(e -> {
+			for (Actor actor : e.actors()) {
+				if (dolphin == actor) {
+					stage().stopAudio(Audio.BGM_CODE);
+					stop();
 				}
 			}
 		});
+		stage().addActor(dolphin).addActor(dolphinBlood);
+
 		Shark shark = drama.newShark();
-		BloodStrip sharkBlood = drama.newBloodStrip(container().getW() * 3 / 4, container().getH() / 10, shark);
-		container().addObject(shark);
-		container().addObject(sharkBlood);
+		BloodStrip sharkBlood = drama.newBloodStrip(stage().getW() * 3 / 4, stage().getH() / 10, shark);
+		stage().addActor(shark).addActorSync(sharkBlood);
 		while (shark.getHealth().isAlive()) {
-			Waits.wait(container(), 10L);
+			Waits.wait(stage(), 10L);
 		}
-		Waits.wait(container(), 30L);
-		container().removeObject(sharkBlood);
+		Waits.wait(stage(), 30L);
+		stage().removeActorSync(sharkBlood);
 		return dolphin.getHealth().isAlive();
 	}
 
 	private void showBGMInfo() {
 		TextLines bgmInfo = drama.newTextLines(7L, 28L, 7L, drama.str("bgm_info").split("\n"));
-		bgmInfo.setX(container().getW() - 1 - bgmInfo.getIntW());
-		bgmInfo.setY(container().getH() - 1 - bgmInfo.getIntH());
-		container().addObject(bgmInfo);
+		bgmInfo.setX(stage().getW() - 1 - bgmInfo.getIntW());
+		bgmInfo.setY(stage().getH() - 1 - bgmInfo.getIntH());
+		stage().addActor(bgmInfo);
 	}
 
 }

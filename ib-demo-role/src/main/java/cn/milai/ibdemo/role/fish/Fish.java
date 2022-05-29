@@ -1,9 +1,9 @@
 package cn.milai.ibdemo.role.fish;
 
-import cn.milai.ib.role.property.holder.AwareMovableHolder;
-import cn.milai.ib.role.property.holder.ColliderHolder;
-import cn.milai.ib.role.property.holder.ExplosibleHolder;
-import cn.milai.ib.role.property.holder.RigidbodyHolder;
+import cn.milai.ib.role.nature.holder.AwareMovableHolder;
+import cn.milai.ib.role.nature.holder.ColliderHolder;
+import cn.milai.ib.role.nature.holder.ExplosibleHolder;
+import cn.milai.ib.role.nature.holder.RigidbodyHolder;
 
 /**
  * 水中游的游戏角色

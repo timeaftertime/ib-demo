@@ -1,7 +1,7 @@
 package cn.milai.ibdemo.container.plugin.control;
 
-import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.container.plugin.control.cmd.PointCmd;
+import cn.milai.ib.plugin.control.cmd.Cmd;
+import cn.milai.ib.plugin.control.cmd.PointCmd;
 
 /**
  * (鼠标)移动 {@link Cmd}

@@ -1,14 +1,14 @@
 package cn.milai.ibdemo.role.fish;
 
-import cn.milai.ib.config.Configurable;
+import cn.milai.ib.actor.config.Configurable;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Collider;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.Rigidbody;
-import cn.milai.ib.role.property.base.BaseCollider;
-import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.role.nature.Collider;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.Rigidbody;
+import cn.milai.ib.role.nature.base.BaseCollider;
+import cn.milai.ib.role.nature.base.BaseHealth;
 
 /**
  * 鲨鱼
@@ -27,7 +27,7 @@ public class Shark extends EnemyFish implements BotRole {
 	private int initWaitFrame;
 
 	public Shark() {
-		setCollider(new BaseCollider() {
+		setCollider(new BaseCollider(this) {
 			@Override
 			public void onCollided(Collider crashed) {
 				Role r = crashed.owner();
@@ -35,8 +35,8 @@ public class Shark extends EnemyFish implements BotRole {
 					return;
 				}
 				r.getHealth().changeHP(Shark.this, -1);
-				lastAttackFrame = container().getFrame();
-				Rigidbody b2 = r.getProperty(Rigidbody.class);
+				lastAttackFrame = stage().lifecycle().getFrame();
+				Rigidbody b2 = r.getNature(Rigidbody.NAME);
 				if (b2 != null) {
 					b2.addExtraForceX(getMovable().getSpeedX() / b2.getMass());
 				}
@@ -44,19 +44,19 @@ public class Shark extends EnemyFish implements BotRole {
 
 			@Override
 			public void onTouching(Collider c) {
-				if (notCollied(c.owner()) || lastAttackFrame + attackInterval > container().getFrame()) {
+				if (notCollied(c.owner()) || lastAttackFrame + attackInterval > stage().lifecycle().getFrame()) {
 					return;
 				}
 				c.owner().getHealth().changeHP(Shark.this, -1);
-				lastAttackFrame = container().getFrame();
+				lastAttackFrame = stage().lifecycle().getFrame();
 			}
 		});
 	}
 
 	@Override
 	protected void initEnemyFish() {
-		setX(container().getW());
-		setY(container().getH());
+		setX(stage().getW());
+		setY(stage().getH());
 		initWaitFrame = waitFrame;
 		lastSetForceFrame = -changeForceInterval;
 		lastAttackFrame = -attackInterval;
@@ -65,13 +65,13 @@ public class Shark extends EnemyFish implements BotRole {
 
 	@Override
 	protected Health createHealth() {
-		return new BaseHealth() {
+		return new BaseHealth(this) {
 			@Override
 			public synchronized void changeHP(Role attacker, int life) throws IllegalArgumentException {
 				if (notCollied(attacker)) {
 					return;
 				}
-				waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getHP() / initHP() * initWaitFrame));
+				waitFrame = Integer.max(minWaitFrame, (int) (1.0 * getHP() / getInitHP() * initWaitFrame));
 				if (status.loseLife(attacker, life)) {
 					super.changeHP(attacker, life);
 				}
@@ -80,16 +80,22 @@ public class Shark extends EnemyFish implements BotRole {
 	}
 
 	// TODO 鲨鱼上面部分空白不进入判定，临时方案
-	private double top() { return getY() + getH() * 0.4; }
+	private double top() {
+		return getY() + getH() * 0.4;
+	}
 
-	private boolean notCollied(Role r) { return r.getY() + r.getH() < top(); }
+	private boolean notCollied(Role r) {
+		return r.getY() + r.getH() < top();
+	}
 
 	@Override
-	public void beforeRefreshSpeeds(Movable m) { status.beforeRefreshSpeeds(getRigidbody()); }
+	public void beforeRefreshSpeeds(Movable m) {
+		status.beforeRefreshSpeeds(getRigidbody());
+	}
 
 	@Override
 	public void afterRefreshSpeeds(Movable m) {
-		long nowFrame = container().getFrame();
+		long nowFrame = stage().lifecycle().getFrame();
 		if (lastSetForceFrame + changeForceInterval > nowFrame) {
 			return;
 		}
@@ -97,14 +103,20 @@ public class Shark extends EnemyFish implements BotRole {
 	}
 
 	@Override
-	public void afterMove(Movable m) { status.afterMove(m); }
+	public void afterMove(Movable m) {
+		status.afterMove(m);
+	}
 
 	private interface Status {
-		default void beforeRefreshSpeeds(Rigidbody r) {};
+		default void beforeRefreshSpeeds(Rigidbody r) {
+		};
 
-		default void afterMove(Movable m) {}
+		default void afterMove(Movable m) {
+		}
 
-		default boolean loseLife(Role attacker, int life) { return true; }
+		default boolean loseLife(Role attacker, int life) {
+			return true;
+		}
 	}
 
 	private class Wait implements Status {
@@ -125,7 +137,9 @@ public class Shark extends EnemyFish implements BotRole {
 		}
 
 		@Override
-		public boolean loseLife(Role character, int life) { return false; }
+		public boolean loseLife(Role character, int life) {
+			return false;
+		}
 
 	}
 
@@ -134,7 +148,7 @@ public class Shark extends EnemyFish implements BotRole {
 		private Attack(Movable m) {
 			m.setSpeedX(0);
 			m.setSpeedY(0);
-			lastSetForceFrame = container().getFrame() - changeForceInterval;
+			lastSetForceFrame = stage().lifecycle().getFrame() - changeForceInterval;
 			setY(getAttackTarget().centerY() - getH() * 0.7);
 
 		}
@@ -165,7 +179,7 @@ public class Shark extends EnemyFish implements BotRole {
 			if (getDirection() < 0) {
 				return getX() + getW() < 0;
 			}
-			return getX() >= container().getW();
+			return getX() >= stage().getW();
 		}
 
 	}

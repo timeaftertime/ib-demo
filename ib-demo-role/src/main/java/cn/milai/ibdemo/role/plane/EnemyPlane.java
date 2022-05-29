@@ -1,5 +1,6 @@
 package cn.milai.ibdemo.role.plane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.milai.common.base.Randoms;
@@ -7,8 +8,9 @@ import cn.milai.ib.role.BaseBot;
 import cn.milai.ib.role.Bot;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.PlayerRole;
-import cn.milai.ib.role.property.base.BaseScore;
-import cn.milai.ib.role.property.holder.ScoreHolder;
+import cn.milai.ib.role.nature.base.BaseScore;
+import cn.milai.ib.role.nature.holder.ScoreHolder;
+import cn.milai.ib.stage.Stage;
 
 /**
  * 敌机
@@ -21,20 +23,21 @@ public abstract class EnemyPlane extends AbstractPlane implements BotRole, Score
 
 	public EnemyPlane() {
 		setDirection(Math.PI);
-		setScore(new BaseScore());
+		setScore(new BaseScore(this));
 	}
 
 	@Override
-	protected final void initItem() {
+	protected void onEnterStage(Stage stage) {
 		selectAttackTarget();
 		initEnemyPlane();
 	}
 
-	protected void initEnemyPlane() {}
+	protected void initEnemyPlane() {
+	}
 
 	@Override
 	public void selectAttackTarget() {
-		List<PlayerRole> targets = container().getAll(PlayerRole.class);
+		List<PlayerRole> targets = new ArrayList<>(stage().getAll(PlayerRole.class));
 		if (targets.size() <= 0) {
 			return;
 		}
@@ -42,7 +45,9 @@ public abstract class EnemyPlane extends AbstractPlane implements BotRole, Score
 	}
 
 	@Override
-	public void setAttackTarget(PlayerRole target) { enemy.setAttackTarget(target); }
+	public void setAttackTarget(PlayerRole target) {
+		enemy.setAttackTarget(target);
+	}
 
 	public PlayerRole getAttackTarget() { return enemy.getAttackTarget(); }
 

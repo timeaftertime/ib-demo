@@ -6,10 +6,12 @@ import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.Explosion;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.base.BaseHealth;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ib.stage.Stage;
+import cn.milai.ibdemo.ActorUtil;
 import cn.milai.ibdemo.role.DemoPlayerRole;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 
@@ -28,13 +30,13 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	public PlayerPlane() {
 		player = new BasePlayer();
 		shooter = new BlueShooter(3, 3, this);
+		onMakeUp(e -> initStatus = new Status());
 	}
 
 	@Override
-	public Player player() { return player; }
-
-	@Override
-	protected void initItem() { initStatus = new Status(); }
+	public Player player() {
+		return player;
+	}
 
 	/**
 	 * 设置使用的子弹发射器
@@ -64,11 +66,17 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 	}
 
 	@Override
-	public void afterMove(Movable m) { ensureIn(0, container().getW(), 0, container().getH()); }
+	public void afterMove(Movable m) {
+		Stage stage = stage();
+		if (stage == null) {
+			return;
+		}
+		ActorUtil.ensureIn(this, 0, stage.getW(), 0, stage.getH());
+	}
 
 	@Override
 	protected Health createHealth() {
-		return new BaseHealth() {
+		return new BaseHealth(this) {
 			@Override
 			public synchronized void changeHP(Role character, int life) {
 				super.changeHP(character, life);
@@ -77,7 +85,7 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 					// 如果没有死亡，显示受伤效果
 					if (isAlive()) {
 						for (Explosion explosion : getExplosible().createExplosions()) {
-							container().addObject(explosion);
+							stage().addActor(explosion);
 						}
 					}
 				}
@@ -100,7 +108,9 @@ public class PlayerPlane extends AbstractPlane implements DemoPlayerRole {
 		}
 	}
 
-	private Status currentStatus() { return statusStack.isEmpty() ? initStatus : statusStack.peek(); }
+	private Status currentStatus() {
+		return statusStack.isEmpty() ? initStatus : statusStack.peek();
+	}
 
 	public synchronized void rollBackStatus() {
 		if (statusStack.isEmpty()) {

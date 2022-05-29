@@ -158,10 +158,9 @@ ibconfig:
                     BaseExplosion:
                         w: 33
                         h: 33
+                        lastFrame: 10
                         health:
                             hp: 1
-                            lastFrame: 10
                     FishFall:
                         speed: 10
-                        health:
-                            lastFrame: 40
+                        lastFrame: 40

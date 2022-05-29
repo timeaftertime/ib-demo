@@ -2,8 +2,9 @@ package cn.milai.ibdemo.story;
 
 import cn.milai.ib.InfinityBattle;
 import cn.milai.ib.InfinityBattleApplication;
-import cn.milai.ib.container.autoconfig.annotation.EnableMediaAutoConfig;
-import cn.milai.ib.container.autoconfig.annotation.EnableUIAutoConfig;
+import cn.milai.ib.autoconfig.annotation.EnableDresserAutoConfig;
+import cn.milai.ib.autoconfig.annotation.EnableMediaAutoConfig;
+import cn.milai.ib.autoconfig.annotation.EnableUIAutoConfig;
 
 /**
  * 启动类
@@ -11,6 +12,7 @@ import cn.milai.ib.container.autoconfig.annotation.EnableUIAutoConfig;
  */
 @EnableMediaAutoConfig
 @EnableUIAutoConfig
+@EnableDresserAutoConfig
 @InfinityBattleApplication
 public class Main {
 

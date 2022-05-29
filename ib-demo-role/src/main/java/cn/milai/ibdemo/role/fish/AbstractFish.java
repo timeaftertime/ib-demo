@@ -1,12 +1,12 @@
 package cn.milai.ibdemo.role.fish;
 
-import cn.milai.ib.config.Configurable;
-import cn.milai.ib.item.property.Painter;
+import cn.milai.ib.actor.config.Configurable;
+import cn.milai.ib.actor.nature.Painter;
 import cn.milai.ib.role.BaseRole;
-import cn.milai.ib.role.property.ReversiblePainter;
-import cn.milai.ib.role.property.base.BaseCollider;
-import cn.milai.ib.role.property.base.BaseMovable;
-import cn.milai.ib.role.property.base.BaseRigidbody;
+import cn.milai.ib.role.nature.ReversiblePainter;
+import cn.milai.ib.role.nature.base.BaseCollider;
+import cn.milai.ib.role.nature.base.BaseMovable;
+import cn.milai.ib.role.nature.base.BaseRigidbody;
 import cn.milai.ibdemo.role.explosion.FishFallExplosible;
 
 /**
@@ -20,14 +20,16 @@ public abstract class AbstractFish extends BaseRole implements Fish {
 	private int forceY;
 
 	public AbstractFish() {
-		setRigidbody(new BaseRigidbody());
-		setExplosible(new FishFallExplosible());
-		setCollider(new BaseCollider());
-		setMovable(new BaseMovable());
+		setRigidbody(new BaseRigidbody(this));
+		setExplosible(new FishFallExplosible(this));
+		setCollider(new BaseCollider(this));
+		setMovable(new BaseMovable(this));
 	}
 
 	@Override
-	protected Painter createPainter() { return new ReversiblePainter(true, false); }
+	protected Painter createPainter() {
+		return new ReversiblePainter(this, true, false);
+	}
 
 	public int getForceX() { return forceX; }
 

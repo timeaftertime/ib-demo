@@ -25,7 +25,7 @@ public class DoubleRedShooter extends AbstractBulletShooter {
 		setShootInterval(
 			Long.max(
 				MIN_SHOOT_INTERVAL,
-				(long) (1.0 * owner.getHealth().getHP() / owner.getHealth().initHP() * INIT_SHOOT_INTERVAL)
+				(long) (1.0 * owner.getHealth().getHP() / owner.getHealth().getInitHP() * INIT_SHOOT_INTERVAL)
 			)
 		);
 		return super.canShoot();

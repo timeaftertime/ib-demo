@@ -1,16 +1,18 @@
 package cn.milai.ibdemo.role.fish;
 
-import cn.milai.ib.config.Configurable;
-import cn.milai.ib.item.Item;
+import cn.milai.ib.actor.Actor;
+import cn.milai.ib.actor.config.Configurable;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.Player;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.Rigidbody;
-import cn.milai.ib.role.property.base.BaseHealth;
-import cn.milai.ib.role.property.base.BaseMovable;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.Rigidbody;
+import cn.milai.ib.role.nature.base.BaseHealth;
+import cn.milai.ib.role.nature.base.BaseMovable;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ib.stage.Stage;
+import cn.milai.ibdemo.ActorUtil;
 import cn.milai.ibdemo.role.DemoPlayerRole;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 
@@ -32,12 +34,10 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	private int damagedCnt;
 
 	public Dolphin() {
-		setMovable(new BaseMovable());
+		setMovable(new BaseMovable(this));
 		setDirection(Math.PI / 2);
+		onMakeUp(e -> shooter = new BlueShooter(shootInterval, maxBulletNum, this));
 	}
-
-	@Override
-	protected void initItem() { shooter = new BlueShooter(shootInterval, maxBulletNum, this); }
 
 	@Override
 	public void beforeRefreshSpeeds(Movable m) {
@@ -48,7 +48,7 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 		if (damagedCnt > 0) {
 			damagedCnt--;
 			if (damagedCnt <= 0) {
-				setStatus(Item.STATUS_DEFAULT);
+				setStatus(Actor.STATUS_DEFAULT);
 			}
 		}
 		if (isUp()) {
@@ -68,7 +68,7 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 			r.addForceX(getForceX());
 		}
 		if (damagedCnt <= 0 && r.getForceX() == 0 && r.getForceY() == 0) {
-			setStatus(Item.STATUS_DEFAULT);
+			setStatus(Actor.STATUS_DEFAULT);
 		}
 		if (player.isA()) {
 			shooter.attack();
@@ -84,11 +84,17 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	}
 
 	@Override
-	public void afterMove(Movable m) { ensureIn(0, container().getW(), 0, container().getH()); }
+	public void afterMove(Movable m) {
+		Stage stage = stage();
+		if (stage == null) {
+			return;
+		}
+		ActorUtil.ensureIn(this, 0, stage.getW(), 0, stage.getH());
+	}
 
 	@Override
 	protected Health createHealth() {
-		return new BaseHealth() {
+		return new BaseHealth(this) {
 			@Override
 			public synchronized void changeHP(Role character, int life) throws IllegalArgumentException {
 				damagedCnt = 8;
@@ -99,13 +105,19 @@ public class Dolphin extends AbstractFish implements DemoPlayerRole {
 	}
 
 	@Override
-	public Player player() { return player; }
+	public Player player() {
+		return player;
+	}
 
 	@Override
-	public void onSetLeft() { setDirection(-Math.PI / 2); }
+	public void onSetLeft() {
+		setDirection(-Math.PI / 2);
+	}
 
 	@Override
-	public void onSetRight() { setDirection(Math.PI / 2); }
+	public void onSetRight() {
+		setDirection(Math.PI / 2);
+	}
 
 	public int getShootInterval() { return shootInterval; }
 

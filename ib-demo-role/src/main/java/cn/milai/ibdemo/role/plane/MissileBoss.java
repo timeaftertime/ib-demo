@@ -1,14 +1,14 @@
 package cn.milai.ibdemo.role.plane;
 
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.config.Configurable;
-import cn.milai.ib.config.ItemConfigApplier;
+import cn.milai.ib.actor.config.Configurable;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.Role;
-import cn.milai.ib.role.property.Health;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.base.BaseHealth;
+import cn.milai.ib.role.nature.Health;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.base.BaseHealth;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ibdemo.ActorUtil;
 import cn.milai.ibdemo.role.bullet.shooter.DoubleRedShooter;
 import cn.milai.ibdemo.role.bullet.shooter.MissileShooter;
 import cn.milai.ibdemo.role.explosion.BaseExplosion;
@@ -17,7 +17,7 @@ import cn.milai.ibdemo.role.explosion.BaseExplosion;
  * 导弹 BOSS
  * @author milai
  */
-public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
+public class MissileBoss extends EnemyPlane {
 
 	private double commingMaxY;
 	private double prepareMinY;
@@ -38,17 +38,19 @@ public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 		sideShooter = new MissileShooter(this);
 	}
 
-	protected void initEnemyPlane() { status = new Comming(); };
+	protected void initEnemyPlane() {
+		status = new Comming();
+	};
 
 	protected Health createHealth() {
-		return new BaseHealth() {
+		return new BaseHealth(this) {
 			@Override
 			public synchronized void changeHP(Role character, int life) throws IllegalArgumentException {
 				super.changeHP(character, life);
 				if (isAlive()) {
-					container().addObject(applyCenter(new BaseExplosion(), character.centerX(), character.centerY()));
+					stage().addActor(new BaseExplosion().centerXY(character.centerX(), character.centerY()));
 				}
-				if (!getStatus().equals(STATUS_DANGER) && getHP() <= initHP() / 4) {
+				if (!getStatus().equals(STATUS_DANGER) && getHP() <= getInitHP() / 4) {
 					setStatus(STATUS_DANGER);
 				}
 			}
@@ -62,12 +64,16 @@ public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 	}
 
 	@Override
-	public void afterMove(Movable m) { status.afterMove(m); }
+	public void afterMove(Movable m) {
+		status.afterMove(m);
+	}
 
 	private interface Status {
-		default void beforeRefreshSpeeds(Movable m) {}
+		default void beforeRefreshSpeeds(Movable m) {
+		}
 
-		default void afterMove(Movable m) {}
+		default void afterMove(Movable m) {
+		}
 	}
 
 	private class Comming implements Status {
@@ -89,7 +95,7 @@ public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 
 	private class Pareparing implements Status {
 
-		private final long CREATE_FRAME = container().getFrame();
+		private final long CREATE_FRAME = stage().lifecycle().getFrame();
 
 		public Pareparing() {
 			Movable m = getMovable();
@@ -99,7 +105,7 @@ public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 
 		@Override
 		public void beforeRefreshSpeeds(Movable m) {
-			if (getX() + getW() >= container().getW()) {
+			if (getX() + getW() >= stage().getW()) {
 				m.setSpeedX(-Math.abs(m.getSpeedX()));
 			} else if (getIntX() <= 0) {
 				m.setSpeedX(Math.abs(m.getSpeedX()));
@@ -114,8 +120,8 @@ public class MissileBoss extends EnemyPlane implements ItemConfigApplier {
 
 		@Override
 		public void afterMove(Movable m) {
-			ensureIn(0, container().getW(), prepareMinY, prepareMaxY);
-			if (container().getFrame() >= CREATE_FRAME + prepareInterval) {
+			ActorUtil.ensureIn(MissileBoss.this, 0, stage().getW(), prepareMinY, prepareMaxY);
+			if (stage().lifecycle().getFrame() >= CREATE_FRAME + prepareInterval) {
 				status = new Pursuing();
 			}
 		}

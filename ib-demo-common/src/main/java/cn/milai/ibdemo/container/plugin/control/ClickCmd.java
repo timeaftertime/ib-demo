@@ -1,6 +1,6 @@
 package cn.milai.ibdemo.container.plugin.control;
 
-import cn.milai.ib.container.plugin.control.cmd.PointCmd;
+import cn.milai.ib.plugin.control.cmd.PointCmd;
 
 /**
  * {@link CmdCode#CLICK} 类型指令

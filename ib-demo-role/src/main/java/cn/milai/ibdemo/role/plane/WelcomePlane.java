@@ -1,6 +1,6 @@
 package cn.milai.ibdemo.role.plane;
 
-import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.nature.Movable;
 
 /**
  * 简单直行的 {@link EnemyPlane}
@@ -17,11 +17,14 @@ public class WelcomePlane extends EnemyPlane {
 	}
 
 	@Override
-	public void afterMove(Movable m) { removeIfOutOfOwner(); }
+	public void afterMove(Movable m) {
+		removeIfOutOfOwner();
+	}
 
 	private void removeIfOutOfOwner() {
-		if (getIntY() > container().getH())
-			container().removeObject(this);
+		if (getIntY() > stage().getH()) {
+			stage().removeActor(this);
+		}
 	}
 
 }

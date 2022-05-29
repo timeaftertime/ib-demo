@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import cn.milai.ib.InfinityBattleMod;
-import cn.milai.ib.config.IBConfig;
+import cn.milai.ib.actor.config.IBConfig;
 import cn.milai.ib.util.YamlProperySourceFactory;
 
 /**

@@ -1,6 +1,6 @@
 package cn.milai.ibdemo.container.plugin.control;
 
-import cn.milai.ib.container.plugin.control.cmd.Cmd;
+import cn.milai.ib.plugin.control.cmd.Cmd;
 
 /**
  * {@link Cmd} 类型

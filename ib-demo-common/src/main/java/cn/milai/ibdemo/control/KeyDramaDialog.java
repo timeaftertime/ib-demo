@@ -2,10 +2,10 @@ package cn.milai.ibdemo.control;
 
 import org.springframework.core.annotation.Order;
 
-import cn.milai.ib.config.ConfigAware;
-import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.control.text.DramaDialog;
+import cn.milai.ib.actor.config.ConfigAware;
+import cn.milai.ib.actor.prop.text.DramaDialog;
+import cn.milai.ib.plugin.control.cmd.Cmd;
+import cn.milai.ib.plugin.ui.Image;
 import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
 /**

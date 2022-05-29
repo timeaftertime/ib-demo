@@ -1,7 +1,8 @@
 package cn.milai.ibdemo.role;
 
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.base.BaseMovable;
+import cn.milai.ib.role.Role;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.base.BaseMovable;
 
 /**
  * {@link UltraLight} 的 {@link Movable}
@@ -9,6 +10,10 @@ import cn.milai.ib.role.property.base.BaseMovable;
  * @date 2021.06.26
  */
 public class UltraLightMovable extends BaseMovable {
+
+	public UltraLightMovable(Role owner) {
+		super(owner);
+	}
 
 	@Override
 	public UltraLight owner() {

@@ -4,10 +4,10 @@ import java.awt.event.KeyEvent;
 
 import org.springframework.stereotype.Component;
 
-import cn.milai.ib.container.plugin.control.cmd.BaseCmd;
-import cn.milai.ib.container.plugin.control.cmd.Cmd;
-import cn.milai.ib.container.plugin.ui.screen.form.KeyCodeMapping;
-import cn.milai.ib.container.plugin.ui.screen.form.KeyMapping;
+import cn.milai.ib.plugin.control.cmd.BaseCmd;
+import cn.milai.ib.plugin.control.cmd.Cmd;
+import cn.milai.ib.plugin.ui.screen.form.KeyCodeMapping;
+import cn.milai.ib.plugin.ui.screen.form.KeyMapping;
 import cn.milai.ibdemo.container.plugin.control.CmdCode;
 
 /**

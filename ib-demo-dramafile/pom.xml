@@ -19,7 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.milai.ib</groupId>
-			<artifactId>ib-container</artifactId>
+			<artifactId>ib-stage</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai.ibdramafile</groupId>

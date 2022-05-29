@@ -2,14 +2,14 @@ package cn.milai.ibdemo.story;
 
 import java.util.List;
 
-import cn.milai.ib.control.BloodStrip;
-import cn.milai.ib.control.GameOverLabel;
-import cn.milai.ib.control.LifeCounter;
-import cn.milai.ib.control.button.RestartButton;
-import cn.milai.ib.control.stage.Curtain;
-import cn.milai.ib.control.text.DramaDialog;
-import cn.milai.ib.control.text.Selections;
-import cn.milai.ib.control.text.TextLines;
+import cn.milai.ib.actor.prop.BloodStrip;
+import cn.milai.ib.actor.prop.Curtain;
+import cn.milai.ib.actor.prop.GameOverLabel;
+import cn.milai.ib.actor.prop.LifeCounter;
+import cn.milai.ib.actor.prop.button.RestartButton;
+import cn.milai.ib.actor.prop.text.DramaDialog;
+import cn.milai.ib.actor.prop.text.Selections;
+import cn.milai.ib.actor.prop.text.TextLines;
 import cn.milai.ib.mode.drama.AbstractDrama;
 import cn.milai.ib.mode.drama.Drama;
 import cn.milai.ib.role.Role;
@@ -108,8 +108,8 @@ public abstract class DemoDrama extends AbstractDrama {
 		return DemoFactory.newMissileBoss(x, y);
 	}
 
-	protected BaseExplosion newBaseExplosion() {
-		return DemoFactory.newBaseExplosion();
+	protected BaseExplosion newBaseExplosion(long lastFrame) {
+		return DemoFactory.makeUpBaseExplosion(lastFrame);
 	}
 
 	protected Dolphin newDolphin(double x, double y) {

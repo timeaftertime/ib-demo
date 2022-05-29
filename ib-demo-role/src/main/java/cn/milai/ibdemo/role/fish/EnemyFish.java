@@ -1,5 +1,6 @@
 package cn.milai.ibdemo.role.fish;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.milai.common.base.Randoms;
@@ -7,8 +8,9 @@ import cn.milai.ib.role.BaseBot;
 import cn.milai.ib.role.Bot;
 import cn.milai.ib.role.BotRole;
 import cn.milai.ib.role.PlayerRole;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.Rigidbody;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.Rigidbody;
+import cn.milai.ib.stage.Stage;
 
 /**
  * 敌方鱼类
@@ -19,10 +21,12 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 
 	private Bot enemy = new BaseBot();
 
-	public EnemyFish() { setDirection(-Math.PI / 4); }
+	public EnemyFish() {
+		setDirection(-Math.PI / 4);
+	}
 
 	@Override
-	protected final void initItem() {
+	protected void onEnterStage(Stage stage) {
 		selectAttackTarget();
 		initEnemyFish();
 	}
@@ -43,7 +47,7 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 
 	@Override
 	public void selectAttackTarget() {
-		List<PlayerRole> targets = container().getAll(PlayerRole.class);
+		List<PlayerRole> targets = new ArrayList<>(stage().getAll(PlayerRole.class));
 		if (targets.size() <= 0) {
 			return;
 		}
@@ -51,7 +55,9 @@ public abstract class EnemyFish extends AbstractFish implements BotRole {
 	}
 
 	@Override
-	public void setAttackTarget(PlayerRole target) { enemy.setAttackTarget(target); }
+	public void setAttackTarget(PlayerRole target) {
+		enemy.setAttackTarget(target);
+	}
 
 	@Override
 	public PlayerRole getAttackTarget() { return enemy.getAttackTarget(); }

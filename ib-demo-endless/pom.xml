@@ -77,11 +77,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>cn.milai.ib</groupId>
-			<artifactId>ib-control</artifactId>
+			<artifactId>ib-prop</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai.ib</groupId>
-			<artifactId>ib-container</artifactId>
+			<artifactId>ib-stage</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>cn.milai.ib</groupId>

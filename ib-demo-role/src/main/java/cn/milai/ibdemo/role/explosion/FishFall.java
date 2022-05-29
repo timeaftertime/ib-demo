@@ -2,10 +2,10 @@ package cn.milai.ibdemo.role.explosion;
 
 import java.awt.image.BufferedImage;
 
-import cn.milai.ib.config.Configurable;
+import cn.milai.ib.actor.config.Configurable;
+import cn.milai.ib.actor.nature.BasePainter;
+import cn.milai.ib.actor.nature.Painter;
 import cn.milai.ib.graphics.Images;
-import cn.milai.ib.item.BasePainter;
-import cn.milai.ib.item.property.Painter;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.AbstractExplosion;
 
@@ -31,7 +31,7 @@ public class FishFall extends AbstractExplosion {
 
 	@Override
 	protected Painter createPainter() {
-		return new BasePainter() {
+		return new BasePainter(this) {
 			@Override
 			public BufferedImage getNowImage() {
 				setY(getIntY() + speed);

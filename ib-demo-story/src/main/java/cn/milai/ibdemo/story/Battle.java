@@ -1,10 +1,9 @@
 package cn.milai.ibdemo.story;
 
-import cn.milai.ib.container.Container;
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.plugin.control.PauseSwitcher;
 import cn.milai.ib.ex.IBException;
+import cn.milai.ib.plugin.control.PauseSwitcher;
+import cn.milai.ib.stage.Stage;
+import cn.milai.ib.stage.Waits;
 
 /**
  * 剧情战斗流程
@@ -14,34 +13,34 @@ import cn.milai.ib.ex.IBException;
 public abstract class Battle {
 
 	protected DemoDrama drama;
-	private Stage container;
+	private Stage stage;
 	private Thread battleThread;
 
-	public Battle(DemoDrama drama, Stage container) {
+	public Battle(DemoDrama drama, Stage stage) {
 		this.drama = drama;
-		this.container = container;
+		this.stage = stage;
 	}
 
 	/**
-	 * 尝试获取所使用容器，若已经停止，将抛出异常
-	 * 子类在每次获取容器时应该通过该方法，以及时响应 {@link Container} 或 {@link Battle} 的关闭
+	 * 尝试获取所使用 {@link Stage} ，若已经停止，将抛出异常
+	 * 子类在每次获取容器时应该通过该方法，以及时响应 {@link Stage} 或 {@link Battle} 的关闭
 	 * @return
 	 * @throws BattleStoppedException
 	 */
-	public Stage container() throws BattleStoppedException {
-		Stage c = this.container;
-		if (c == null || c.isClosed()) {
-			this.container = null;
+	public Stage stage() throws BattleStoppedException {
+		Stage stage = this.stage;
+		if (stage == null || stage.lifecycle().isClosed()) {
+			this.stage = null;
 			throw new BattleStoppedException();
 		}
-		return container;
+		return stage;
 	}
 
 	/**
 	 * 通知运行中的当前 Battle 停止
 	 */
 	public void stop() {
-		this.container = null;
+		this.stage = null;
 		Waits.notify(battleThread);
 	}
 
@@ -51,7 +50,7 @@ public abstract class Battle {
 	public final boolean run() {
 		this.battleThread = Thread.currentThread();
 		try {
-			container().addObject(new PauseSwitcher());
+			stage().addActor(new PauseSwitcher());
 			return doRun();
 		} catch (BattleStoppedException e) {
 			return false;

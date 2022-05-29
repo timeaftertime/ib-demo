@@ -1,7 +1,7 @@
 package cn.milai.ibdemo.role.force;
 
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.Rigidbody;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.Rigidbody;
 
 /**
  * 陆军

@@ -1,6 +1,6 @@
 import  cn.milai.ibdemo.role.plane.PlayerPlane;
 import  cn.milai.ibdemo.role.plane.WelcomePlane;
-import  cn.milai.ib.control.text.DramaDialog;
+import  cn.milai.ib.actor.prop.text.DramaDialog;
 import  cn.milai.ibdemo.role.plane.FollowPlane;
 import  cn.milai.ibdemo.role.plane.MissileBoss;
 

@@ -1,9 +1,10 @@
 package cn.milai.ibdemo.role.plane;
 
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.config.Configurable;
-import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.actor.config.Configurable;
+import cn.milai.ib.role.nature.Movable;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
+import cn.milai.ib.stage.Stage;
 import cn.milai.ibdemo.role.bullet.shooter.RedShooter;
 
 /**
@@ -19,7 +20,9 @@ public class FollowPlane extends EnemyPlane {
 
 	private BulletShooter shooter = new RedShooter(this);
 
-	public FollowPlane() { setStatus(STATUS[Randoms.nextInt(STATUS.length)]); }
+	public FollowPlane() {
+		setStatus(STATUS[Randoms.nextInt(STATUS.length)]);
+	}
 
 	@Override
 	protected void initEnemyPlane() {
@@ -56,14 +59,15 @@ public class FollowPlane extends EnemyPlane {
 	private void redirectIfNeed(Movable m) {
 		if (getIntX() <= 0) {
 			m.setSpeedX(Math.abs(m.getSpeedX()));
-		} else if (getIntX() + getIntW() > container().getW()) {
+		} else if (getIntX() + getIntW() > stage().getW()) {
 			m.setSpeedX(-Math.abs(m.getSpeedX()));
 		}
 	}
 
 	private void removeIfOutOfOwner() {
-		if (getIntY() > container().getH()) {
-			container().removeObject(FollowPlane.this);
+		Stage stage = stage();
+		if (getIntY() > stage.getH()) {
+			stage.addActor(this);
 		}
 	}
 

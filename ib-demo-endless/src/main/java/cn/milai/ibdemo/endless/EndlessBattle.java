@@ -1,24 +1,22 @@
 package cn.milai.ibdemo.endless;
 
-import java.util.List;
-
 import cn.milai.common.base.Randoms;
-import cn.milai.ib.container.Container;
-import cn.milai.ib.container.Stage;
-import cn.milai.ib.container.Waits;
-import cn.milai.ib.container.listener.ContainerListeners;
-import cn.milai.ib.container.plugin.control.PauseSwitcher;
-import cn.milai.ib.container.plugin.media.Audio;
-import cn.milai.ib.container.plugin.media.MediaPlugin;
-import cn.milai.ib.container.plugin.ui.Image;
-import cn.milai.ib.container.plugin.ui.UIPlugin;
-import cn.milai.ib.control.GameOverLabel;
+import cn.milai.ib.actor.Actor;
 import cn.milai.ib.loader.AudioLoader;
 import cn.milai.ib.loader.ImageLoader;
+import cn.milai.ib.plugin.audio.Audio;
+import cn.milai.ib.plugin.audio.AudioCrew;
+import cn.milai.ib.plugin.control.PauseSwitcher;
+import cn.milai.ib.plugin.ui.Image;
+import cn.milai.ib.plugin.ui.UICrew;
 import cn.milai.ib.role.Role;
 import cn.milai.ib.role.explosion.Explosion;
-import cn.milai.ib.role.property.Score;
+import cn.milai.ib.role.nature.Score;
 import cn.milai.ib.role.weapon.bullet.Bullet;
+import cn.milai.ib.stage.Stage;
+import cn.milai.ib.stage.Waits;
+import cn.milai.ib.stage.event.AddActorEvent;
+import cn.milai.ib.stage.event.RemoveActorEvent;
 import cn.milai.ibdemo.role.bullet.shooter.BlueShooter;
 import cn.milai.ibdemo.role.plane.FollowPlane;
 import cn.milai.ibdemo.role.plane.PlayerPlane;
@@ -63,14 +61,18 @@ public class EndlessBattle implements Runnable {
 		return stageCursor;
 	}
 
-	private void onRoleAdded(Container c, Role r) {
-		if (r instanceof Explosion) {
+	private void onRoleAdded(AddActorEvent e) {
+		if (e.actor() instanceof Explosion) {
 			nowStage().playAudio(AudioLoader.load(BOMB_CODE, DRAMA_CODE, GameConf.AUDIO_BOMB_FILE));
 		}
 	}
 
-	private void onRolesRemoved(Container c, List<Role> rs) {
-		for (Role r : rs) {
+	private void onRolesRemoved(RemoveActorEvent e) {
+		for (Actor actor : e.actors()) {
+			if (!(actor instanceof Role)) {
+				continue;
+			}
+			Role r = (Role) actor;
 			if (r.getHealth().isAlive()) {
 				continue;
 			}
@@ -78,8 +80,8 @@ public class EndlessBattle implements Runnable {
 				gameOver();
 				return;
 			}
-			if (r.hasProperty(Score.class)) {
-				Score s = r.getProperty(Score.class);
+			if (r.hasNature(Score.NAME)) {
+				Score s = r.getNature(Score.NAME);
 				Role lastAttacker = r.getHealth().lastAttacker();
 				if (lastAttacker instanceof Bullet) {
 					if (((Bullet) lastAttacker).getOwner() == player) {
@@ -94,13 +96,10 @@ public class EndlessBattle implements Runnable {
 	@Override
 	public void run() {
 		stage.resize(GameConf.WIDTH, GameConf.HEIGHT);
-		stage.addItemListener(
-			ContainerListeners.roleListener(
-				EndlessBattle.this::onRoleAdded,
-				EndlessBattle.this::onRolesRemoved
-			)
-		);
-		while (true) {
+		stage.onAddActor().subscribe(this::onRoleAdded);
+		stage.onRemoveActor().subscribe(this::onRolesRemoved);
+		stage.onClosed().subscribe(e -> stageCursor = null);
+		while (!stage.lifecycle().isClosed()) {
 			try {
 				initGame();
 				addWelComePlayer();
@@ -129,11 +128,12 @@ public class EndlessBattle implements Runnable {
 		player = DemoFactory.newPlayerPlane(nowStage().getW() / 2, nowStage().getH() * 0.93);
 		formTitle = GameConf.TITLE_PREFIX;
 		playerScore = 0;
+		nowStage()
+			.addActor(player)
+			.addActor(new PauseSwitcher())
+			.playAudio(AudioLoader.load(Audio.BGM_CODE, DRAMA_CODE, GameConf.AUDIO_BG_FILE));
+		Waits.wait(nowStage(), 1);
 		refreshFormTitle();
-		nowStage().addObject(player);
-		nowStage().addObject(new PauseSwitcher());
-
-		nowStage().playAudio(AudioLoader.load(Audio.BGM_CODE, DRAMA_CODE, GameConf.AUDIO_BG_FILE));
 	}
 
 	private void addWelComePlayer() {
@@ -147,29 +147,34 @@ public class EndlessBattle implements Runnable {
 		if (row < 1)
 			throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
 		for (int i = 0; i < row; i++) {
-			nowStage().addObject(newWelcomePlane(nowStage().getW() / 2 - disFromCenter, 0));
-			nowStage().addObject(newWelcomePlane(nowStage().getW() / 2 + disFromCenter, 0));
+			nowStage()
+				.addActor(newWelcomePlane(nowStage().getW() / 2 - disFromCenter, 0))
+				.addActor(newWelcomePlane(nowStage().getW() / 2 + disFromCenter, 0));
 			Waits.wait(nowStage(), GameConf.ADD_VERTICAL_WELCOME_PLANE_FRAMES);
 		}
 	}
 
 	private void addLadderWelcomePlayer(int row, int disOfX) {
-		if (row < 1)
+		if (row < 1) {
 			throw new IllegalArgumentException("行数必须大于等于 1 ：" + row);
-		nowStage().addObject(newWelcomePlane(nowStage().getW() / 2, 0));
+		}
+		nowStage().addActor(newWelcomePlane(nowStage().getW() / 2, 0));
 		Waits.wait(nowStage(), GameConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
 		for (int i = 2; i <= row; i++) {
-			nowStage().addObject(newWelcomePlane(nowStage().getW() / 2 - i * disOfX, 0));
-			nowStage().addObject(newWelcomePlane(nowStage().getW() / 2 + i * disOfX, 0));
+			nowStage()
+				.addActor(newWelcomePlane(nowStage().getW() / 2 - i * disOfX, 0))
+				.addActor(newWelcomePlane(nowStage().getW() / 2 + i * disOfX, 0));
 			Waits.wait(nowStage(), GameConf.ADD_LADDER_WELCOME_PLANE_FRAMES);
 		}
 	}
 
 	private void checkLevelUp() {
-		if (playerScore >= preGameScore + GameConf.LEVEL_UP_SCORE_INTERVAL)
+		if (playerScore >= preGameScore + GameConf.LEVEL_UP_SCORE_INTERVAL) {
 			levelUp();
-		if (nowStage().getFrame() - lastLevelUpTime > GameConf.LEVEL_UP_FRAMES)
+		}
+		if (nowStage().lifecycle().getFrame() - lastLevelUpTime > GameConf.LEVEL_UP_FRAMES) {
 			levelUp();
+		}
 	}
 
 	private void levelUp() {
@@ -185,19 +190,19 @@ public class EndlessBattle implements Runnable {
 		if (addNormalEnemyInterval < GameConf.MIN_ADD_ENEMEY_FRAMES)
 			addNormalEnemyInterval = GameConf.MIN_ADD_ENEMEY_FRAMES;
 
-		lastLevelUpTime = nowStage().getFrame();
+		lastLevelUpTime = nowStage().lifecycle().getFrame();
 	}
 
 	private void randomAddEnemy() {
 		if (Randoms.nextLess(GameConf.ADD_ENEMY_CHANCE)) {
-			nowStage().addObject(DemoFactory.newFollowPlane(Randoms.nextInt(nowStage().getIntW()), 0));
+			nowStage().addActor(DemoFactory.newFollowPlane(Randoms.nextInt(nowStage().getIntW()), 0));
 			Waits.wait(nowStage(), addNormalEnemyInterval);
 		}
 	}
 
 	private void refreshFormTitle() {
 		nowStage().fire(
-			UIPlugin.class, f -> f.setTitle(
+			UICrew.class, f -> f.setTitle(
 				formTitle + "         得分：" + playerScore + "      生命：" + player.getHealth().getHP()
 			)
 		);
@@ -212,25 +217,27 @@ public class EndlessBattle implements Runnable {
 	}
 
 	private void gameOver() {
-		nowStage().fire(MediaPlugin.class, m -> m.stopAudio(Audio.BGM_CODE));
+		nowStage().fire(AudioCrew.class, m -> m.stopAudio(Audio.BGM_CODE));
 		showGameOverLabel();
 		showRestartButton();
 	}
 
 	private void showGameOverLabel() {
-		GameOverLabel gameOverLabel = DemoFactory.newGameOverLabel(
-			GameConf.GAME_OVER_LABEL_POS_X, GameConf.GAME_OVER_LABEL_POS_Y
+		nowStage().addActor(
+			DemoFactory.newGameOverLabel(
+				GameConf.GAME_OVER_LABEL_POS_X, GameConf.GAME_OVER_LABEL_POS_Y
+			)
 		);
-		nowStage().addObject(gameOverLabel);
 	}
 
 	private void showRestartButton() {
-		nowStage().addObject(
+		nowStage().addActor(
 			DemoFactory.newRestartButton(GameConf.RESTART_BUTTON_POS_X, GameConf.RESTART_BUTTON_POS_Y, () -> {
 				try {
 					Stage nowStage = nowStage();
 					EndlessBattle.this.stageCursor = null;
-					nowStage.reset();
+					nowStage.lifecycle().reset();
+					nowStage.clearActor();
 				} catch (RestartInterrupt e) {
 				}
 			})

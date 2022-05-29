@@ -1,18 +1,18 @@
 package cn.milai.ibdemo.role.force;
 
-import cn.milai.ib.config.Configurable;
-import cn.milai.ib.item.Item;
-import cn.milai.ib.item.property.Painter;
+import cn.milai.ib.actor.Actor;
+import cn.milai.ib.actor.config.Configurable;
+import cn.milai.ib.actor.nature.Painter;
 import cn.milai.ib.role.BasePlayer;
 import cn.milai.ib.role.BaseRole;
 import cn.milai.ib.role.Player;
-import cn.milai.ib.role.property.Movable;
-import cn.milai.ib.role.property.ReversiblePainter;
-import cn.milai.ib.role.property.Rigidbody;
-import cn.milai.ib.role.property.base.BaseMovable;
-import cn.milai.ib.role.property.base.BaseRigidbody;
-import cn.milai.ib.role.property.holder.AwareMovableHolder;
-import cn.milai.ib.role.property.holder.RigidbodyHolder;
+import cn.milai.ib.role.nature.Movable;
+import cn.milai.ib.role.nature.ReversiblePainter;
+import cn.milai.ib.role.nature.Rigidbody;
+import cn.milai.ib.role.nature.base.BaseMovable;
+import cn.milai.ib.role.nature.base.BaseRigidbody;
+import cn.milai.ib.role.nature.holder.AwareMovableHolder;
+import cn.milai.ib.role.nature.holder.RigidbodyHolder;
 import cn.milai.ib.role.weapon.bullet.shooter.BulletShooter;
 import cn.milai.ibdemo.role.DemoPlayerRole;
 
@@ -32,8 +32,8 @@ public class ForceRole extends BaseRole implements DemoPlayerRole, AwareMovableH
 	private int damagedCnt;
 
 	public ForceRole() {
-		setMovable(new BaseMovable());
-		setRigidbody(new BaseRigidbody());
+		setMovable(new BaseMovable(this));
+		setRigidbody(new BaseRigidbody(this));
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ForceRole extends BaseRole implements DemoPlayerRole, AwareMovableH
 		if (damagedCnt > 0) {
 			damagedCnt--;
 			if (damagedCnt <= 0) {
-				setStatus(Item.STATUS_DEFAULT);
+				setStatus(Actor.STATUS_DEFAULT);
 			}
 		}
 		applyForce(m, r);
@@ -65,7 +65,7 @@ public class ForceRole extends BaseRole implements DemoPlayerRole, AwareMovableH
 
 	@Override
 	protected Painter createPainter() {
-		return new ReversiblePainter(true, false);
+		return new ReversiblePainter(this, true, false);
 	}
 
 	@Override

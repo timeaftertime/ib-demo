@@ -1,9 +1,9 @@
 package cn.milai.ibdemo.role.helper;
 
-import cn.milai.ib.config.Configurable;
+import cn.milai.ib.actor.config.Configurable;
 import cn.milai.ib.role.PlayerRole;
 import cn.milai.ib.role.helper.AbstractHelper;
-import cn.milai.ib.role.property.Movable;
+import cn.milai.ib.role.nature.Movable;
 
 /**
  * 加速道具
@@ -35,11 +35,11 @@ public class AccelerateHelper extends AbstractHelper {
 
 	@Override
 	public void makeFunction(PlayerRole player) {
-		if (!(player.hasProperty(Movable.class))) {
+		if (!(player.hasNature(Movable.NAME))) {
 			return;
 		}
 		player.pushStatus(false);
-		Movable movable = player.getProperty(Movable.class);
+		Movable movable = player.getNature(Movable.NAME);
 		movable.setRatedSpeedX(Math.min(maxRatedSpeedX, movable.getRatedSpeedX() + 2));
 		movable.setRatedSpeedY(Math.min(maxRatedSpeedY, movable.getRatedSpeedY() + 2));
 		player.setStatus(ACC_STATUS);
